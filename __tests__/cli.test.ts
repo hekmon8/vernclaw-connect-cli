@@ -1,0 +1,44 @@
+import { describe, expect, it } from 'vitest';
+
+import { mapErrorCodeToExitCode, parseArgv } from '../src/index.js';
+import { resolveCliConfig } from '../src/config/env.js';
+
+describe('openclaw-connect cli helpers', () => {
+  it('maps connector error codes to exit codes', () => {
+    expect(mapErrorCodeToExitCode()).toBe(0);
+    expect(mapErrorCodeToExitCode('AUTH_REQUIRED')).toBe(1);
+    expect(mapErrorCodeToExitCode('INVALID_API_KEY')).toBe(2);
+    expect(mapErrorCodeToExitCode('INVALID_PARAMS')).toBe(3);
+    expect(mapErrorCodeToExitCode('ALL_PROVIDERS_FAILED')).toBe(4);
+  });
+
+  it('parses flags and positionals', () => {
+    const parsed = parseArgv([
+      'invoke',
+      'website_traffic_get',
+      '--domain',
+      'example.com',
+      '--api-key',
+      'key_123',
+    ]);
+
+    expect(parsed.positionals).toEqual(['invoke', 'website_traffic_get']);
+    expect(parsed.flags.domain).toBe('example.com');
+    expect(parsed.flags['api-key']).toBe('key_123');
+  });
+
+  it('resolves config precedence', () => {
+    const config = resolveCliConfig({
+      env: {
+        OPENCLAW_CONNECT_API_KEY: 'env-key',
+        OPENCLAW_CONNECT_API_BASE_URL: 'https://api.example.com',
+      },
+      apiKey: 'flag-key',
+      apiBaseUrl: 'https://flag.example.com',
+      homeDir: '/tmp/openclaw-test-home',
+    });
+
+    expect(config.apiKey).toBe('flag-key');
+    expect(config.apiBaseUrl).toBe('https://flag.example.com');
+  });
+});

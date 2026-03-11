@@ -14,7 +14,7 @@ export interface StoredCredentials {
 }
 
 export function getCredentialsFilePath(homeDir = homedir()) {
-  return join(homeDir, '.openclaw-connect.json');
+  return join(homeDir, '.vernclaw-cli.json');
 }
 
 export function loadStoredCredentials(
@@ -51,10 +51,10 @@ export function resolveCliConfig({
   return {
     apiBaseUrl:
       apiBaseUrl ||
-      env.OPENCLAW_CONNECT_API_BASE_URL ||
+      env.VERNCLAW_CLI_API_BASE_URL ||
       stored.apiBaseUrl ||
       'http://localhost:3000',
-    apiKey: apiKey || env.OPENCLAW_CONNECT_API_KEY || stored.apiKey || '',
+    apiKey: apiKey || env.VERNCLAW_CLI_API_KEY || stored.apiKey || '',
     credentialsFile,
   };
 }

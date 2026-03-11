@@ -18,7 +18,7 @@ export async function runLoginCommand(
 
   if (!nextApiKey) {
     const readline = createInterface({ input, output });
-    nextApiKey = await readline.question('Paste your OpenClaw Connect API key: ');
+    nextApiKey = await readline.question('Paste your Vernclaw CLI API key: ');
     await readline.close();
   }
 
@@ -31,7 +31,7 @@ export async function runLoginCommand(
   );
 
   return {
-    markdown: '# Login Complete\n\n- Credentials stored for `openclaw-connect`.\n',
+    markdown: '# Login Complete\n\n- Credentials stored for `vernclaw-cli`.\n',
     status: 200,
   };
 }

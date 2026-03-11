@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { mapErrorCodeToExitCode, parseArgv } from '../src/index.js';
 import { resolveCliConfig } from '../src/config/env.js';
 
-describe('openclaw-connect cli helpers', () => {
+describe('vernclaw-cli helpers', () => {
   it('maps connector error codes to exit codes', () => {
     expect(mapErrorCodeToExitCode()).toBe(0);
     expect(mapErrorCodeToExitCode('AUTH_REQUIRED')).toBe(1);
@@ -30,12 +30,12 @@ describe('openclaw-connect cli helpers', () => {
   it('resolves config precedence', () => {
     const config = resolveCliConfig({
       env: {
-        OPENCLAW_CONNECT_API_KEY: 'env-key',
-        OPENCLAW_CONNECT_API_BASE_URL: 'https://api.example.com',
+        VERNCLAW_CLI_API_KEY: 'env-key',
+        VERNCLAW_CLI_API_BASE_URL: 'https://api.example.com',
       },
       apiKey: 'flag-key',
       apiBaseUrl: 'https://flag.example.com',
-      homeDir: '/tmp/openclaw-test-home',
+      homeDir: '/tmp/vernclaw-test-home',
     });
 
     expect(config.apiKey).toBe('flag-key');

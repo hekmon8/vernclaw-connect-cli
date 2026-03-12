@@ -2,7 +2,10 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 export function getCredentialsFilePath(homeDir = homedir()) {
-    return join(homeDir, '.openclaw-connect.json');
+    return join(homeDir, '.vernclaw-cli.json');
+}
+export function getRegistryCacheFilePath(homeDir = homedir()) {
+    return join(homeDir, '.vernclaw', 'registry', 'catalog.json');
 }
 export function loadStoredCredentials(filePath = getCredentialsFilePath()) {
     if (!existsSync(filePath)) {
@@ -18,10 +21,13 @@ export function resolveCliConfig({ env = process.env, apiKey, apiBaseUrl, homeDi
     const stored = loadStoredCredentials(credentialsFile);
     return {
         apiBaseUrl: apiBaseUrl ||
-            env.OPENCLAW_CONNECT_API_BASE_URL ||
+            env.VERNCLAW_CLI_API_BASE_URL ||
             stored.apiBaseUrl ||
             'http://localhost:3000',
-        apiKey: apiKey || env.OPENCLAW_CONNECT_API_KEY || stored.apiKey || '',
+        apiKey: apiKey || env.VERNCLAW_CLI_API_KEY || stored.apiKey || '',
         credentialsFile,
+        registryCatalogFile: getRegistryCacheFilePath(homeDir),
+        registryCacheFile: getRegistryCacheFilePath(homeDir),
+        cliVersion: '0.1.0',
     };
 }

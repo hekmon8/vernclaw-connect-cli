@@ -10,3 +10,10 @@ export declare function requestMarkdown({ config, pathname, method, body, }: {
     method?: 'GET' | 'POST';
     body?: Record<string, unknown>;
 }): Promise<MarkdownResponse>;
+export declare function requestJson<T>({ config, pathname, }: {
+    config: CliConfig;
+    pathname: string;
+}): Promise<{
+    status: number;
+    data: T;
+}>;

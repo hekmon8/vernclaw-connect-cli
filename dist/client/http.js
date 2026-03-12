@@ -25,3 +25,34 @@ export async function requestMarkdown({ config, pathname, method = 'GET', body, 
         status: response.status,
     };
 }
+export async function requestJson({ config, pathname, }) {
+    const response = await fetch(buildUrl(config.apiBaseUrl, pathname), {
+        headers: {
+            ...(config.apiKey
+                ? {
+                    Authorization: `Bearer ${config.apiKey}`,
+                }
+                : {}),
+        },
+    });
+    const payload = (await response.json());
+    if (!response.ok) {
+        const message = payload && typeof payload === 'object' && 'message' in payload
+            ? String(payload.message)
+            : `request failed with status ${response.status}`;
+        throw new Error(message);
+    }
+    if (payload && typeof payload === 'object' && 'code' in payload) {
+        if (payload.code !== 0) {
+            throw new Error(payload.message || `request failed with status ${response.status}`);
+        }
+        return {
+            status: response.status,
+            data: payload.data,
+        };
+    }
+    return {
+        status: response.status,
+        data: payload,
+    };
+}

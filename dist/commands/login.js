@@ -5,7 +5,7 @@ export async function runLoginCommand(config, { apiKey, apiBaseUrl, } = {}) {
     let nextApiKey = apiKey;
     if (!nextApiKey) {
         const readline = createInterface({ input, output });
-        nextApiKey = await readline.question('Paste your OpenClaw Connect API key: ');
+        nextApiKey = await readline.question('Paste your Vernclaw CLI API key: ');
         await readline.close();
     }
     saveStoredCredentials({
@@ -13,7 +13,7 @@ export async function runLoginCommand(config, { apiKey, apiBaseUrl, } = {}) {
         apiBaseUrl: apiBaseUrl || config.apiBaseUrl,
     }, config.credentialsFile);
     return {
-        markdown: '# Login Complete\n\n- Credentials stored for `openclaw-connect`.\n',
+        markdown: '# Login Complete\n\n- Credentials stored for `vernclaw-cli`.\n',
         status: 200,
     };
 }

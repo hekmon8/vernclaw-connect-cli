@@ -41,7 +41,7 @@ async function main() {
           : undefined,
     });
   } else if (command === 'list') {
-    response = await runListCommand(config);
+    response = await runListCommand(config, flags);
   } else if (command === 'describe') {
     response = await runDescribeCommand(config, positionals[1] || '');
   } else if (command === 'invoke') {

@@ -1,7 +1,16 @@
-import { requestMarkdown } from '../client/http.js';
-export function runDescribeCommand(config, connectorId) {
-    return requestMarkdown({
-        config,
-        pathname: `/api/connectors/${connectorId}?format=markdown`,
-    });
+import { renderCatalogEntry } from '../catalog/index.js';
+import { getEffectiveConnectorById } from '../catalog/service.js';
+export async function runDescribeCommand(config, connectorId) {
+    const entry = await getEffectiveConnectorById(config, connectorId);
+    if (!entry) {
+        return {
+            markdown: `# Connector Not Found\n\n- Connector ID: ${connectorId}\n`,
+            status: 404,
+            errorCode: 'INVALID_PARAMS',
+        };
+    }
+    return {
+        markdown: renderCatalogEntry(entry),
+        status: 200,
+    };
 }

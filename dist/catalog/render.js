@@ -3,7 +3,7 @@ function pad(value, width) {
 }
 export function renderCatalogTable(entries) {
     const columns = [
-        ['NAME', 24],
+        ['CONNECTOR', 28],
         ['CATEGORY', 14],
         ['VISIBILITY', 12],
         ['INSTALL', 12],
@@ -18,7 +18,7 @@ export function renderCatalogTable(entries) {
         .join(' ');
     const body = entries
         .map((entry) => [
-        pad(entry.name, 24),
+        pad(entry.id, 28),
         pad(entry.category, 14),
         pad(entry.visibility, 12),
         pad(entry.installStatus, 12),

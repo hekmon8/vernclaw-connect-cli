@@ -14,8 +14,8 @@ describe('registry compatibility engine', () => {
         connectors: [
           {
             manifest: {
-              id: 'website_traffic_get',
-              name: 'Website Traffic',
+              id: 'seo.website-traffic',
+              name: 'SEO Website Traffic',
               category: 'seo',
               description: 'Traffic lookup',
               version: '1.0.0',
@@ -30,7 +30,7 @@ describe('registry compatibility engine', () => {
               },
             },
             overlay: {
-              connectorId: 'website_traffic_get',
+              connectorId: 'seo.website-traffic',
               visible: true,
               featured: false,
               emergencyDisable: false,
@@ -42,7 +42,7 @@ describe('registry compatibility engine', () => {
 
     expect(entries).toEqual([
       expect.objectContaining({
-        id: 'website_traffic_get',
+        id: 'seo.website-traffic',
         compatibilityState: 'visible_upgrade_required',
         installStatus: 'upgrade_required',
       }),
@@ -54,8 +54,8 @@ describe('registry compatibility engine', () => {
 
     const output = renderCatalogTable([
       {
-        id: 'website_traffic_get',
-        name: 'website_traffic_get',
+        id: 'seo.website-traffic',
+        name: 'seo.website-traffic',
         category: 'seo',
         description: 'Traffic lookup',
         version: '1.0.0',
@@ -68,8 +68,8 @@ describe('registry compatibility engine', () => {
         trainingStatus: 'not_required',
         source: 'remote',
         manifest: {
-          id: 'website_traffic_get',
-          name: 'website_traffic_get',
+          id: 'seo.website-traffic',
+          name: 'seo.website-traffic',
           category: 'seo',
           description: 'Traffic lookup',
           version: '1.0.0',
@@ -85,8 +85,8 @@ describe('registry compatibility engine', () => {
         },
       },
       {
-        id: 'image_generate',
-        name: 'image_generate',
+        id: 'generate.image',
+        name: 'generate.image',
         category: 'generation',
         description: 'Generate images',
         version: '1.0.0',
@@ -99,8 +99,8 @@ describe('registry compatibility engine', () => {
         trainingStatus: 'unknown',
         source: 'cache',
         manifest: {
-          id: 'image_generate',
-          name: 'image_generate',
+          id: 'generate.image',
+          name: 'generate.image',
           category: 'generation',
           description: 'Generate images',
           version: '1.0.0',
@@ -117,8 +117,8 @@ describe('registry compatibility engine', () => {
       },
     ]);
 
-    expect(output).toContain('NAME');
-    expect(output).toContain('website_traffic_get');
+    expect(output).toContain('CONNECTOR');
+    expect(output).toContain('seo.website-traffic');
     expect(output).toContain('upgrade_required');
   });
 });

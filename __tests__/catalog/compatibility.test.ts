@@ -9,8 +9,8 @@ function buildEntry(
 ): RegistryCatalogEntry {
   return {
     manifest: {
-      id: 'website_traffic_get',
-      name: 'Website Traffic Get',
+      id: 'seo.website-traffic',
+      name: 'SEO Website Traffic',
       version: '1.0.0',
       connector_type: 'read_only',
       min_cli_version: '0.1.0',

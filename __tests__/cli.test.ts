@@ -15,14 +15,14 @@ describe('vernclaw-cli helpers', () => {
   it('parses flags and positionals', () => {
     const parsed = parseArgv([
       'invoke',
-      'website_traffic_get',
+      'seo.website-traffic',
       '--domain',
       'example.com',
       '--api-key',
       'key_123',
     ]);
 
-    expect(parsed.positionals).toEqual(['invoke', 'website_traffic_get']);
+    expect(parsed.positionals).toEqual(['invoke', 'seo.website-traffic']);
     expect(parsed.flags.domain).toBe('example.com');
     expect(parsed.flags['api-key']).toBe('key_123');
   });

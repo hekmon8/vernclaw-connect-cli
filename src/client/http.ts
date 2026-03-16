@@ -12,6 +12,26 @@ interface JsonEnvelope<T> {
   data: T;
 }
 
+function inferErrorCode(status: number, headerErrorCode?: string | null) {
+  if (headerErrorCode) {
+    return headerErrorCode;
+  }
+
+  if (status >= 500) {
+    return 'PROVIDER_ERROR';
+  }
+
+  if (status === 401 || status === 403) {
+    return 'INVALID_API_KEY';
+  }
+
+  if (status >= 400) {
+    return 'INVALID_PARAMS';
+  }
+
+  return undefined;
+}
+
 function buildUrl(baseUrl: string, pathname: string) {
   const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
   return new URL(pathname.replace(/^\//, ''), normalizedBase).toString();
@@ -45,9 +65,11 @@ export async function requestMarkdown({
     body: body ? JSON.stringify(body) : undefined,
   });
 
+  const headerErrorCode = response.headers.get('x-error-code');
+
   return {
     markdown: await response.text(),
-    errorCode: response.headers.get('x-error-code') || undefined,
+    errorCode: inferErrorCode(response.status, headerErrorCode),
     status: response.status,
   };
 }

@@ -60,7 +60,7 @@ Markdown 输出到 `stdout`，包含：
 vernclaw-cli invoke read.x.post --url "https://x.com/expert/status/123"
 
 # 2. 为内容生成配图
-vernclaw-cli invoke generate.image --prompt "行业洞察的视觉摘要" --style illustration
+vernclaw-cli invoke generate.image --prompt "行业洞察的视觉摘要"
 
 # 3. 查看积分使用情况
 vernclaw-cli balance

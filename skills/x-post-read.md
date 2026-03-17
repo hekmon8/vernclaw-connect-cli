@@ -60,7 +60,7 @@ Execution mode: **synchronous** (results returned in 1–3 seconds).
 vernclaw-cli invoke read.x.post --url "https://x.com/expert/status/123"
 
 # 2. Generate a companion image for the content
-vernclaw-cli invoke generate.image --prompt "Visual summary of industry insights" --style illustration
+vernclaw-cli invoke generate.image --prompt "Visual summary of industry insights"
 
 # 3. Check credit usage
 vernclaw-cli balance

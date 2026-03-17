@@ -64,7 +64,7 @@ vernclaw-cli invoke seo.website-traffic --domain example.com
 vernclaw-cli invoke read.x.post --url "https://x.com/user/status/123"
 
 # Generate an image (async — returns a job ID)
-vernclaw-cli invoke generate.image --prompt "sunset over mountains" --style realistic
+vernclaw-cli invoke generate.image --prompt "sunset over mountains"
 vernclaw-cli job get img_abc123
 ```
 

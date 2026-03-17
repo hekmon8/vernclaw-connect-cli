@@ -1,7 +1,60 @@
 function pad(value, width) {
     return value.length >= width ? value : value.padEnd(width, ' ');
 }
-export function renderCatalogTable(entries) {
+function truncate(value, width) {
+    if (value.length <= width)
+        return value;
+    return width > 3 ? value.slice(0, width - 3) + '...' : value.slice(0, width);
+}
+function friendlyStatus(entry) {
+    if (entry.installStatus === 'disabled')
+        return 'disabled';
+    if (entry.installStatus === 'upgrade_required')
+        return 'upgrade cli';
+    if (entry.runtimeStatus === 'active')
+        return 'ready';
+    if (entry.runtimeStatus === 'blocked')
+        return 'blocked';
+    if (entry.runtimeStatus === 'quota_exceeded')
+        return 'quota exceeded';
+    if (entry.runtimeStatus === 'auth_required')
+        return 'auth required';
+    if (entry.runtimeStatus === 'training_required')
+        return 'training required';
+    if (entry.runtimeStatus === 'not_installed')
+        return 'not installed';
+    if (entry.installStatus === 'installed')
+        return 'ready';
+    if (entry.installStatus === 'available')
+        return 'available';
+    if (entry.installStatus === 'installable')
+        return 'available';
+    return entry.runtimeStatus;
+}
+export function renderCatalogTable(entries, debug = false) {
+    if (debug) {
+        return renderCatalogTableDebug(entries);
+    }
+    const columns = [
+        ['CONNECTOR', 28],
+        ['CATEGORY', 18],
+        ['DESCRIPTION', 36],
+        ['STATUS', 18],
+    ];
+    const header = columns
+        .map(([label, width]) => pad(label, width))
+        .join(' ');
+    const body = entries
+        .map((entry) => [
+        pad(entry.id, 28),
+        pad(entry.category, 18),
+        pad(truncate(entry.description || '', 36), 36),
+        pad(friendlyStatus(entry), 18),
+    ].join(' '))
+        .join('\n');
+    return body ? `${header}\n${body}\n` : `${header}\n`;
+}
+function renderCatalogTableDebug(entries) {
     const columns = [
         ['CONNECTOR', 28],
         ['CATEGORY', 14],

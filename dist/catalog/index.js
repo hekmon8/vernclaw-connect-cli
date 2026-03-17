@@ -4,8 +4,8 @@ export { filterCatalogForList, getEffectiveConnectorById, resolveEffectiveCatalo
 export function getCatalogEntry(entries, connectorId) {
     return entries.find((entry) => entry.id === connectorId);
 }
-export function renderCatalogList(entries) {
-    return renderCatalogTable(entries);
+export function renderCatalogList(entries, debug = false) {
+    return renderCatalogTable(entries, debug);
 }
 export function renderCatalogEntry(entry) {
     return renderCatalogDescribe(entry);

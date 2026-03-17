@@ -9,10 +9,45 @@ import { runLoginCommand } from './commands/login.js';
 import { runLogoutCommand } from './commands/logout.js';
 import { resolveCliConfig } from './config/env.js';
 import { mapErrorCodeToExitCode, parseArgv } from './index.js';
+const CLI_VERSION = '0.1.0';
+function printHelp() {
+    const help = [
+        `vernclaw-cli v${CLI_VERSION}`,
+        '',
+        'Usage: vernclaw-cli <command> [options]',
+        '',
+        'Commands:',
+        '  login                    Authenticate via browser or API key',
+        '  logout                   Remove stored credentials',
+        '  list                     List available connectors',
+        '  describe <connector>     Show connector details and parameters',
+        '  invoke <connector>       Run a connector and print output',
+        '  job get <jobId>          Check status of an async job',
+        '  balance                  Display current credit balance',
+        '',
+        'Options:',
+        '  --help                   Show this help message',
+        '  --api-key <key>          Use a specific API key',
+        '  --api-base-url <url>     Override the API base URL',
+        '',
+        'Examples:',
+        '  vernclaw-cli login',
+        '  vernclaw-cli list',
+        '  vernclaw-cli invoke seo.website-traffic --domain example.com',
+        '',
+        'Docs: https://vernclaw.com/docs/connectors/cli',
+        '',
+    ].join('\n');
+    process.stdout.write(help);
+}
 async function main() {
     const { positionals, flags } = parseArgv(process.argv.slice(2));
     const command = positionals[0];
     const subcommand = positionals[1];
+    if (!command || flags['help'] === true) {
+        printHelp();
+        return 0;
+    }
     const config = resolveCliConfig({
         apiKey: typeof flags['api-key'] === 'string' ? String(flags['api-key']) : undefined,
         apiBaseUrl: typeof flags['api-base-url'] === 'string'
@@ -49,8 +84,8 @@ async function main() {
         response = await runBalanceCommand(config);
     }
     else {
-        process.stderr.write('ERROR_CODE=INVALID_PARAMS\n');
-        process.stderr.write('Unknown command.\n');
+        process.stderr.write(`Unknown command: ${command}\n\n`);
+        printHelp();
         return 3;
     }
     process.stdout.write(response.markdown);

@@ -79,7 +79,7 @@ export interface EffectiveConnectorView {
     minCliVersion: string;
     visibility: 'visible' | 'hidden' | 'disabled';
     compatibilityState: ConnectorCompatibilityState;
-    installStatus: 'installable' | 'installed' | 'upgrade_required' | 'hidden' | 'disabled';
+    installStatus: 'available' | 'installable' | 'installed' | 'upgrade_required' | 'hidden' | 'disabled';
     runtimeStatus: 'active' | 'auth_required' | 'training_required' | 'quota_exceeded' | 'not_installed' | 'blocked' | 'unavailable' | 'unknown';
     authStatus: 'required' | 'authorized' | 'not_required' | 'unknown';
     trainingStatus: 'required' | 'acknowledged' | 'not_required' | 'unknown';

@@ -1,11 +1,44 @@
 {
-  "name": "vernclaw-cli",
+  "name": "vernclaw-connect-cli",
   "version": "0.1.0",
-  "private": true,
+  "description": "Official Vernclaw connector CLI with markdown-first output.",
+  "keywords": [
+    "vernclaw",
+    "connector",
+    "cli",
+    "ai",
+    "agent"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hekmon8/vernclaw-connect-cli.git"
+  },
+  "homepage": "https://github.com/hekmon8/vernclaw-connect-cli#readme",
+  "bugs": {
+    "url": "https://github.com/hekmon8/vernclaw-connect-cli/issues"
+  },
   "type": "module",
   "bin": {
     "vernclaw-cli": "dist/cli.js"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

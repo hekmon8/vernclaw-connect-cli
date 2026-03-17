@@ -77,18 +77,29 @@ export async function requestMarkdown({
 export async function requestJson<T>({
   config,
   pathname,
+  method = 'GET',
+  body,
 }: {
   config: CliConfig;
   pathname: string;
+  method?: 'GET' | 'POST';
+  body?: Record<string, unknown>;
 }) {
   const response = await fetch(buildUrl(config.apiBaseUrl, pathname), {
+    method,
     headers: {
       ...(config.apiKey
         ? {
             Authorization: `Bearer ${config.apiKey}`,
           }
         : {}),
+      ...(body
+        ? {
+            'Content-Type': 'application/json',
+          }
+        : {}),
     },
+    body: body ? JSON.stringify(body) : undefined,
   });
   const payload = (await response.json()) as JsonEnvelope<T> | T;
 

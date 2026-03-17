@@ -5,4 +5,9 @@ export declare function runLoginCommand(config: CliConfig, { apiKey, apiBaseUrl,
 }): Promise<{
     markdown: string;
     status: number;
+    errorCode: string;
+} | {
+    markdown: string;
+    status: number;
+    errorCode?: undefined;
 }>;

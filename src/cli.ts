@@ -7,6 +7,7 @@ import { runInvokeCommand } from './commands/invoke.js';
 import { runJobGetCommand } from './commands/job-get.js';
 import { runListCommand } from './commands/list.js';
 import { runLoginCommand } from './commands/login.js';
+import { runLogoutCommand } from './commands/logout.js';
 import { resolveCliConfig } from './config/env.js';
 import { mapErrorCodeToExitCode, parseArgv } from './index.js';
 
@@ -39,6 +40,10 @@ async function main() {
         typeof flags['api-base-url'] === 'string'
           ? String(flags['api-base-url'])
           : undefined,
+    });
+  } else if (command === 'logout') {
+    response = await runLogoutCommand(config, {
+      force: flags['force'] === true,
     });
   } else if (command === 'list') {
     response = await runListCommand(config, flags);

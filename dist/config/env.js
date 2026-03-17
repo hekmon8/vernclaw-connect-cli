@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 export function getCredentialsFilePath(homeDir = homedir()) {
@@ -15,6 +15,13 @@ export function loadStoredCredentials(filePath = getCredentialsFilePath()) {
 }
 export function saveStoredCredentials(credentials, filePath = getCredentialsFilePath()) {
     writeFileSync(filePath, JSON.stringify(credentials, null, 2));
+}
+export function deleteStoredCredentials(filePath = getCredentialsFilePath()) {
+    if (!existsSync(filePath)) {
+        return false;
+    }
+    unlinkSync(filePath);
+    return true;
 }
 export function resolveCliConfig({ env = process.env, apiKey, apiBaseUrl, homeDir, } = {}) {
     const credentialsFile = getCredentialsFilePath(homeDir);

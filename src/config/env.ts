@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 
@@ -39,6 +39,16 @@ export function saveStoredCredentials(
   filePath = getCredentialsFilePath()
 ) {
   writeFileSync(filePath, JSON.stringify(credentials, null, 2));
+}
+
+export function deleteStoredCredentials(
+  filePath = getCredentialsFilePath()
+): boolean {
+  if (!existsSync(filePath)) {
+    return false;
+  }
+  unlinkSync(filePath);
+  return true;
 }
 
 export function resolveCliConfig({

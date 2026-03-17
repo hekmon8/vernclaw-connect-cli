@@ -5,7 +5,7 @@ description: Use when generating images from text prompts, creating marketing vi
 
 # AI Image Generator — CLI Skill
 
-Generate high-quality images from text prompts with multiple artistic styles through the `vernclaw-cli`. Uses asynchronous processing — submit a job and poll for results.
+Generate high-quality images from text prompts through the `vernclaw-cli`. Uses asynchronous processing — submit a job and poll for results.
 
 ## When to Use
 
@@ -28,13 +28,11 @@ If you need an API key for CI/CD, generate one at [vernclaw.com/settings/connect
 ```bash
 # Basic generation
 vernclaw-cli invoke generate.image \
-  --prompt "A modern office with floor-to-ceiling windows, natural light" \
-  --style realistic
+  --prompt "A modern office with floor-to-ceiling windows, natural light"
 
 # With size option
 vernclaw-cli invoke generate.image \
   --prompt "Flat design data visualization, blue palette" \
-  --style illustration \
   --size landscape
 ```
 
@@ -49,7 +47,6 @@ vernclaw-cli job get img_abc123xyz
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--prompt` | Yes | Text description of the image to generate |
-| `--style` | No | Artistic style: `realistic`, `illustration`, `anime`, `abstract` (default: `realistic`) |
 | `--size` | No | Output size: `square`, `portrait`, `landscape`, `banner` (default: `square`) |
 
 ## Output
@@ -59,7 +56,7 @@ vernclaw-cli job get img_abc123xyz
 **On completion** (via `job get`) — Markdown with:
 
 - **Prompt** — the text used for generation
-- **Style / Size** — selected options
+- **Size** — selected option
 - **Image URL** — link to the generated image
 - **Preview link** — browser-viewable preview
 
@@ -71,7 +68,7 @@ Execution mode: **asynchronous** (standard size 30–60 s, high resolution 1–3
 # 1. Submit image generation
 vernclaw-cli invoke generate.image \
   --prompt "Orange cat on a windowsill, sunlight, watercolor style" \
-  --style illustration --size square
+  --size square
 
 # 2. Poll for completion
 vernclaw-cli job get img_abc123xyz
@@ -79,7 +76,7 @@ vernclaw-cli job get img_abc123xyz
 # 3. Generate a variant
 vernclaw-cli invoke generate.image \
   --prompt "Orange cat on a windowsill, sunset, oil painting style" \
-  --style realistic --size landscape
+  --size landscape
 
 # 4. Check credit balance
 vernclaw-cli balance

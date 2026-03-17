@@ -159,7 +159,8 @@ function resolveInstallStatus(
   if (compatibilityState === 'disabled') return 'disabled';
   if (compatibilityState === 'hidden') return 'hidden';
   if (compatibilityState !== 'supported') return 'upgrade_required';
-  return runtimeState?.installed ? 'installed' : 'installable';
+  if (!runtimeState) return 'available';
+  return runtimeState.installed ? 'installed' : 'installable';
 }
 
 function resolveRuntimeStatus(

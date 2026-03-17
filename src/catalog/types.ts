@@ -94,6 +94,7 @@ export interface EffectiveConnectorView {
   visibility: 'visible' | 'hidden' | 'disabled';
   compatibilityState: ConnectorCompatibilityState;
   installStatus:
+    | 'available'
     | 'installable'
     | 'installed'
     | 'upgrade_required'

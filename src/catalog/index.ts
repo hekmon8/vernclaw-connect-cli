@@ -16,8 +16,8 @@ export function getCatalogEntry(
   return entries.find((entry) => entry.id === connectorId);
 }
 
-export function renderCatalogList(entries: EffectiveConnectorView[]) {
-  return renderCatalogTable(entries);
+export function renderCatalogList(entries: EffectiveConnectorView[], debug = false) {
+  return renderCatalogTable(entries, debug);
 }
 
 export function renderCatalogEntry(entry: EffectiveConnectorView) {

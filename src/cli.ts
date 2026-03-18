@@ -11,8 +11,7 @@ import { runStatusCommand } from './commands/status.js';
 import { resolveCliConfig } from './config/env.js';
 import { buildHelpText } from './help.js';
 import { mapErrorCodeToExitCode, parseArgv } from './index.js';
-
-const CLI_VERSION = '0.1.0';
+import { CLI_VERSION } from './version.js';
 
 function printHelp() {
   process.stdout.write(buildHelpText(CLI_VERSION));
@@ -30,7 +29,9 @@ async function main() {
 
   const config = resolveCliConfig({
     apiKey:
-      typeof flags['api-key'] === 'string' ? String(flags['api-key']) : undefined,
+      typeof flags['api-key'] === 'string'
+        ? String(flags['api-key'])
+        : undefined,
     apiBaseUrl:
       typeof flags['api-base-url'] === 'string'
         ? String(flags['api-base-url'])
@@ -48,7 +49,9 @@ async function main() {
   if (command === 'login') {
     response = await runLoginCommand(config, {
       apiKey:
-        typeof flags['api-key'] === 'string' ? String(flags['api-key']) : undefined,
+        typeof flags['api-key'] === 'string'
+          ? String(flags['api-key'])
+          : undefined,
       apiBaseUrl:
         typeof flags['api-base-url'] === 'string'
           ? String(flags['api-base-url'])
@@ -89,6 +92,8 @@ main()
   })
   .catch((error) => {
     process.stderr.write('ERROR_CODE=PROVIDER_ERROR\n');
-    process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+    process.stderr.write(
+      `${error instanceof Error ? error.message : String(error)}\n`
+    );
     process.exitCode = 4;
   });

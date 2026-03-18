@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { mapErrorCodeToExitCode, parseArgv } from '../src/index.js';
+import {
+  ensureTrailingNewline,
+  mapErrorCodeToExitCode,
+  parseArgv,
+} from '../src/index.js';
 import { resolveCliConfig } from '../src/config/env.js';
 
 describe('vernclaw-cli helpers', () => {
@@ -40,5 +44,19 @@ describe('vernclaw-cli helpers', () => {
 
     expect(config.apiKey).toBe('flag-key');
     expect(config.apiBaseUrl).toBe('https://flag.example.com');
+  });
+
+  it('defaults api base url to production when no override is provided', () => {
+    const config = resolveCliConfig({
+      env: {},
+      homeDir: '/tmp/vernclaw-empty-home',
+    });
+
+    expect(config.apiBaseUrl).toBe('https://vernclaw.com');
+  });
+
+  it('ensures terminal output ends with a newline', () => {
+    expect(ensureTrailingNewline('# Heading')).toBe('# Heading\n');
+    expect(ensureTrailingNewline('# Heading\n')).toBe('# Heading\n');
   });
 });

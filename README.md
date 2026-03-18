@@ -30,6 +30,8 @@ vernclaw-cli login --api-key YOUR_API_KEY
 
 Generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) (sign in → Connector Settings → Create API Key).
 
+By default, the CLI targets `https://vernclaw.com`. For local or self-hosted environments, pass `--api-base-url` or set `VERNCLAW_CLI_API_BASE_URL`.
+
 ## Commands
 
 | Command | Description |

@@ -16,6 +16,8 @@ export interface StoredCredentials {
   apiKey?: string;
 }
 
+export const DEFAULT_CLI_API_BASE_URL = 'https://vernclaw.com';
+
 export function getCredentialsFilePath(homeDir = homedir()) {
   return join(homeDir, '.vernclaw-cli.json');
 }
@@ -70,7 +72,7 @@ export function resolveCliConfig({
       apiBaseUrl ||
       env.VERNCLAW_CLI_API_BASE_URL ||
       stored.apiBaseUrl ||
-      'http://localhost:3000',
+      DEFAULT_CLI_API_BASE_URL,
     apiKey: apiKey || env.VERNCLAW_CLI_API_KEY || stored.apiKey || '',
     credentialsFile,
     registryCatalogFile: getRegistryCacheFilePath(homeDir),

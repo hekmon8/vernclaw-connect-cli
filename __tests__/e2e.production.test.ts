@@ -144,7 +144,7 @@ describeE2E('vernclaw-cli production e2e', () => {
     }
   });
 
-  it('login/list/describe/balance/invoke/job-get flows work against production', async () => {
+  it('login/list/describe/status/invoke/job-get flows work against production', async () => {
     const homeDir = mkdtempSync(join(tmpdir(), 'vernclaw-cli-e2e-'));
     mkdirSync(homeDir, { recursive: true });
 
@@ -208,12 +208,12 @@ describeE2E('vernclaw-cli production e2e', () => {
       }
     }
 
-    const balance = await runCli(['balance']);
-    expect([0, 4]).toContain(balance.status);
-    if (balance.status === 0) {
-      expect(balance.stdout).toContain('Account Balance');
+    const status = await runCli(['status']);
+    expect([0, 4]).toContain(status.status);
+    if (status.status === 0) {
+      expect(status.stdout).toContain('Account Status');
     } else {
-      expect(balance.stderr).toContain('ERROR_CODE=');
+      expect(status.stderr).toContain('ERROR_CODE=');
     }
 
     const jobGet = await runCli([

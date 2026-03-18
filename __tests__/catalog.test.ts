@@ -119,6 +119,6 @@ describe('registry compatibility engine', () => {
 
     expect(output).toContain('CONNECTOR');
     expect(output).toContain('seo.website-traffic');
-    expect(output).toContain('upgrade_required');
+    expect(output).toContain('upgrade cli');
   });
 });

@@ -88,16 +88,17 @@ All connector output is **Markdown-first**: structured Markdown is printed to `s
 ## Development
 
 ```bash
-pnpm build:cli
+npm install
+npm run build
 ```
 
-Compiles `packages/vernclaw-connect-cli/src` into `packages/vernclaw-connect-cli/dist`.
+Compiles `src` into `dist`.
 
 ## Testing
 
 ```bash
-pnpm vitest run packages/vernclaw-connect-cli/__tests__
-pnpm test:e2e:cli:prod
+npm test
+VERNCLAW_E2E_RUN=1 VERNCLAW_E2E_API_KEY=your_key npx vitest run __tests__/e2e.production.test.ts
 ```
 
 Use `VERNCLAW_E2E_RUN=1` together with `VERNCLAW_E2E_API_KEY` and optionally `VERNCLAW_E2E_API_BASE_URL` to enable the production e2e smoke test.
@@ -105,10 +106,11 @@ Use `VERNCLAW_E2E_RUN=1` together with `VERNCLAW_E2E_API_KEY` and optionally `VE
 ## Publish / Deploy
 
 ```bash
-pnpm publish:cli
+npm pack --dry-run
+npm publish
 ```
 
-This runs `pnpm build:cli`, bumps the package patch version without creating a git tag, and publishes `packages/vernclaw-connect-cli` to npm.
+`npm publish` triggers `prepack`, which rebuilds `dist` before publishing. `dist` is treated as a generated publish artifact and is not tracked in git.
 
 ## Links
 

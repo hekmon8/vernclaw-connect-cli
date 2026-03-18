@@ -38,6 +38,16 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  },
   "engines": {
     "node": ">=20"
   }

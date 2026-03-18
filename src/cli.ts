@@ -1,47 +1,21 @@
 #!/usr/bin/env node
 import process from 'node:process';
 
-import { runBalanceCommand } from './commands/balance.js';
 import { runDescribeCommand } from './commands/describe.js';
 import { runInvokeCommand } from './commands/invoke.js';
 import { runJobGetCommand } from './commands/job-get.js';
 import { runListCommand } from './commands/list.js';
 import { runLoginCommand } from './commands/login.js';
 import { runLogoutCommand } from './commands/logout.js';
+import { runStatusCommand } from './commands/status.js';
 import { resolveCliConfig } from './config/env.js';
+import { buildHelpText } from './help.js';
 import { mapErrorCodeToExitCode, parseArgv } from './index.js';
 
 const CLI_VERSION = '0.1.0';
 
 function printHelp() {
-  const help = [
-    `vernclaw-cli v${CLI_VERSION}`,
-    '',
-    'Usage: vernclaw-cli <command> [options]',
-    '',
-    'Commands:',
-    '  login                    Authenticate via browser or API key',
-    '  logout                   Remove stored credentials',
-    '  list                     List available connectors',
-    '  describe <connector>     Show connector details and parameters',
-    '  invoke <connector>       Run a connector and print output',
-    '  job get <jobId>          Check status of an async job',
-    '  balance                  Display current credit balance',
-    '',
-    'Options:',
-    '  --help                   Show this help message',
-    '  --api-key <key>          Use a specific API key',
-    '  --api-base-url <url>     Override the API base URL',
-    '',
-    'Examples:',
-    '  vernclaw-cli login',
-    '  vernclaw-cli list',
-    '  vernclaw-cli invoke seo.website-traffic --domain example.com',
-    '',
-    'Docs: https://vernclaw.com/docs/connectors/cli',
-    '',
-  ].join('\n');
-  process.stdout.write(help);
+  process.stdout.write(buildHelpText(CLI_VERSION));
 }
 
 async function main() {
@@ -92,8 +66,8 @@ async function main() {
     response = await runInvokeCommand(config, positionals[1] || '', flags);
   } else if (command === 'job' && subcommand === 'get') {
     response = await runJobGetCommand(config, positionals[2] || '');
-  } else if (command === 'balance') {
-    response = await runBalanceCommand(config);
+  } else if (command === 'status' || command === 'balance') {
+    response = await runStatusCommand(config);
   } else {
     process.stderr.write(`Unknown command: ${command}\n\n`);
     printHelp();

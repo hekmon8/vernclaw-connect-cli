@@ -18,7 +18,7 @@ async function loginWithApiKey(config, apiKey, apiBaseUrl) {
     };
     const result = await requestMarkdown({
         config: tempConfig,
-        pathname: '/api/connectors/balance',
+        pathname: '/api/connectors/status',
     });
     if (result.errorCode === 'INVALID_API_KEY') {
         return {

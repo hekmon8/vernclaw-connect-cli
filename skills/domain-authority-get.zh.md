@@ -58,8 +58,8 @@ vernclaw-cli invoke seo.domain-authority --domain mysite.com
 # 2. 与主要竞品对比
 vernclaw-cli invoke seo.domain-authority --domain mysite.com,competitor1.com,competitor2.com
 
-# 3. 查看剩余积分
-vernclaw-cli balance
+# 3. 查看账户状态
+vernclaw-cli status
 ```
 
 ## 相关资源

@@ -63,7 +63,7 @@ vernclaw-cli invoke read.x.post --url "https://x.com/expert/status/123"
 vernclaw-cli invoke generate.image --prompt "行业洞察的视觉摘要"
 
 # 3. 查看积分使用情况
-vernclaw-cli balance
+vernclaw-cli status
 ```
 
 ## 相关资源

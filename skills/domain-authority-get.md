@@ -58,8 +58,8 @@ vernclaw-cli invoke seo.domain-authority --domain mysite.com
 # 2. Compare with top competitors
 vernclaw-cli invoke seo.domain-authority --domain mysite.com,competitor1.com,competitor2.com
 
-# 3. Check remaining credits
-vernclaw-cli balance
+# 3. Check account status
+vernclaw-cli status
 ```
 
 ## Related Resources

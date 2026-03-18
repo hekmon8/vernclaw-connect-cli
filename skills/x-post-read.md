@@ -62,8 +62,8 @@ vernclaw-cli invoke read.x.post --url "https://x.com/expert/status/123"
 # 2. Generate a companion image for the content
 vernclaw-cli invoke generate.image --prompt "Visual summary of industry insights"
 
-# 3. Check credit usage
-vernclaw-cli balance
+# 3. Check account status
+vernclaw-cli status
 ```
 
 ## Related Resources

@@ -40,7 +40,7 @@ Generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/s
 | `vernclaw-cli describe <connectorId>` | Show connector details and parameters |
 | `vernclaw-cli invoke <connectorId> [flags]` | Run a connector and print Markdown output |
 | `vernclaw-cli job get <jobId>` | Check status of an async job |
-| `vernclaw-cli balance` | Display current credit balance |
+| `vernclaw-cli status` | Display current login, subscription, and credit status |
 
 ## Available Connectors
 
@@ -66,6 +66,9 @@ vernclaw-cli invoke read.x.post --url "https://x.com/user/status/123"
 # Generate an image (async — returns a job ID)
 vernclaw-cli invoke generate.image --prompt "sunset over mountains"
 vernclaw-cli job get img_abc123
+
+# Check account status
+vernclaw-cli status
 ```
 
 ## Output Contract
@@ -81,6 +84,31 @@ All connector output is **Markdown-first**: structured Markdown is printed to `s
 | `2` | Authentication failure |
 | `3` | Invalid parameters |
 | `4` | Provider failure |
+
+## Development
+
+```bash
+pnpm build:cli
+```
+
+Compiles `packages/vernclaw-connect-cli/src` into `packages/vernclaw-connect-cli/dist`.
+
+## Testing
+
+```bash
+pnpm vitest run packages/vernclaw-connect-cli/__tests__
+pnpm test:e2e:cli:prod
+```
+
+Use `VERNCLAW_E2E_RUN=1` together with `VERNCLAW_E2E_API_KEY` and optionally `VERNCLAW_E2E_API_BASE_URL` to enable the production e2e smoke test.
+
+## Publish / Deploy
+
+```bash
+pnpm publish:cli
+```
+
+This runs `pnpm build:cli`, bumps the package patch version without creating a git tag, and publishes `packages/vernclaw-connect-cli` to npm.
 
 ## Links
 

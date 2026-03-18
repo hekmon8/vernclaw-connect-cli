@@ -78,8 +78,8 @@ vernclaw-cli invoke generate.image \
   --prompt "橘猫趴在窗台上，日落时分，油画风格" \
   --size landscape
 
-# 4. 查看积分余额
-vernclaw-cli balance
+# 4. 查看账户状态
+vernclaw-cli status
 ```
 
 ## 相关资源

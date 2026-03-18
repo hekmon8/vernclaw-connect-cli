@@ -78,8 +78,8 @@ vernclaw-cli invoke generate.image \
   --prompt "Orange cat on a windowsill, sunset, oil painting style" \
   --size landscape
 
-# 4. Check credit balance
-vernclaw-cli balance
+# 4. Check account status
+vernclaw-cli status
 ```
 
 ## Related Resources

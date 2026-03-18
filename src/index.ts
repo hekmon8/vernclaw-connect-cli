@@ -2,6 +2,10 @@ import { resolveCliConfig } from './config/env.js';
 
 export { resolveCliConfig };
 
+export function ensureTrailingNewline(value: string) {
+  return value.endsWith('\n') ? value : `${value}\n`;
+}
+
 export function mapErrorCodeToExitCode(errorCode?: string) {
   if (!errorCode) return 0;
 

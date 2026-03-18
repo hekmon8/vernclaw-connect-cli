@@ -10,7 +10,11 @@ import { runLogoutCommand } from './commands/logout.js';
 import { runStatusCommand } from './commands/status.js';
 import { resolveCliConfig } from './config/env.js';
 import { buildHelpText } from './help.js';
-import { mapErrorCodeToExitCode, parseArgv } from './index.js';
+import {
+  ensureTrailingNewline,
+  mapErrorCodeToExitCode,
+  parseArgv,
+} from './index.js';
 import { CLI_VERSION } from './version.js';
 
 function printHelp() {
@@ -77,7 +81,7 @@ async function main() {
     return 3;
   }
 
-  process.stdout.write(response.markdown);
+  process.stdout.write(ensureTrailingNewline(response.markdown));
 
   if (response.errorCode) {
     process.stderr.write(`ERROR_CODE=${response.errorCode}\n`);

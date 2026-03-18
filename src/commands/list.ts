@@ -9,7 +9,8 @@ function buildContextualHints(
   const hints: string[] = [];
 
   if (!isLoggedIn) {
-    hints.push('Run `vernclaw-cli login` to authenticate and unlock all connectors.');
+    hints.push('Run `vernclaw-cli login` to authenticate before invoking connectors.');
+    hints.push('Run `vernclaw-cli describe <connector>` to inspect required flags and example commands.');
   } else {
     const hasUpgradeRequired = entries.some(
       (e) => e.installStatus === 'upgrade_required'
@@ -17,7 +18,7 @@ function buildContextualHints(
     if (hasUpgradeRequired) {
       hints.push('Some connectors require a CLI upgrade. Run `npm i -g vernclaw-connect-cli` to update.');
     }
-    hints.push('Run `vernclaw-cli describe <connector>` for details, or `vernclaw-cli invoke <connector>` to use.');
+    hints.push('Run `vernclaw-cli describe <connector>` to inspect flags and example commands, or `vernclaw-cli invoke <connector>` to use.');
   }
 
   return hints.length > 0 ? '\n' + hints.join('\n') + '\n' : '';
@@ -38,7 +39,9 @@ export async function runListCommand(
     flags.installed === true
   );
 
-  const table = renderCatalogList(entries, debug);
+  const table = renderCatalogList(entries, debug, {
+    viewerState: config.apiKey ? 'authenticated' : 'unauthenticated',
+  });
   const hints = debug ? '' : buildContextualHints(entries, !!config.apiKey);
 
   return {

@@ -8,6 +8,8 @@ describe('help text', () => {
 
     expect(help).toContain('status                   Display current login, subscription, and credit status');
     expect(help).toContain('vernclaw-cli login --api-key YOUR_API_KEY');
+    expect(help).toContain('vernclaw-cli describe seo.website-traffic');
     expect(help).not.toContain('balance                  Display current credit balance');
+    expect(help).toContain('describe <connector>` shows required flags and an example invoke command');
   });
 });

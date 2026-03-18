@@ -1,11 +1,73 @@
 import type { CliConfig } from '../config/env.js';
 import { requestJson } from '../client/http.js';
 
+import { BUILTIN_BOOTSTRAP_CATALOG } from './bootstrap.js';
 import type {
   ConnectorRegistryCatalog,
   ConnectorRuntimeState,
   RegistryCatalogResponse,
 } from './types.js';
+
+function getBootstrapInputSchema(connectorId: string) {
+  return BUILTIN_BOOTSTRAP_CATALOG.connectors.find(
+    (entry) => entry.manifest.id === connectorId
+  )?.manifest.inputSchema;
+}
+
+function resolveInputSchema(
+  connectorId: string,
+  inputSchema: Record<string, unknown>
+) {
+  const bootstrapSchema = getBootstrapInputSchema(connectorId) as
+    | {
+        properties?: Record<string, Record<string, unknown>>;
+        required?: string[];
+      }
+    | undefined;
+  const schema = inputSchema as {
+    properties?: Record<string, Record<string, unknown>>;
+    required?: string[];
+  };
+
+  if (schema.properties && Object.keys(schema.properties).length > 0) {
+    return inputSchema;
+  }
+
+  const legacyEntries = Object.entries(inputSchema || {});
+  if (legacyEntries.length === 0) {
+    return bootstrapSchema || inputSchema;
+  }
+
+  if (!bootstrapSchema?.properties) {
+    return inputSchema;
+  }
+
+  const properties = Object.fromEntries(
+    legacyEntries.map(([key, value]) => {
+      const bootstrapProperty = bootstrapSchema.properties?.[key] || {};
+      const rawType = typeof value === 'string' ? value : String(bootstrapProperty.type || 'string');
+      const normalizedType = rawType.endsWith('?') ? rawType.slice(0, -1) : rawType;
+
+      return [
+        key,
+        {
+          ...bootstrapProperty,
+          type: normalizedType || 'string',
+        },
+      ];
+    })
+  );
+
+  const required = legacyEntries
+    .filter(([, value]) => !(typeof value === 'string' && value.endsWith('?')))
+    .map(([key]) => key);
+
+  return {
+    ...bootstrapSchema,
+    properties,
+    required,
+  };
+}
 
 export function normalizeRegistryCatalogResponse(
   catalog: RegistryCatalogResponse | ConnectorRegistryCatalog
@@ -27,7 +89,7 @@ export function normalizeRegistryCatalogResponse(
         connectorType: entry.manifest.connector_type,
         minCliVersion: entry.manifest.min_cli_version,
         requiredCliFeatures: entry.manifest.required_cli_features,
-        inputSchema: entry.manifest.input_schema,
+        inputSchema: resolveInputSchema(entry.manifest.id, entry.manifest.input_schema),
         outputContract: {
           mode: entry.manifest.output_contract.mode,
           resultFormat: entry.manifest.output_contract.result_format,

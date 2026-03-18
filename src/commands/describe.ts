@@ -14,7 +14,9 @@ export async function runDescribeCommand(config: CliConfig, connectorId: string)
   }
 
   return {
-    markdown: renderCatalogEntry(entry),
+    markdown: renderCatalogEntry(entry, {
+      viewerState: config.apiKey ? 'authenticated' : 'unauthenticated',
+    }),
     status: 200,
   };
 }

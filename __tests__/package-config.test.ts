@@ -14,6 +14,7 @@ describe('package publishing configuration', () => {
       files?: string[];
       scripts?: Record<string, string>;
       devDependencies?: Record<string, string>;
+      version?: string;
     };
 
     expect(packageJson.files).toContain('dist');

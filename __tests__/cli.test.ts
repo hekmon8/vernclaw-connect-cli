@@ -4,6 +4,7 @@ import {
   ensureTrailingNewline,
   mapErrorCodeToExitCode,
   parseArgv,
+  shouldEmitMachineErrorCode,
 } from '../src/index.js';
 import { resolveCliConfig } from '../src/config/env.js';
 
@@ -58,5 +59,11 @@ describe('vernclaw-cli helpers', () => {
   it('ensures terminal output ends with a newline', () => {
     expect(ensureTrailingNewline('# Heading')).toBe('# Heading\n');
     expect(ensureTrailingNewline('# Heading\n')).toBe('# Heading\n');
+  });
+
+  it('suppresses machine-readable error codes on interactive terminals', () => {
+    expect(shouldEmitMachineErrorCode(undefined, false)).toBe(false);
+    expect(shouldEmitMachineErrorCode('PROVIDER_ERROR', true)).toBe(false);
+    expect(shouldEmitMachineErrorCode('PROVIDER_ERROR', false)).toBe(true);
   });
 });

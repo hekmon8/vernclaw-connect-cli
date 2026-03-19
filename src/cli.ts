@@ -14,6 +14,7 @@ import {
   ensureTrailingNewline,
   mapErrorCodeToExitCode,
   parseArgv,
+  shouldEmitMachineErrorCode,
 } from './index.js';
 import { CLI_VERSION } from './version.js';
 
@@ -83,7 +84,7 @@ async function main() {
 
   process.stdout.write(ensureTrailingNewline(response.markdown));
 
-  if (response.errorCode) {
+  if (shouldEmitMachineErrorCode(response.errorCode, process.stderr.isTTY)) {
     process.stderr.write(`ERROR_CODE=${response.errorCode}\n`);
   }
 
@@ -95,7 +96,9 @@ main()
     process.exitCode = exitCode;
   })
   .catch((error) => {
-    process.stderr.write('ERROR_CODE=PROVIDER_ERROR\n');
+    if (shouldEmitMachineErrorCode('PROVIDER_ERROR', process.stderr.isTTY)) {
+      process.stderr.write('ERROR_CODE=PROVIDER_ERROR\n');
+    }
     process.stderr.write(
       `${error instanceof Error ? error.message : String(error)}\n`
     );

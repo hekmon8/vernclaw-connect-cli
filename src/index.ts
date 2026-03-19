@@ -6,6 +6,13 @@ export function ensureTrailingNewline(value: string) {
   return value.endsWith('\n') ? value : `${value}\n`;
 }
 
+export function shouldEmitMachineErrorCode(
+  errorCode: string | undefined,
+  stderrIsTTY: boolean | undefined
+) {
+  return Boolean(errorCode) && !stderrIsTTY;
+}
+
 export function mapErrorCodeToExitCode(errorCode?: string) {
   if (!errorCode) return 0;
 

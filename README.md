@@ -32,6 +32,17 @@ Generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/s
 
 By default, the CLI targets `https://vernclaw.com`. For local or self-hosted environments, pass `--api-base-url` or set `VERNCLAW_CLI_API_BASE_URL`.
 
+## Local Development Against a Local Vernclaw App
+
+```bash
+pnpm dev:connectors:local
+pnpm install:cli:local
+vernclaw-cli login --api-base-url http://localhost:3000 --api-key YOUR_API_KEY
+vernclaw-cli list
+```
+
+The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so follow-up commands keep targeting your local app until you log in again against another environment.
+
 ## Commands
 
 | Command | Description |
@@ -101,9 +112,10 @@ Compiles `src` into `dist`.
 ```bash
 npm test
 VERNCLAW_E2E_RUN=1 VERNCLAW_E2E_API_KEY=your_key npx vitest run __tests__/e2e.production.test.ts
+VERNCLAW_E2E_RUN=1 VERNCLAW_E2E_API_KEY=your_key pnpm test:e2e:cli:local
 ```
 
-Use `VERNCLAW_E2E_RUN=1` together with `VERNCLAW_E2E_API_KEY` and optionally `VERNCLAW_E2E_API_BASE_URL` to enable the production e2e smoke test.
+Use `VERNCLAW_E2E_RUN=1` together with `VERNCLAW_E2E_API_KEY` and optionally `VERNCLAW_E2E_API_BASE_URL` to enable the live e2e smoke test. `pnpm test:e2e:cli:local` assumes a local app is already running on `http://127.0.0.1:3000`, preferably via `pnpm dev:connectors:local`.
 
 ## Publish / Deploy
 

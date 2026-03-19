@@ -5,6 +5,8 @@ import { requestMarkdown } from '../src/client/http.js';
 const config = {
   apiBaseUrl: 'https://api.example.com',
   apiKey: 'sk-test',
+  credentialsFile: '/tmp/.vernclaw-cli.json',
+  registryCatalogFile: '/tmp/catalog.json',
 };
 
 describe('requestMarkdown', () => {

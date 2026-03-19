@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import process from 'node:process';
 
+import { runBalanceCommand } from './commands/balance.js';
 import { runDescribeCommand } from './commands/describe.js';
 import { runInvokeCommand } from './commands/invoke.js';
 import { runJobGetCommand } from './commands/job-get.js';
@@ -74,8 +75,10 @@ async function main() {
     response = await runInvokeCommand(config, positionals[1] || '', flags);
   } else if (command === 'job' && subcommand === 'get') {
     response = await runJobGetCommand(config, positionals[2] || '');
-  } else if (command === 'status' || command === 'balance') {
+  } else if (command === 'status') {
     response = await runStatusCommand(config);
+  } else if (command === 'balance') {
+    response = await runBalanceCommand(config);
   } else {
     process.stderr.write(`Unknown command: ${command}\n\n`);
     printHelp();

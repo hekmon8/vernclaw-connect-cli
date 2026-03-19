@@ -11,7 +11,7 @@ import { runStatusCommand } from './commands/status.js';
 import { resolveCliConfig } from './config/env.js';
 import { buildHelpText } from './help.js';
 import {
-  ensureTrailingNewline,
+  formatMarkdownForTerminal,
   mapErrorCodeToExitCode,
   parseArgv,
   shouldEmitMachineErrorCode,
@@ -82,7 +82,9 @@ async function main() {
     return 3;
   }
 
-  process.stdout.write(ensureTrailingNewline(response.markdown));
+  process.stdout.write(
+    formatMarkdownForTerminal(response.markdown, { command, subcommand })
+  );
 
   if (shouldEmitMachineErrorCode(response.errorCode, process.stderr.isTTY)) {
     process.stderr.write(`ERROR_CODE=${response.errorCode}\n`);

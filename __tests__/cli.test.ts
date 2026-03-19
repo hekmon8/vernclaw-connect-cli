@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   ensureTrailingNewline,
+  formatMarkdownForTerminal,
   mapErrorCodeToExitCode,
   parseArgv,
   shouldEmitMachineErrorCode,
@@ -65,5 +66,55 @@ describe('vernclaw-cli helpers', () => {
     expect(shouldEmitMachineErrorCode(undefined, false)).toBe(false);
     expect(shouldEmitMachineErrorCode('PROVIDER_ERROR', true)).toBe(false);
     expect(shouldEmitMachineErrorCode('PROVIDER_ERROR', false)).toBe(true);
+  });
+
+  it('sanitizes invoke markdown for terminal display', () => {
+    const output = formatMarkdownForTerminal(
+      [
+        '# Image Generate',
+        '',
+        '- Provider: aiapi-center-fallback',
+        '- Credits Cost: 10',
+        '- prompt: dog swiming in the river',
+        '- size: 1024x1024',
+        '## Summary',
+        'The image prompt was accepted by AIAPI Center and rendered successfully.',
+        '## Result',
+        '- Prompt: dog swiming in the river',
+        '- Size: 1024x1024',
+        '',
+        '- Preview URL: https://aires.hekmon.com/image/2026/03/19/media_mmwuzf7xi9g335p5.jpeg',
+        '',
+        '## Notes',
+        '',
+        '- Rendered through AIAPI Center.',
+        '',
+      ].join('\n'),
+      { command: 'invoke' }
+    );
+
+    expect(output).toBe(
+      [
+        '# Image Generate',
+        '',
+        '- Credits Cost: 10',
+        '- Prompt: dog swiming in the river',
+        '- Size: 1024x1024',
+        '- Preview URL: https://aires.hekmon.com/image/2026/03/19/media_mmwuzf7xi9g335p5.jpeg',
+        '',
+      ].join('\n')
+    );
+    expect(output).not.toContain('rendered successfully');
+    expect(output).not.toContain('## Notes');
+    expect(output).not.toContain('## Summary');
+    expect(output).not.toContain('## Result');
+  });
+
+  it('keeps non-invoke markdown unchanged apart from trailing newline normalization', () => {
+    const input = '# SEO Website Traffic\n\n## Summary\n\nTraffic lookup';
+
+    expect(formatMarkdownForTerminal(input, { command: 'describe' })).toBe(
+      '# SEO Website Traffic\n\n## Summary\n\nTraffic lookup\n'
+    );
   });
 });

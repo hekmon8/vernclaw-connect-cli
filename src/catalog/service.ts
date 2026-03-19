@@ -2,9 +2,16 @@ import type { CliConfig } from '../config/env.js';
 
 import { BUILTIN_BOOTSTRAP_CATALOG } from './bootstrap.js';
 import { buildEffectiveCatalog } from './compat.js';
-import { readCachedCatalog, shouldRefreshCatalog, writeCachedCatalog } from './cache.js';
+import {
+  readCachedCatalog,
+  renewCacheTimestamp,
+  shouldCheckVersion,
+  writeCachedCatalog,
+} from './cache.js';
+import type { CachedCatalogEnvelope } from './cache.js';
 import {
   fetchRegistryCatalogResponse,
+  fetchRegistryVersion,
   fetchRuntimeStates,
   normalizeRegistryCatalogResponse,
   toRegistryCatalogResponse,
@@ -26,6 +33,25 @@ function getCliVersion(config: CliConfig & { cliVersion?: string }) {
   return config.cliVersion || '0.1.0';
 }
 
+function isVersionNewer(remote: string, cached: string): boolean {
+  if (!cached || !remote) {
+    return true;
+  }
+
+  const remoteParts = remote.split('.').map((p) => Number.parseInt(p, 10) || 0);
+  const cachedParts = cached.split('.').map((p) => Number.parseInt(p, 10) || 0);
+  const maxLen = Math.max(remoteParts.length, cachedParts.length);
+
+  for (let i = 0; i < maxLen; i += 1) {
+    const r = remoteParts[i] || 0;
+    const c = cachedParts[i] || 0;
+    if (r > c) return true;
+    if (r < c) return false;
+  }
+
+  return false;
+}
+
 export async function resolveRegistryCatalog({
   config,
   options = {},
@@ -38,78 +64,94 @@ export async function resolveRegistryCatalog({
   };
   dependencies?: {
     fetchCatalog?: (config: CliConfig) => Promise<RegistryCatalogResponse>;
-    readCache?: (filePath: string) => RegistryCatalogResponse | null;
-    writeCache?: (filePath: string, catalog: RegistryCatalogResponse) => void;
+    fetchVersion?: (config: CliConfig) => Promise<{ registry_version: string }>;
+    readCache?: (filePath: string) => CachedCatalogEnvelope | null;
+    writeCache?: (filePath: string, catalog: RegistryCatalogResponse, version?: string) => void;
+    renewTimestamp?: (filePath: string) => void;
     bootstrapCatalog?: RegistryCatalogResponse;
   };
 }) {
   const cacheFile = getCacheFile(config);
   const fetchCatalog =
     dependencies?.fetchCatalog ||
-    (async (cliConfig: CliConfig) => fetchRegistryCatalogResponse(cliConfig));
-  const readCache =
-    dependencies?.readCache ||
-    ((filePath: string) => readCachedCatalog(filePath)?.catalog || null);
+    ((cfg: CliConfig) => fetchRegistryCatalogResponse(cfg));
+  const fetchVer =
+    dependencies?.fetchVersion ||
+    ((cfg: CliConfig) => fetchRegistryVersion(cfg));
+  const readCache = dependencies?.readCache || readCachedCatalog;
   const writeCache = dependencies?.writeCache || writeCachedCatalog;
+  const renewTimestamp = dependencies?.renewTimestamp || renewCacheTimestamp;
   const bootstrapCatalog =
     dependencies?.bootstrapCatalog || toRegistryCatalogResponse(BUILTIN_BOOTSTRAP_CATALOG);
-  const cachedCatalog = (cacheFile ? readCache(cacheFile) : null) as RegistryCatalogResponse | null;
+
+  const cachedEnvelope = cacheFile ? readCache(cacheFile) : null;
+  const cachedCatalog = cachedEnvelope?.catalog as RegistryCatalogResponse | null;
 
   if (options.offline) {
     if (cachedCatalog) {
-      return {
-        catalog: cachedCatalog,
-        source: 'cache' as const,
-      };
+      return { catalog: cachedCatalog, source: 'cache' as const };
     }
-
-    return {
-      catalog: bootstrapCatalog,
-      source: 'bootstrap' as const,
-    };
+    return { catalog: bootstrapCatalog, source: 'bootstrap' as const };
   }
 
-  if (!options.refresh) {
-    const cachedEnvelope = cacheFile ? readCachedCatalog(cacheFile) : null;
-    if (cachedEnvelope && !shouldRefreshCatalog(cachedEnvelope)) {
-      return {
-        catalog: cachedEnvelope.catalog as RegistryCatalogResponse,
-        source: 'cache' as const,
-      };
-    }
+  if (options.refresh) {
+    return fetchAndCache({ config, cacheFile, fetchCatalog, writeCache, cachedCatalog, bootstrapCatalog });
+  }
 
-    if (cachedCatalog && !cachedEnvelope) {
-      return {
-        catalog: cachedCatalog,
-        source: 'cache' as const,
-      };
-    }
+  if (!cachedEnvelope) {
+    return fetchAndCache({ config, cacheFile, fetchCatalog, writeCache, cachedCatalog, bootstrapCatalog });
+  }
+
+  if (!shouldCheckVersion(cachedEnvelope)) {
+    return { catalog: cachedEnvelope.catalog as RegistryCatalogResponse, source: 'cache' as const };
   }
 
   try {
+    const remoteVersion = await fetchVer(config);
+    const cachedVersion = cachedEnvelope.registryVersion || '';
+
+    if (!isVersionNewer(remoteVersion.registry_version, cachedVersion)) {
+      if (cacheFile) {
+        renewTimestamp(cacheFile);
+      }
+      return { catalog: cachedEnvelope.catalog as RegistryCatalogResponse, source: 'cache' as const };
+    }
+
+    return fetchAndCache({ config, cacheFile, fetchCatalog, writeCache, cachedCatalog, bootstrapCatalog });
+  } catch {
+    if (cachedCatalog) {
+      return { catalog: cachedCatalog, source: 'cache' as const };
+    }
+    return { catalog: bootstrapCatalog, source: 'bootstrap' as const };
+  }
+}
+
+async function fetchAndCache({
+  config,
+  cacheFile,
+  fetchCatalog,
+  writeCache,
+  cachedCatalog,
+  bootstrapCatalog,
+}: {
+  config: CliConfig;
+  cacheFile: string | undefined;
+  fetchCatalog: (config: CliConfig) => Promise<RegistryCatalogResponse>;
+  writeCache: (filePath: string, catalog: RegistryCatalogResponse, version?: string) => void;
+  cachedCatalog: RegistryCatalogResponse | null;
+  bootstrapCatalog: RegistryCatalogResponse;
+}) {
+  try {
     const remoteCatalog = await fetchCatalog(config);
     if (cacheFile) {
-      writeCache(cacheFile, remoteCatalog);
+      writeCache(cacheFile, remoteCatalog, remoteCatalog.registry_version);
     }
-
-    return {
-      catalog: remoteCatalog,
-      source: 'remote' as const,
-    };
+    return { catalog: remoteCatalog, source: 'remote' as const };
   } catch (error) {
     if (cachedCatalog) {
-      return {
-        catalog: cachedCatalog,
-        source: 'cache' as const,
-        error,
-      };
+      return { catalog: cachedCatalog, source: 'cache' as const, error };
     }
-
-    return {
-      catalog: bootstrapCatalog,
-      source: 'bootstrap' as const,
-      error,
-    };
+    return { catalog: bootstrapCatalog, source: 'bootstrap' as const, error };
   }
 }
 
@@ -124,10 +166,7 @@ export async function resolveEffectiveCatalog({
 }) {
   const resolved = await resolveRegistryCatalog({
     config,
-    options: {
-      refresh,
-      offline,
-    },
+    options: { refresh, offline },
   });
 
   let runtimeStates: ConnectorRuntimeState[] = [];

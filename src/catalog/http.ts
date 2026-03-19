@@ -6,6 +6,7 @@ import type {
   ConnectorRegistryCatalog,
   ConnectorRuntimeState,
   RegistryCatalogResponse,
+  RegistryVersionResponse,
 } from './types.js';
 
 function getBootstrapInputSchema(connectorId: string) {
@@ -158,6 +159,17 @@ export async function fetchRegistryCatalog(config: CliConfig) {
     ...response,
     data: normalizeRegistryCatalogResponse(response.data),
   };
+}
+
+export async function fetchRegistryVersion(
+  config: CliConfig
+): Promise<RegistryVersionResponse> {
+  const response = await requestJson<RegistryVersionResponse>({
+    config,
+    pathname: '/api/registry/catalog/version',
+  });
+
+  return response.data;
 }
 
 export async function fetchRuntimeStates(

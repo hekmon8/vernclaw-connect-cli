@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { resolveRegistryCatalog } from '../../src/catalog/service.js';
+import type { CachedCatalogEnvelope } from '../../src/catalog/cache.js';
 import type { RegistryCatalogResponse } from '../../src/catalog/types.js';
 
 function buildCatalog(version = '2026-03-12'): RegistryCatalogResponse {
@@ -33,9 +34,17 @@ function buildCatalog(version = '2026-03-12'): RegistryCatalogResponse {
   };
 }
 
+function buildCacheEnvelope(version: string): CachedCatalogEnvelope {
+  return {
+    fetchedAt: new Date().toISOString(),
+    registryVersion: version,
+    catalog: buildCatalog(version),
+  };
+}
+
 describe('registry catalog service', () => {
   it('falls back to cache when refresh fails', async () => {
-    const cached = buildCatalog('2026-03-11');
+    const cachedEnvelope = buildCacheEnvelope('1.0.0');
     const result = await resolveRegistryCatalog({
       config: {
         apiBaseUrl: 'https://api.example.com',
@@ -49,14 +58,14 @@ describe('registry catalog service', () => {
       },
       dependencies: {
         fetchCatalog: vi.fn().mockRejectedValue(new Error('network down')),
-        readCache: vi.fn().mockReturnValue(cached),
+        readCache: vi.fn().mockReturnValue(cachedEnvelope),
         writeCache: vi.fn(),
-        bootstrapCatalog: buildCatalog('2026-03-10'),
+        bootstrapCatalog: buildCatalog('0.0.0'),
       },
     });
 
     expect(result.source).toBe('cache');
-    expect(result.catalog.registry_version).toBe('2026-03-11');
+    expect(result.catalog.registry_version).toBe('1.0.0');
   });
 
   it('falls back to builtin bootstrap catalog when offline and cache is missing', async () => {
@@ -74,11 +83,93 @@ describe('registry catalog service', () => {
         fetchCatalog: vi.fn(),
         readCache: vi.fn().mockReturnValue(null),
         writeCache: vi.fn(),
-        bootstrapCatalog: buildCatalog('2026-03-10'),
+        bootstrapCatalog: buildCatalog('0.0.0'),
       },
     });
 
     expect(result.source).toBe('bootstrap');
-    expect(result.catalog.registry_version).toBe('2026-03-10');
+    expect(result.catalog.registry_version).toBe('0.0.0');
+  });
+
+  it('uses cache when version check shows same version', async () => {
+    const staleEnvelope = buildCacheEnvelope('1.0.0');
+    staleEnvelope.fetchedAt = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    const fetchCatalog = vi.fn();
+    const fetchVersion = vi.fn().mockResolvedValue({ registry_version: '1.0.0' });
+    const renewTimestamp = vi.fn();
+
+    const result = await resolveRegistryCatalog({
+      config: {
+        apiBaseUrl: 'https://api.example.com',
+        apiKey: '',
+        credentialsFile: '/tmp/cred.json',
+        registryCatalogFile: '/tmp/catalog.json',
+      },
+      dependencies: {
+        fetchCatalog,
+        fetchVersion,
+        readCache: vi.fn().mockReturnValue(staleEnvelope),
+        writeCache: vi.fn(),
+        renewTimestamp,
+      },
+    });
+
+    expect(result.source).toBe('cache');
+    expect(fetchVersion).toHaveBeenCalledOnce();
+    expect(fetchCatalog).not.toHaveBeenCalled();
+    expect(renewTimestamp).toHaveBeenCalled();
+  });
+
+  it('fetches full catalog when remote version is newer', async () => {
+    const staleEnvelope = buildCacheEnvelope('1.0.0');
+    staleEnvelope.fetchedAt = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    const newCatalog = buildCatalog('1.1.0');
+    const fetchCatalog = vi.fn().mockResolvedValue(newCatalog);
+    const fetchVersion = vi.fn().mockResolvedValue({ registry_version: '1.1.0' });
+    const writeCache = vi.fn();
+
+    const result = await resolveRegistryCatalog({
+      config: {
+        apiBaseUrl: 'https://api.example.com',
+        apiKey: '',
+        credentialsFile: '/tmp/cred.json',
+        registryCatalogFile: '/tmp/catalog.json',
+      },
+      dependencies: {
+        fetchCatalog,
+        fetchVersion,
+        readCache: vi.fn().mockReturnValue(staleEnvelope),
+        writeCache,
+      },
+    });
+
+    expect(result.source).toBe('remote');
+    expect(result.catalog.registry_version).toBe('1.1.0');
+    expect(fetchVersion).toHaveBeenCalledOnce();
+    expect(fetchCatalog).toHaveBeenCalledOnce();
+    expect(writeCache).toHaveBeenCalled();
+  });
+
+  it('skips version check within TTL window', async () => {
+    const freshEnvelope = buildCacheEnvelope('1.0.0');
+    const fetchVersion = vi.fn();
+
+    const result = await resolveRegistryCatalog({
+      config: {
+        apiBaseUrl: 'https://api.example.com',
+        apiKey: '',
+        credentialsFile: '/tmp/cred.json',
+        registryCatalogFile: '/tmp/catalog.json',
+      },
+      dependencies: {
+        fetchCatalog: vi.fn(),
+        fetchVersion,
+        readCache: vi.fn().mockReturnValue(freshEnvelope),
+        writeCache: vi.fn(),
+      },
+    });
+
+    expect(result.source).toBe('cache');
+    expect(fetchVersion).not.toHaveBeenCalled();
   });
 });

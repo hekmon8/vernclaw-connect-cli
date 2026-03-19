@@ -134,3 +134,8 @@ export interface CatalogBuildOptions {
   runtimeStates?: ConnectorRuntimeState[];
   source?: EffectiveConnectorView['source'];
 }
+
+export interface RegistryVersionResponse {
+  registry_schema: string;
+  registry_version: string;
+}

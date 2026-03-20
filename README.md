@@ -113,9 +113,12 @@ Compiles `src` into `dist`.
 npm test
 VERNCLAW_E2E_RUN=1 VERNCLAW_E2E_API_KEY=your_key npx vitest run __tests__/e2e.production.test.ts
 VERNCLAW_E2E_RUN=1 VERNCLAW_E2E_API_KEY=your_key pnpm test:e2e:cli:local
+VERNCLAW_E2E_API_KEY=your_key pnpm test:e2e:cli:prod
 ```
 
 Use `VERNCLAW_E2E_RUN=1` together with `VERNCLAW_E2E_API_KEY` and optionally `VERNCLAW_E2E_API_BASE_URL` to enable the live e2e smoke test. `pnpm test:e2e:cli:local` assumes a local app is already running on `http://127.0.0.1:3000`, preferably via `pnpm dev:connectors:local`.
+
+`pnpm test:e2e:cli:prod` now runs as a production success gate: it forces `VERNCLAW_E2E_RUN=1`, defaults `VERNCLAW_E2E_EXPECT_SUCCESS=1`, and fails fast when `VERNCLAW_E2E_API_KEY` is missing.
 
 ## Publish / Deploy
 

@@ -1,4 +1,5 @@
 import type { EffectiveConnectorView } from './types.js';
+import { normalizeInputSchema } from './input-schema.js';
 
 export type ViewerState = 'authenticated' | 'unauthenticated';
 type AvailabilityStatus =
@@ -20,55 +21,6 @@ function truncate(value: string, width: number) {
 
 function toCliFlagName(key: string) {
   return `--${key}`;
-}
-
-function normalizeInputSchema(entry: EffectiveConnectorView) {
-  const rawSchema = entry.manifest.inputSchema || {};
-  const schema = rawSchema as {
-    properties?: Record<string, Record<string, unknown>>;
-    required?: string[];
-  };
-
-  if (schema.properties && Object.keys(schema.properties).length > 0) {
-    return {
-      properties: schema.properties,
-      required: Array.isArray(schema.required) ? schema.required : [],
-    };
-  }
-
-  const legacyEntries = Object.entries(rawSchema).filter(
-    ([key]) => key !== 'type' && key !== 'properties' && key !== 'required'
-  );
-  if (legacyEntries.length > 0) {
-    const properties = Object.fromEntries(
-      legacyEntries.map(([key, value]) => {
-        const rawType = typeof value === 'string' ? value : 'string';
-        const optional = rawType.endsWith('?');
-        const normalizedType = optional ? rawType.slice(0, -1) : rawType;
-
-        return [
-          key,
-          {
-            type: normalizedType || 'string',
-            description: `${key} parameter`,
-          },
-        ];
-      })
-    );
-    const required = legacyEntries
-      .filter(([, value]) => !(typeof value === 'string' && value.endsWith('?')))
-      .map(([key]) => key);
-
-    return {
-      properties,
-      required,
-    };
-  }
-
-  return {
-    properties: {},
-    required: [],
-  };
 }
 
 function buildExampleValue(key: string, schema: Record<string, unknown>) {
@@ -94,7 +46,7 @@ function buildExampleValue(key: string, schema: Record<string, unknown>) {
 }
 
 function buildExampleInvokeCommand(entry: EffectiveConnectorView) {
-  const { properties, required } = normalizeInputSchema(entry);
+  const { properties, required } = normalizeInputSchema(entry.manifest.inputSchema);
   const args = required
     .map((key) => {
       const schema = properties[key] || {};
@@ -259,7 +211,7 @@ export function renderCatalogDescribe(
   options: { viewerState?: ViewerState } = {}
 ) {
   const viewerState = options.viewerState || 'authenticated';
-  const { properties, required } = normalizeInputSchema(entry);
+  const { properties, required } = normalizeInputSchema(entry.manifest.inputSchema);
   const inputFields = Object.entries(properties);
   const cliFlags = inputFields.map(([key, value]) => {
     const schema = value as Record<string, unknown>;

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 
 import type { CliConfig } from '../config/env.js';
+import { validateAndNormalizeInvokePayload } from '../catalog/input-schema.js';
 import { getEffectiveConnectorById } from '../catalog/service.js';
 import { requestMarkdown } from '../client/http.js';
 
@@ -16,6 +17,32 @@ export function buildInvokePayload(flags: Record<string, string | boolean>) {
     acc[key] = value;
     return acc;
   }, {});
+}
+
+function buildLocalInvalidParamsResponse(
+  connectorId: string,
+  connectorName: string,
+  message: string
+) {
+  return {
+    markdown: [
+      `# ${connectorName}`,
+      '',
+      '- Error Code: INVALID_PARAMS',
+      `- Connector: ${connectorId}`,
+      '',
+      '## Summary',
+      '',
+      message,
+      '',
+      '## Next Steps',
+      '',
+      `- Run \`vernclaw-cli describe ${connectorId}\` to inspect the expected flags and example command.`,
+      '',
+    ].join('\n'),
+    status: 400,
+    errorCode: 'INVALID_PARAMS',
+  } as const;
 }
 
 export async function runInvokeCommand(
@@ -44,10 +71,23 @@ export async function runInvokeCommand(
     };
   }
 
+  const payloadValidation = validateAndNormalizeInvokePayload(
+    buildInvokePayload(flags),
+    entry.manifest?.inputSchema
+  );
+
+  if (!payloadValidation.ok) {
+    return buildLocalInvalidParamsResponse(
+      connectorId,
+      entry.name,
+      payloadValidation.error
+    );
+  }
+
   return requestMarkdown({
     config,
     pathname: `/api/connectors/${connectorId}/invoke`,
     method: 'POST',
-    body: buildInvokePayload(flags) as Record<string, unknown>,
+    body: payloadValidation.payload,
   });
 }

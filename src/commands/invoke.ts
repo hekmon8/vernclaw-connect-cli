@@ -50,6 +50,34 @@ export async function runInvokeCommand(
   connectorId: string,
   flags: Record<string, string | boolean>
 ) {
+  if (!connectorId) {
+    return {
+      markdown: [
+        '# Connector Invocation Failed',
+        '',
+        '- Error Code: INVALID_PARAMS',
+        '',
+        '## Summary',
+        '',
+        'No connector ID provided.',
+        '',
+        '## Next Steps',
+        '',
+        '- Run `vernclaw-cli list` to see all available connectors.',
+        '- Run `vernclaw-cli invoke <connector-id> [--flags]` to invoke a connector.',
+        '- Run `vernclaw-cli describe <connector-id>` to see connector details.',
+        '',
+      ].join('\n'),
+      status: 400,
+      errorCode: 'INVALID_PARAMS',
+    };
+  }
+
+  if (flags['help'] === true) {
+    const { runDescribeCommand } = await import('./describe.js');
+    return runDescribeCommand(config, connectorId);
+  }
+
   const entry = await getEffectiveConnectorById(config, connectorId);
   if (!entry) {
     return {

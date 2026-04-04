@@ -45,24 +45,31 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `vernclaw-cli login` | Authenticate via browser or API key |
-| `vernclaw-cli logout` | Remove stored credentials |
-| `vernclaw-cli list` | List available connectors |
-| `vernclaw-cli describe <connectorId>` | Show connector details and parameters |
-| `vernclaw-cli invoke <connectorId> [flags]` | Run a connector and print Markdown output |
-| `vernclaw-cli job get <jobId>` | Check status of an async job |
-| `vernclaw-cli status` | Display current login, subscription, and credit status |
+| Command                                     | Description                                            |
+| ------------------------------------------- | ------------------------------------------------------ |
+| `vernclaw-cli login`                        | Authenticate via browser or API key                    |
+| `vernclaw-cli logout`                       | Remove stored credentials                              |
+| `vernclaw-cli list`                         | List available connectors                              |
+| `vernclaw-cli describe <connectorId>`       | Show connector details and parameters                  |
+| `vernclaw-cli invoke <connectorId> [flags]` | Run a connector and print Markdown output              |
+| `vernclaw-cli job get <jobId>`              | Check status of an async job                           |
+| `vernclaw-cli status`                       | Display current login, subscription, and credit status |
 
 ## Available Connectors
 
-| Connector ID | Category | Mode | Skill |
-|--------------|----------|------|-------|
-| `seo.domain-authority` | SEO | sync | [EN](./skills/domain-authority-get.md) / [中文](./skills/domain-authority-get.zh.md) |
-| `seo.website-traffic` | SEO | sync | [EN](./skills/website-traffic-get.md) / [中文](./skills/website-traffic-get.zh.md) |
-| `read.x.post` | Social | sync | [EN](./skills/x-post-read.md) / [中文](./skills/x-post-read.zh.md) |
-| `generate.image` | AI | async | [EN](./skills/image-generate.md) / [中文](./skills/image-generate.zh.md) |
+| Connector ID                | Category | Mode  | Skill                                                                                          |
+| --------------------------- | -------- | ----- | ---------------------------------------------------------------------------------------------- |
+| `seo.domain-authority`      | SEO      | sync  | [EN](./skills/domain-authority-get.md) / [中文](./skills/domain-authority-get.zh.md)           |
+| `seo.website-traffic`       | SEO      | sync  | [EN](./skills/website-traffic-get.md) / [中文](./skills/website-traffic-get.zh.md)             |
+| `seo.backlinks`             | SEO      | sync  | [EN](./skills/backlinks-get.md) / [中文](./skills/backlinks-get.zh.md)                         |
+| `seo.keyword-search-volume` | SEO      | sync  | [EN](./skills/keyword-search-volume-get.md) / [中文](./skills/keyword-search-volume-get.zh.md) |
+| `seo.keyword-suggestions`   | SEO      | sync  | [EN](./skills/keyword-suggestions-get.md) / [中文](./skills/keyword-suggestions-get.zh.md)     |
+| `seo.site-keywords`         | SEO      | sync  | [EN](./skills/site-keywords-get.md) / [中文](./skills/site-keywords-get.zh.md)                 |
+| `seo.serp-google-organic`   | SEO      | sync  | [EN](./skills/serp-google-organic-get.md) / [中文](./skills/serp-google-organic-get.zh.md)     |
+| `seo.site-technologies`     | SEO      | sync  | [EN](./skills/site-technologies-get.md) / [中文](./skills/site-technologies-get.zh.md)         |
+| `seo.domain-whois`          | SEO      | sync  | [EN](./skills/domain-whois-get.md) / [中文](./skills/domain-whois-get.zh.md)                   |
+| `read.x.post`               | Social   | sync  | [EN](./skills/x-post-read.md) / [中文](./skills/x-post-read.zh.md)                             |
+| `generate.image`            | AI       | async | [EN](./skills/image-generate.md) / [中文](./skills/image-generate.zh.md)                       |
 
 ## Quick Examples
 
@@ -72,6 +79,21 @@ vernclaw-cli invoke seo.domain-authority --domain example.com
 
 # Estimate website traffic
 vernclaw-cli invoke seo.website-traffic --domain example.com
+
+# Expand a seed keyword
+vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --language english
+
+# Review a domain's keyword footprint
+vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language english
+
+# Inspect live Google organic results
+vernclaw-cli invoke seo.serp-google-organic --keyword "openai" --market us --language english --device desktop --os windows --depth 5
+
+# Detect public technologies
+vernclaw-cli invoke seo.site-technologies --target openai.com
+
+# Inspect Whois timestamps
+vernclaw-cli invoke seo.domain-whois --target openai.com
 
 # Read an X/Twitter post
 vernclaw-cli invoke read.x.post --url "https://x.com/user/status/123"
@@ -90,13 +112,13 @@ All connector output is **Markdown-first**: structured Markdown is printed to `s
 
 ### Exit Codes
 
-| Code | Meaning |
-|------|---------|
-| `0` | Success |
-| `1` | Business rejection (e.g. insufficient credits) |
-| `2` | Authentication failure |
-| `3` | Invalid parameters |
-| `4` | Provider failure |
+| Code | Meaning                                        |
+| ---- | ---------------------------------------------- |
+| `0`  | Success                                        |
+| `1`  | Business rejection (e.g. insufficient credits) |
+| `2`  | Authentication failure                         |
+| `3`  | Invalid parameters                             |
+| `4`  | Provider failure                               |
 
 ## Development
 

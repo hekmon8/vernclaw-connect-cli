@@ -35,9 +35,9 @@ vernclaw-cli invoke seo.domain-authority --domain example.com,competitor.com,riv
 
 ## Parameters
 
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--domain` | Yes | One or more domains to query (comma-separated) |
+| Flag       | Required | Description                                    |
+| ---------- | -------- | ---------------------------------------------- |
+| `--domain` | Yes      | One or more domains to query (comma-separated) |
 
 ## Output
 

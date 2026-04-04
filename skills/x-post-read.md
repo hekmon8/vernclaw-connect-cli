@@ -36,9 +36,9 @@ vernclaw-cli invoke read.x.post \
 
 ## Parameters
 
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--url` | Yes | One or more X/Twitter post URLs (comma-separated). Supports both `x.com` and `twitter.com` domains. |
+| Flag    | Required | Description                                                                                         |
+| ------- | -------- | --------------------------------------------------------------------------------------------------- |
+| `--url` | Yes      | One or more X/Twitter post URLs (comma-separated). Supports both `x.com` and `twitter.com` domains. |
 
 ## Output
 

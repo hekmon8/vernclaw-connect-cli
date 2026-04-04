@@ -35,9 +35,9 @@ vernclaw-cli invoke seo.domain-authority --domain example.com,competitor.com,riv
 
 ## 参数
 
-| 标志 | 必填 | 说明 |
-|------|------|------|
-| `--domain` | 是 | 要查询的一个或多个域名（逗号分隔） |
+| 标志       | 必填 | 说明                               |
+| ---------- | ---- | ---------------------------------- |
+| `--domain` | 是   | 要查询的一个或多个域名（逗号分隔） |
 
 ## 输出
 

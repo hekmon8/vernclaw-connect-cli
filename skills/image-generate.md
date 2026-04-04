@@ -44,10 +44,10 @@ vernclaw-cli job get img_abc123xyz
 
 ## Parameters
 
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--prompt` | Yes | Text description of the image to generate |
-| `--size` | No | Output size: `square`, `portrait`, `landscape`, `banner` (default: `square`) |
+| Flag       | Required | Description                                                                  |
+| ---------- | -------- | ---------------------------------------------------------------------------- |
+| `--prompt` | Yes      | Text description of the image to generate                                    |
+| `--size`   | No       | Output size: `square`, `portrait`, `landscape`, `banner` (default: `square`) |
 
 ## Output
 

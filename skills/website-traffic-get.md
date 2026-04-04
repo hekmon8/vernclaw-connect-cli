@@ -38,10 +38,10 @@ vernclaw-cli invoke seo.website-traffic --domain example.com,competitor.com
 
 ## Parameters
 
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--domain` | Yes | One or more domains to query (comma-separated) |
-| `--market` | No | Country/region code to filter traffic data (e.g. `US`, `UK`, `CN`) |
+| Flag       | Required | Description                                                        |
+| ---------- | -------- | ------------------------------------------------------------------ |
+| `--domain` | Yes      | One or more domains to query (comma-separated)                     |
+| `--market` | No       | Country/region code to filter traffic data (e.g. `US`, `UK`, `CN`) |
 
 ## Output
 

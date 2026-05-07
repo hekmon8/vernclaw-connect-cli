@@ -119,6 +119,202 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       ),
     }),
     bootstrapConnector({
+      id: 'seo.backlinks-summary',
+      name: 'Backlinks Summary Get',
+      category: 'seo',
+      description: 'Fetch aggregate backlink summary metrics for a target domain.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          target: {
+            type: 'string',
+            description: 'Target root domain to inspect.',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional number of rows sampled in summary inputs.',
+          },
+          offset: {
+            type: 'number',
+            description: 'Optional summary pagination offset.',
+          },
+        },
+        ['target']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'seo.serp-google-organic',
+      name: 'SERP Google Organic Get',
+      category: 'seo',
+      description: 'Fetch live Google organic SERP snapshots for a keyword.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          keyword: {
+            type: 'string',
+            description: 'Keyword to query.',
+          },
+          market: {
+            type: 'string',
+            description: 'Optional market code such as us.',
+          },
+          language: {
+            type: 'string',
+            description: 'Optional language name such as english.',
+          },
+          device: {
+            type: 'string',
+            description: 'Optional device type such as desktop or mobile.',
+          },
+          os: {
+            type: 'string',
+            description: 'Optional OS name such as windows.',
+          },
+          depth: {
+            type: 'number',
+            description: 'Optional result depth.',
+          },
+        },
+        ['keyword']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'seo.google-trends',
+      name: 'Google Trends Get',
+      category: 'seo',
+      description: 'Fetch trend indicator points for one or more keywords.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          keywords: {
+            type: 'string',
+            description: 'Seed keyword or comma-separated keyword list.',
+          },
+          market: {
+            type: 'string',
+            description: 'Optional market code such as us.',
+          },
+          language: {
+            type: 'string',
+            description: 'Optional language name such as english.',
+          },
+        },
+        ['keywords']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'seo.keyword-search-volume',
+      name: 'Keyword Search Volume Get',
+      category: 'seo',
+      description: 'Fetch search volume and competition signals for keyword seeds.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          keywords: {
+            type: 'string',
+            description: 'Seed keyword or comma-separated keyword list.',
+          },
+          market: {
+            type: 'string',
+            description: 'Optional market code such as us.',
+          },
+          language: {
+            type: 'string',
+            description: 'Optional language name such as english.',
+          },
+        },
+        ['keywords']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'seo.keyword-suggestions',
+      name: 'Keyword Suggestions Get',
+      category: 'seo',
+      description: 'Generate keyword suggestions from one or more seed keywords.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          keywords: {
+            type: 'string',
+            description: 'Seed keyword or comma-separated keyword list.',
+          },
+          market: {
+            type: 'string',
+            description: 'Optional market code such as us.',
+          },
+          language: {
+            type: 'string',
+            description: 'Optional language name such as english.',
+          },
+        },
+        ['keywords']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'seo.site-keywords',
+      name: 'Site Keywords Get',
+      category: 'seo',
+      description: 'Fetch ranked keyword data for a target domain.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          target: {
+            type: 'string',
+            description: 'Target root domain to inspect.',
+          },
+          market: {
+            type: 'string',
+            description: 'Optional market code such as us.',
+          },
+          language: {
+            type: 'string',
+            description: 'Optional language name such as english.',
+          },
+        },
+        ['target']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'seo.domain-rank-overview',
+      name: 'Domain Rank Overview Get',
+      category: 'seo',
+      description: 'Fetch aggregate domain rank overview metrics.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          target: {
+            type: 'string',
+            description: 'Target domain to inspect.',
+          },
+          market: {
+            type: 'string',
+            description: 'Optional market code such as us.',
+          },
+          language: {
+            type: 'string',
+            description: 'Optional language name such as english.',
+          },
+        },
+        ['target']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'seo.domain-whois',
+      name: 'Whois Get',
+      category: 'seo',
+      description: 'Inspect public domain registration metadata.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          target: {
+            type: 'string',
+            description: 'Root domain to inspect.',
+          },
+        },
+        ['target']
+      ),
+    }),
+    bootstrapConnector({
       id: 'seo.domain-authority',
       name: 'Domain Rating Get',
       category: 'seo',

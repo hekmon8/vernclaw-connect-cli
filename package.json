@@ -1,6 +1,6 @@
 {
   "name": "vernclaw-connect-cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Official Vernclaw connector CLI with JSON-first output.",
   "keywords": [
     "vernclaw",

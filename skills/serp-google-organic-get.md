@@ -40,6 +40,6 @@ vernclaw-cli invoke seo.serp-google-organic --keyword "openai" --market us --lan
 
 ## Output
 
-Markdown to `stdout` containing `Keyword`, `Organic Results`, `Top Result`, `Top Rank`, and `Top Result URL`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Keyword`, `Organic Results`, `Top Result`, `Top Rank`, and `Top Result URL`.
 
 Execution mode: **synchronous**.

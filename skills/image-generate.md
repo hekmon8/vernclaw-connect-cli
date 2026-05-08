@@ -51,9 +51,9 @@ vernclaw-cli job get img_abc123xyz
 
 ## Output
 
-**On submission** — Markdown confirmation with job ID and estimated wait time.
+**On submission** — JSON with `status` and `data`, including the job ID and estimated wait time.
 
-**On completion** (via `job get`) — Markdown with:
+**On completion** (via `job get`) — JSON with `status` and `data`, including a normalized summary, image URL metadata, and the full upstream `raw` payload:
 
 - **Prompt** — the text used for generation
 - **Size** — selected option

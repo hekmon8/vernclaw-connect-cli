@@ -37,6 +37,6 @@ vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language
 
 ## Output
 
-Markdown to `stdout` containing `Target`, `Fetched Keywords`, `Top Keyword`, and `Top Keyword Volume`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Target`, `Fetched Keywords`, `Top Keyword`, and `Top Keyword Volume`.
 
 Execution mode: **synchronous**.

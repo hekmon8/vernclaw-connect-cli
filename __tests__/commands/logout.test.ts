@@ -33,7 +33,11 @@ describe('logout command', () => {
     );
 
     expect(result.status).toBe(200);
-    expect(result.markdown).toContain('Logged Out');
+    expect(result.data).toEqual({
+      command: 'logout',
+      status: 'logged_out',
+      message: 'Stored credentials removed.',
+    });
     expect(mockDeleteStoredCredentials).toHaveBeenCalledWith(
       '/tmp/.vernclaw-cli.json'
     );

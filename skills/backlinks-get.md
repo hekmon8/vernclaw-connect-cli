@@ -37,7 +37,7 @@ vernclaw-cli invoke seo.backlinks --target example.com --limit 10
 
 ## Output
 
-Markdown to `stdout` containing sampled backlink rows, referring domains, and rank-like signals when available.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes sampled backlink rows, referring domains, and rank-like signals when available.
 
 Execution mode: **synchronous**.
 

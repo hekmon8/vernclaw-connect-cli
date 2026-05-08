@@ -45,7 +45,7 @@ vernclaw-cli invoke seo.website-traffic --domain example.com,competitor.com
 
 ## 输出
 
-Markdown 表格输出到 `stdout`，包含：
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及：
 
 - **估算月度访问量** — 总访问量估算
 - **主要流量国家** — 贡献最多流量的国家

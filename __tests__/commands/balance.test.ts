@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { runBalanceCommand } from '../../src/commands/balance.js';
 
-const { mockRequestMarkdown } = vi.hoisted(() => ({
-  mockRequestMarkdown: vi.fn(),
+const { mockRequestApiJson } = vi.hoisted(() => ({
+  mockRequestApiJson: vi.fn(),
 }));
 
 vi.mock('../../src/client/http.js', () => ({
-  requestMarkdown: mockRequestMarkdown,
+  requestApiJson: mockRequestApiJson,
 }));
 
 describe('balance command', () => {
@@ -15,9 +15,15 @@ describe('balance command', () => {
     vi.clearAllMocks();
   });
 
-  it('requests connector balance markdown from the balance endpoint', async () => {
-    mockRequestMarkdown.mockResolvedValue({
-      markdown: '# Account Status',
+  it('requests connector balance and returns structured data', async () => {
+    mockRequestApiJson.mockResolvedValue({
+      data: {
+        command: 'status',
+        account: {
+          account_email: 'user@example.com',
+          credits_remaining: 245,
+        },
+      },
       status: 200,
     });
 
@@ -31,7 +37,14 @@ describe('balance command', () => {
     const result = await runBalanceCommand(config);
 
     expect(result.status).toBe(200);
-    expect(mockRequestMarkdown).toHaveBeenCalledWith({
+    expect(result.data).toEqual({
+      command: 'balance',
+      account: {
+        account_email: 'user@example.com',
+        credits_remaining: 245,
+      },
+    });
+    expect(mockRequestApiJson).toHaveBeenCalledWith({
       config,
       pathname: '/api/connectors/balance',
     });

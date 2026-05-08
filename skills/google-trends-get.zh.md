@@ -28,15 +28,15 @@ vernclaw-cli invoke seo.google-trends --keywords "openai,chatgpt" --market us --
 
 ## 参数
 
-| 标志         | 必填 | 说明                                 |
-| ------------ | ---- | ------------------------------------ |
-| `--keywords` | 是   | 种子词或逗号分隔关键词列表             |
-| `--market`   | 否   | 市场代码，如 `us`                    |
-| `--language` | 否   | 语言名称，如 `english`               |
+| 标志         | 必填 | 说明                       |
+| ------------ | ---- | -------------------------- |
+| `--keywords` | 是   | 种子词或逗号分隔关键词列表 |
+| `--market`   | 否   | 市场代码，如 `us`          |
+| `--language` | 否   | 语言名称，如 `english`     |
 
 ## 输出
 
-输出到 `stdout` 的 Markdown，包含 `Keywords Queried`、`Trend Points`、`Top Trend Value` 和 `Latest Date`。
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化 Google Trends 字段，例如 `Keywords Queried`、`Result Item Types`、`Trend Points`、`Top Trend Value`、`Average Trend Value`、`Date Range`、`Latest Date`、`Latest Values`、地区/主题/查询行数，以及完整上游 `raw` payload。
 
 执行模式：**同步**。
 

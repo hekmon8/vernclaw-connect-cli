@@ -10,8 +10,8 @@ export interface RegistryCatalogManifest {
   input_schema: Record<string, unknown>;
   output_contract: {
     mode: 'sync_result' | 'async_job';
-    result_format: 'markdown';
-    structured_payload: 'none' | 'optional';
+    result_format: 'json';
+    structured_payload: 'optional';
   };
 }
 
@@ -33,8 +33,8 @@ export interface RegistryCatalogResponse {
 
 export interface ConnectorOutputContract {
   mode: 'sync_result' | 'async_job';
-  resultFormat: 'markdown';
-  structuredPayload: 'none' | 'optional';
+  resultFormat: 'json';
+  structuredPayload: 'optional';
 }
 
 export interface ConnectorRegistryManifest {

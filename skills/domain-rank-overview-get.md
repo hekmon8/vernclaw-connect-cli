@@ -29,15 +29,15 @@ vernclaw-cli invoke seo.domain-rank-overview --target openai.com --market us --l
 
 ## Parameters
 
-| Flag       | Required | Description                                  |
-| ---------- | -------- | -------------------------------------------- |
-| `--target` | Yes      | Target domain to inspect                      |
-| `--market` | No       | Optional market code such as `us`             |
-| `--language` | No     | Optional language name such as `english`      |
+| Flag         | Required | Description                              |
+| ------------ | -------- | ---------------------------------------- |
+| `--target`   | Yes      | Target domain to inspect                 |
+| `--market`   | No       | Optional market code such as `us`        |
+| `--language` | No       | Optional language name such as `english` |
 
 ## Output
 
-Markdown to `stdout` containing `Domain`, `Domain Rank`, `Organic Keywords`, `Organic Traffic`, and `Top Keyword`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Domain`, `Domain Rank`, `Organic Keywords`, `Organic Traffic`, and `Top Keyword`.
 
 Execution mode: **synchronous**.
 

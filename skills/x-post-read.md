@@ -9,7 +9,7 @@ Extract complete public post content, author information, and engagement metrics
 
 ## When to Use
 
-- Read and archive public X/Twitter posts in Markdown
+- Read and archive public X/Twitter posts with JSON-first CLI output
 - Monitor brand mentions and competitor social activity
 - Collect content inspiration from industry thought leaders
 - Extract thread content for repurposing into articles or reports
@@ -42,7 +42,7 @@ vernclaw-cli invoke read.x.post \
 
 ## Output
 
-Markdown to `stdout` containing:
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the fields below, and the full upstream `raw` payload:
 
 - **Author** — username and display name
 - **Timestamp** — publish date and time (UTC)

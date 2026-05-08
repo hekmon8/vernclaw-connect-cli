@@ -1,22 +1,25 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { runInvokeCommand } from '../../src/commands/invoke.js';
 
-const {
-  mockRequestMarkdown,
-  mockGetEffectiveConnectorById,
-} = vi.hoisted(() => ({
-  mockRequestMarkdown: vi.fn(),
-  mockGetEffectiveConnectorById: vi.fn(),
-}));
+const { mockRequestApiJson, mockGetEffectiveConnectorById } = vi.hoisted(
+  () => ({
+    mockRequestApiJson: vi.fn(),
+    mockGetEffectiveConnectorById: vi.fn(),
+  })
+);
 
 vi.mock('../../src/client/http.js', () => ({
-  requestMarkdown: mockRequestMarkdown,
+  requestApiJson: mockRequestApiJson,
 }));
 
 vi.mock('../../src/catalog/service.js', () => ({
   getEffectiveConnectorById: mockGetEffectiveConnectorById,
 }));
+
+function getResponseData(result: Awaited<ReturnType<typeof runInvokeCommand>>) {
+  return 'data' in result ? result.data : undefined;
+}
 
 describe('invoke command', () => {
   beforeEach(() => {
@@ -58,8 +61,11 @@ describe('invoke command', () => {
     );
 
     expect(result.errorCode).toBe('INVALID_PARAMS');
-    expect(result.markdown).toContain('Missing required parameter: `query`');
-    expect(mockRequestMarkdown).not.toHaveBeenCalled();
+    expect(getResponseData(result)).toMatchObject({
+      error_code: 'INVALID_PARAMS',
+      message: 'Missing required parameter: `query`.',
+    });
+    expect(mockRequestApiJson).not.toHaveBeenCalled();
   });
 
   it('normalizes schema-typed flags before sending invoke requests', async () => {
@@ -84,8 +90,8 @@ describe('invoke command', () => {
         },
       },
     });
-    mockRequestMarkdown.mockResolvedValue({
-      markdown: '# ok\n',
+    mockRequestApiJson.mockResolvedValue({
+      data: { summary: 'ok' },
       status: 200,
     });
 
@@ -104,7 +110,7 @@ describe('invoke command', () => {
     );
 
     expect(result.status).toBe(200);
-    expect(mockRequestMarkdown).toHaveBeenCalledWith({
+    expect(mockRequestApiJson).toHaveBeenCalledWith({
       config: {
         apiBaseUrl: 'https://api.example.com',
         apiKey: 'key_123',
@@ -158,10 +164,11 @@ describe('invoke command', () => {
     );
 
     expect(result.errorCode).toBe('INVALID_PARAMS');
-    expect(result.markdown).toContain(
-      'Parameter `limit` must be a valid number.'
-    );
-    expect(mockRequestMarkdown).not.toHaveBeenCalled();
+    expect(getResponseData(result)).toMatchObject({
+      error_code: 'INVALID_PARAMS',
+      message: 'Parameter `limit` must be a valid number.',
+    });
+    expect(mockRequestApiJson).not.toHaveBeenCalled();
   });
 
   it('blocks local invoke when connector requires a CLI upgrade', async () => {
@@ -189,7 +196,10 @@ describe('invoke command', () => {
     );
 
     expect(result.errorCode).toBe('CLI_UPGRADE_REQUIRED');
-    expect(result.markdown).toContain('0.2.0');
-    expect(mockRequestMarkdown).not.toHaveBeenCalled();
+    expect(getResponseData(result)).toMatchObject({
+      error_code: 'CLI_UPGRADE_REQUIRED',
+      message: 'Requires vernclaw-cli >= 0.2.0',
+    });
+    expect(mockRequestApiJson).not.toHaveBeenCalled();
   });
 });

@@ -37,7 +37,7 @@ vernclaw-cli invoke seo.keyword-search-volume --keywords "openai" --market us --
 
 ## 输出
 
-输出到 `stdout` 的 Markdown，包含 `Keywords Queried`、`Top Keyword`、`Search Volume`、`Competition` 和 `Competition Index`。
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及 `Keywords Queried`、`Top Keyword`、`Search Volume`、`Competition` 和 `Competition Index`。
 
 执行模式：**同步**。
 

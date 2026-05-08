@@ -7,7 +7,22 @@ import {
 } from './support/e2e-credits.js';
 
 describe('e2e credits helper', () => {
-  it('parses the account email from status markdown', () => {
+  it('parses the account email from structured status JSON', () => {
+    const email = parseAccountEmailFromStatus(
+      JSON.stringify({
+        status: 200,
+        data: {
+          account: {
+            account_email: 'user@example.com',
+          },
+        },
+      })
+    );
+
+    expect(email).toBe('user@example.com');
+  });
+
+  it('parses the account email from legacy status markdown', () => {
     const email = parseAccountEmailFromStatus(`
 # Account Status
 

@@ -8,7 +8,8 @@ type TerminalFormatOptions = {
 };
 
 export type CliCommandResponse = {
-  markdown: string;
+  markdown?: string;
+  data?: unknown;
   status: number;
   errorCode?: string;
 };
@@ -20,7 +21,7 @@ export function ensureTrailingNewline(value: string) {
 export function formatJsonForTerminal(response: CliCommandResponse) {
   const payload: Record<string, unknown> = {
     status: response.status,
-    markdown: response.markdown,
+    data: response.data !== undefined ? response.data : {},
   };
 
   if (response.errorCode) {
@@ -28,6 +29,294 @@ export function formatJsonForTerminal(response: CliCommandResponse) {
   }
 
   return ensureTrailingNewline(JSON.stringify(payload));
+}
+
+function formatScalar(value: unknown) {
+  if (value === undefined || value === null || value === '') {
+    return undefined;
+  }
+
+  if (
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean'
+  ) {
+    return String(value);
+  }
+
+  return JSON.stringify(value);
+}
+
+function formatRecordBullets(record: Record<string, unknown>) {
+  return Object.entries(record)
+    .map(([key, value]) => {
+      const formatted = formatScalar(value);
+      return formatted ? `- ${key}: ${formatted}` : undefined;
+    })
+    .filter((line): line is string => Boolean(line));
+}
+
+function prettifyLabel(key: string) {
+  return key
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (value) => value.toUpperCase());
+}
+
+function formatGenericObject(record: Record<string, unknown>) {
+  return Object.entries(record)
+    .map(([key, value]) => {
+      const formatted = formatScalar(value);
+      return formatted ? `- ${prettifyLabel(key)}: ${formatted}` : undefined;
+    })
+    .filter((line): line is string => Boolean(line));
+}
+
+function formatStructuredDataForTerminal(data: unknown) {
+  if (!data || typeof data !== 'object') {
+    return ensureTrailingNewline(JSON.stringify(data, null, 2));
+  }
+
+  const record = data as Record<string, unknown>;
+
+  if (record.command === 'list' && Array.isArray(record.connectors)) {
+    const lines = [
+      '# Connectors',
+      '',
+      `- Count: ${formatScalar(record.count) || record.connectors.length}`,
+      '',
+      '## Result',
+      '',
+      ...record.connectors
+        .map((item) => {
+          if (!item || typeof item !== 'object') {
+            return undefined;
+          }
+          const connector = item as Record<string, unknown>;
+          return [
+            `- ${formatScalar(connector.id) || 'unknown'}`,
+            `  Name: ${formatScalar(connector.name) || 'Unknown'}`,
+            `  Category: ${formatScalar(connector.category) || 'unknown'}`,
+            `  Status: ${formatScalar(connector.status) || 'unknown'}`,
+            `  Description: ${formatScalar(connector.description) || ''}`,
+          ].join('\n');
+        })
+        .filter((line): line is string => Boolean(line)),
+    ];
+
+    if (Array.isArray(record.hints) && record.hints.length > 0) {
+      lines.push(
+        '',
+        '## Hints',
+        '',
+        ...record.hints.map((hint) => `- ${String(hint)}`)
+      );
+    }
+
+    return ensureTrailingNewline(lines.join('\n'));
+  }
+
+  if (record.command === 'status' || record.command === 'balance') {
+    const account =
+      record.account && typeof record.account === 'object'
+        ? (record.account as Record<string, unknown>)
+        : {};
+    return ensureTrailingNewline(
+      [
+        record.command === 'balance' ? '# Account Balance' : '# Account Status',
+        '',
+        ...formatGenericObject(account),
+      ].join('\n')
+    );
+  }
+
+  if (record.command === 'login' || record.command === 'logout') {
+    const lines = [
+      record.command === 'login' ? '# Login' : '# Logout',
+      '',
+      ...formatGenericObject(record),
+    ];
+    return ensureTrailingNewline(lines.join('\n'));
+  }
+
+  if (record.command === 'describe') {
+    const lines = ['# Connector', '', ...formatGenericObject(record)];
+    return ensureTrailingNewline(lines.join('\n'));
+  }
+
+  if (record.connector_id && record.name && record.cli_usage) {
+    const usage =
+      record.cli_usage && typeof record.cli_usage === 'object'
+        ? (record.cli_usage as Record<string, unknown>)
+        : {};
+    const flags = Array.isArray(record.cli_flags) ? record.cli_flags : [];
+    const lines = [
+      `# ${formatScalar(record.name) || 'Connector'}`,
+      '',
+      ...formatRecordBullets({
+        'Connector ID': record.connector_id,
+        Category: record.category,
+        Version: record.version,
+        'Min CLI': record.min_cli_version,
+        Compatibility: record.compatibility,
+        Status: record.status,
+        'Can Run Now': record.can_run_now,
+        'Next Step': record.next_step,
+      }),
+      '',
+      '## Summary',
+      '',
+      String(record.description || ''),
+      '',
+      '## CLI Usage',
+      '',
+      ...formatRecordBullets({
+        Describe: usage.describe,
+        Invoke: usage.invoke,
+      }),
+      '',
+      '## CLI Flags',
+      '',
+      ...(flags.length
+        ? flags
+            .map((item) => {
+              if (!item || typeof item !== 'object') {
+                return undefined;
+              }
+              const flag = item as Record<string, unknown>;
+              const required = flag.required ? 'required' : 'optional';
+              return `- ${flag.name} (${required}): ${flag.description} [type=${flag.type}]`;
+            })
+            .filter((line): line is string => Boolean(line))
+        : ['- No connector-specific flags.']),
+      '',
+      '## Output Contract',
+      '',
+      ...formatGenericObject(
+        (record.output_contract as Record<string, unknown>) || {}
+      ),
+    ];
+    return ensureTrailingNewline(lines.join('\n'));
+  }
+
+  const title =
+    formatScalar(record.connector_name) ||
+    (record.error_code ? 'Connector Error' : 'Connector Result');
+  const lines: string[] = [`# ${title}`, ''];
+
+  if (record.error_code) {
+    lines.push(`- Error Code: ${record.error_code}`);
+    if (record.connector_id) {
+      lines.push(`- Connector ID: ${record.connector_id}`);
+    }
+    lines.push(
+      '',
+      '## Summary',
+      '',
+      String(record.message || 'Command failed.')
+    );
+    if (record.next_command) {
+      lines.push('', '## Next Steps', '', `- ${record.next_command}`);
+    }
+    return ensureTrailingNewline(lines.join('\n'));
+  }
+
+  if (record.job_id) {
+    lines.push(
+      ...formatRecordBullets({
+        'Connector ID': record.connector_id,
+        'Job ID': record.job_id,
+        Status: record.status,
+        'Estimated Duration': record.estimated_duration,
+        'Credits Cost': record.credits_cost,
+      })
+    );
+    if (record.next_command) {
+      lines.push('', '## Next Steps', '', `- ${record.next_command}`);
+    }
+    if (record.raw !== undefined) {
+      lines.push(
+        '',
+        '## Raw JSON',
+        '',
+        '```json',
+        JSON.stringify(record.raw, null, 2),
+        '```'
+      );
+    }
+    return ensureTrailingNewline(lines.join('\n'));
+  }
+
+  lines.push(
+    ...formatRecordBullets({
+      'Connector ID': record.connector_id,
+      'Execution Mode': record.execution_mode,
+      'Credits Cost': record.credits_cost,
+    })
+  );
+
+  if (record.input && typeof record.input === 'object') {
+    lines.push(
+      '',
+      '## Input',
+      '',
+      ...formatRecordBullets(record.input as Record<string, unknown>)
+    );
+  }
+
+  if (record.summary) {
+    lines.push('', '## Summary', '', String(record.summary));
+  }
+
+  if (Array.isArray(record.result)) {
+    lines.push(
+      '',
+      '## Result',
+      '',
+      ...record.result
+        .map((item) => {
+          if (!item || typeof item !== 'object') {
+            return undefined;
+          }
+          const field = item as Record<string, unknown>;
+          const label = formatScalar(field.label);
+          const value = formatScalar(field.value);
+          return label && value ? `- ${label}: ${value}` : undefined;
+        })
+        .filter((line): line is string => Boolean(line))
+    );
+  }
+
+  if (record.preview_url) {
+    lines.push(`- Preview URL: ${record.preview_url}`);
+  }
+
+  if (Array.isArray(record.notes) && record.notes.length > 0) {
+    lines.push('', '## Notes', '', ...record.notes.map((note) => `- ${note}`));
+  }
+
+  if (record.raw !== undefined) {
+    lines.push(
+      '',
+      '## Raw JSON',
+      '',
+      '```json',
+      JSON.stringify(record.raw, null, 2),
+      '```'
+    );
+  }
+
+  return ensureTrailingNewline(lines.join('\n'));
+}
+
+export function formatResponseForTerminal(
+  response: CliCommandResponse,
+  options: TerminalFormatOptions = {}
+) {
+  if (response.data !== undefined) {
+    return formatStructuredDataForTerminal(response.data);
+  }
+
+  return formatMarkdownForTerminal(response.markdown || '', options);
 }
 
 function extractBulletLabel(line: string) {
@@ -144,13 +433,8 @@ export function formatMarkdownForTerminal(
   const singleResultBlockMode = hasResultSection(lines);
   const resultLabels = collectResultLabels(lines);
   const output: string[] = [];
-  let section:
-    | 'root'
-    | 'summary'
-    | 'result'
-    | 'notes'
-    | 'sources'
-    | 'other' = 'root';
+  let section: 'root' | 'summary' | 'result' | 'notes' | 'sources' | 'other' =
+    'root';
   let noteLines: string[] = [];
 
   const flushNotes = () => {

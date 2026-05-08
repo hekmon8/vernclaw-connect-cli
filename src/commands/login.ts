@@ -1,11 +1,10 @@
-import { createInterface } from 'node:readline/promises';
-import { stdin as input, stdout as output } from 'node:process';
 import { exec } from 'node:child_process';
 import { platform } from 'node:os';
+import { stdin as input, stdout as output } from 'node:process';
+import { createInterface } from 'node:readline/promises';
 
-import type { CliConfig } from '../config/env.js';
-import { saveStoredCredentials } from '../config/env.js';
-import { requestMarkdown, requestJson } from '../client/http.js';
+import { requestApiJson, requestJson } from '../client/http.js';
+import { saveStoredCredentials, type CliConfig } from '../config/env.js';
 
 interface DeviceCodeResponse {
   device_code: string;
@@ -22,8 +21,7 @@ interface PollResponse {
 
 function openBrowser(url: string) {
   const os = platform();
-  const cmd =
-    os === 'darwin' ? 'open' : os === 'win32' ? 'start' : 'xdg-open';
+  const cmd = os === 'darwin' ? 'open' : os === 'win32' ? 'start' : 'xdg-open';
   exec(`${cmd} "${url}"`, () => {});
 }
 
@@ -42,14 +40,18 @@ async function loginWithApiKey(
     apiBaseUrl: apiBaseUrl || config.apiBaseUrl,
   };
 
-  const result = await requestMarkdown({
+  const result = await requestApiJson({
     config: tempConfig,
     pathname: '/api/connectors/status',
   });
 
   if (result.errorCode === 'INVALID_API_KEY') {
     return {
-      markdown: '# Login Failed\n\n- Invalid API key. Please check and try again.\n',
+      data: {
+        command: 'login',
+        error_code: 'INVALID_API_KEY',
+        message: 'Invalid API key. Please check and try again.',
+      },
       status: 401,
       errorCode: 'INVALID_API_KEY',
     };
@@ -57,7 +59,11 @@ async function loginWithApiKey(
 
   if (result.errorCode) {
     return {
-      markdown: `# Login Failed\n\n- Could not validate API key: ${result.errorCode}\n`,
+      data: {
+        command: 'login',
+        error_code: result.errorCode,
+        message: `Could not validate API key: ${result.errorCode}`,
+      },
       status: result.status,
       errorCode: result.errorCode,
     };
@@ -69,7 +75,11 @@ async function loginWithApiKey(
   );
 
   return {
-    markdown: '# Login Complete\n\n- API key validated and stored for `vernclaw-cli`.\n',
+    data: {
+      command: 'login',
+      status: 'complete',
+      message: 'API key validated and stored for vernclaw-cli.',
+    },
     status: 200,
   };
 }
@@ -117,15 +127,22 @@ async function loginWithDeviceCode(config: CliConfig, apiBaseUrl?: string) {
       );
 
       return {
-        markdown:
-          '# Login Complete\n\n- Authorized via browser. API key stored for `vernclaw-cli`.\n',
+        data: {
+          command: 'login',
+          status: 'complete',
+          message: 'Authorized via browser. API key stored for vernclaw-cli.',
+        },
         status: 200,
       };
     }
 
     if (pollData.status === 'expired') {
       return {
-        markdown: '# Login Failed\n\n- Device code expired. Please try again.\n',
+        data: {
+          command: 'login',
+          error_code: 'INVALID_PARAMS',
+          message: 'Device code expired. Please try again.',
+        },
         status: 408,
         errorCode: 'INVALID_PARAMS',
       };
@@ -133,7 +150,11 @@ async function loginWithDeviceCode(config: CliConfig, apiBaseUrl?: string) {
   }
 
   return {
-    markdown: '# Login Failed\n\n- Timed out waiting for authorization. Please try again.\n',
+    data: {
+      command: 'login',
+      error_code: 'INVALID_PARAMS',
+      message: 'Timed out waiting for authorization. Please try again.',
+    },
     status: 408,
     errorCode: 'INVALID_PARAMS',
   };

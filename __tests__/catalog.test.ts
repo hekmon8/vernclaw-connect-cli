@@ -25,8 +25,8 @@ describe('registry compatibility engine', () => {
               inputSchema: {},
               outputContract: {
                 mode: 'sync_result',
-                resultFormat: 'markdown',
-                structuredPayload: 'none',
+                resultFormat: 'json',
+                structuredPayload: 'optional',
               },
             },
             overlay: {
@@ -79,8 +79,8 @@ describe('registry compatibility engine', () => {
           inputSchema: {},
           outputContract: {
             mode: 'sync_result',
-            resultFormat: 'markdown',
-            structuredPayload: 'none',
+            resultFormat: 'json',
+            structuredPayload: 'optional',
           },
         },
       },
@@ -110,8 +110,8 @@ describe('registry compatibility engine', () => {
           inputSchema: {},
           outputContract: {
             mode: 'sync_result',
-            resultFormat: 'markdown',
-            structuredPayload: 'none',
+            resultFormat: 'json',
+            structuredPayload: 'optional',
           },
         },
       },
@@ -163,8 +163,8 @@ describe('registry compatibility engine', () => {
             },
             outputContract: {
               mode: 'sync_result',
-              resultFormat: 'markdown',
-              structuredPayload: 'none',
+              resultFormat: 'json',
+              structuredPayload: 'optional',
             },
           },
         },
@@ -218,19 +218,23 @@ describe('registry compatibility engine', () => {
         },
         outputContract: {
           mode: 'sync_result',
-          resultFormat: 'markdown',
-          structuredPayload: 'none',
+          resultFormat: 'json',
+          structuredPayload: 'optional',
         },
       },
     });
 
     expect(output).toContain('- Status: setup required');
     expect(output).toContain('- Can Run Now: No');
-    expect(output).toContain('- Next Step: Complete connector setup in Settings → Connectors, then retry.');
+    expect(output).toContain(
+      '- Next Step: Complete connector setup in Settings → Connectors, then retry.'
+    );
     expect(output).not.toContain('- Install:');
     expect(output).not.toContain('- Runtime:');
     expect(output).toContain('## CLI Usage');
-    expect(output).toContain('vernclaw-cli invoke seo.website-traffic --domain example.com');
+    expect(output).toContain(
+      'vernclaw-cli invoke seo.website-traffic --domain example.com'
+    );
     expect(output).toContain('--domain (required)');
     expect(output).toContain('--market (optional)');
   });
@@ -238,43 +242,48 @@ describe('registry compatibility engine', () => {
   it('renders login required summary in describe output for unauthenticated users', async () => {
     const { renderCatalogDescribe } = await import('../src/catalog/render.js');
 
-    const output = renderCatalogDescribe({
-      id: 'seo.website-traffic',
-      name: 'Website Traffic Get',
-      category: 'seo',
-      description: 'Traffic lookup',
-      version: '1.0.0',
-      minCliVersion: '0.1.0',
-      visibility: 'visible',
-      compatibilityState: 'supported',
-      installStatus: 'available',
-      runtimeStatus: 'unknown',
-      authStatus: 'unknown',
-      trainingStatus: 'unknown',
-      source: 'remote',
-      manifest: {
+    const output = renderCatalogDescribe(
+      {
         id: 'seo.website-traffic',
         name: 'Website Traffic Get',
         category: 'seo',
         description: 'Traffic lookup',
         version: '1.0.0',
-        connectorType: 'read_only',
         minCliVersion: '0.1.0',
-        requiredCliFeatures: ['registry_v1'],
-        inputSchema: {
-          domain: 'string',
-        },
-        outputContract: {
-          mode: 'sync_result',
-          resultFormat: 'markdown',
-          structuredPayload: 'none',
+        visibility: 'visible',
+        compatibilityState: 'supported',
+        installStatus: 'available',
+        runtimeStatus: 'unknown',
+        authStatus: 'unknown',
+        trainingStatus: 'unknown',
+        source: 'remote',
+        manifest: {
+          id: 'seo.website-traffic',
+          name: 'Website Traffic Get',
+          category: 'seo',
+          description: 'Traffic lookup',
+          version: '1.0.0',
+          connectorType: 'read_only',
+          minCliVersion: '0.1.0',
+          requiredCliFeatures: ['registry_v1'],
+          inputSchema: {
+            domain: 'string',
+          },
+          outputContract: {
+            mode: 'sync_result',
+            resultFormat: 'json',
+            structuredPayload: 'optional',
+          },
         },
       },
-    }, { viewerState: 'unauthenticated' });
+      { viewerState: 'unauthenticated' }
+    );
 
     expect(output).toContain('- Status: login required');
     expect(output).toContain('- Can Run Now: No');
-    expect(output).toContain('- Next Step: Run `vernclaw-cli login` and retry.');
+    expect(output).toContain(
+      '- Next Step: Run `vernclaw-cli login` and retry.'
+    );
   });
 
   it('supports legacy input schema maps when rendering describe output', async () => {
@@ -309,13 +318,15 @@ describe('registry compatibility engine', () => {
         },
         outputContract: {
           mode: 'sync_result',
-          resultFormat: 'markdown',
-          structuredPayload: 'none',
+          resultFormat: 'json',
+          structuredPayload: 'optional',
         },
       },
     });
 
-    expect(output).toContain('vernclaw-cli invoke seo.website-traffic --domain example.com');
+    expect(output).toContain(
+      'vernclaw-cli invoke seo.website-traffic --domain example.com'
+    );
     expect(output).toContain('--domain (required)');
     expect(output).toContain('--market (optional)');
   });

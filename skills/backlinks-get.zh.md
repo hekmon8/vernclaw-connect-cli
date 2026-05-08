@@ -37,7 +37,7 @@ vernclaw-cli invoke seo.backlinks --target example.com --limit 10
 
 ## 输出
 
-输出到 `stdout` 的 Markdown，包含反向链接样本、引荐域名以及可用的质量/排名信号。
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及反向链接样本、引荐域名以及可用的质量/排名信号。
 
 执行模式：**同步**。
 

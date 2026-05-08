@@ -35,6 +35,6 @@ vernclaw-cli invoke seo.site-technologies --target openai.com
 
 ## Output
 
-Markdown to `stdout` containing `Target`, `Detected Technologies`, and `Top Technology`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Target`, `Detected Technologies`, and `Top Technology`.
 
 Execution mode: **synchronous**.

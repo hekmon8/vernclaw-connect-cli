@@ -24,8 +24,8 @@ describe('catalog http normalization', () => {
             },
             output_contract: {
               mode: 'sync_result',
-              result_format: 'markdown',
-              structured_payload: 'none',
+              result_format: 'json',
+              structured_payload: 'optional',
             },
           },
           overlay: {

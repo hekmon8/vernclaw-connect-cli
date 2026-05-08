@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { resolveRegistryCatalog } from '../../src/catalog/service.js';
 import type { CachedCatalogEnvelope } from '../../src/catalog/cache.js';
+import { resolveRegistryCatalog } from '../../src/catalog/service.js';
 import type { RegistryCatalogResponse } from '../../src/catalog/types.js';
 
 function buildCatalog(version = '2026-03-12'): RegistryCatalogResponse {
@@ -20,8 +20,8 @@ function buildCatalog(version = '2026-03-12'): RegistryCatalogResponse {
           input_schema: { type: 'object', properties: {} },
           output_contract: {
             mode: 'sync_result',
-            result_format: 'markdown',
-            structured_payload: 'none',
+            result_format: 'json',
+            structured_payload: 'optional',
           },
         },
         overlay: {
@@ -93,9 +93,13 @@ describe('registry catalog service', () => {
 
   it('uses cache when version check shows same version', async () => {
     const staleEnvelope = buildCacheEnvelope('1.0.0');
-    staleEnvelope.fetchedAt = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    staleEnvelope.fetchedAt = new Date(
+      Date.now() - 10 * 60 * 1000
+    ).toISOString();
     const fetchCatalog = vi.fn();
-    const fetchVersion = vi.fn().mockResolvedValue({ registry_version: '1.0.0' });
+    const fetchVersion = vi
+      .fn()
+      .mockResolvedValue({ registry_version: '1.0.0' });
     const renewTimestamp = vi.fn();
 
     const result = await resolveRegistryCatalog({
@@ -122,10 +126,14 @@ describe('registry catalog service', () => {
 
   it('fetches full catalog when remote version is newer', async () => {
     const staleEnvelope = buildCacheEnvelope('1.0.0');
-    staleEnvelope.fetchedAt = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+    staleEnvelope.fetchedAt = new Date(
+      Date.now() - 10 * 60 * 1000
+    ).toISOString();
     const newCatalog = buildCatalog('1.1.0');
     const fetchCatalog = vi.fn().mockResolvedValue(newCatalog);
-    const fetchVersion = vi.fn().mockResolvedValue({ registry_version: '1.1.0' });
+    const fetchVersion = vi
+      .fn()
+      .mockResolvedValue({ registry_version: '1.1.0' });
     const writeCache = vi.fn();
 
     const result = await resolveRegistryCatalog({

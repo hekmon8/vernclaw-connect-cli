@@ -37,6 +37,6 @@ vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --la
 
 ## 输出
 
-输出到 `stdout` 的 Markdown，包含 `Seed Keywords`、`Suggestion Count`、`Top Suggestion` 和 `Top Suggestion Volume`。
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及 `Seed Keywords`、`Suggestion Count`、`Top Suggestion` 和 `Top Suggestion Volume`。
 
 执行模式：**同步**。

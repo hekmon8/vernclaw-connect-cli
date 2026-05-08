@@ -29,15 +29,15 @@ vernclaw-cli invoke seo.backlinks-summary --target openai.com --limit 20 --offse
 
 ## Parameters
 
-| Flag       | Required | Description                                  |
-| ---------- | -------- | -------------------------------------------- |
-| `--target` | Yes      | Root domain to inspect                       |
-| `--limit`  | No       | Optional number of rows sampled in inputs     |
-| `--offset` | No       | Optional pagination offset                   |
+| Flag       | Required | Description                               |
+| ---------- | -------- | ----------------------------------------- |
+| `--target` | Yes      | Root domain to inspect                    |
+| `--limit`  | No       | Optional number of rows sampled in inputs |
+| `--offset` | No       | Optional pagination offset                |
 
 ## Output
 
-Markdown to `stdout` containing `Target`, `Total Backlinks`, `Referring Domains`, and `Top Referring Domain`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Target`, `Total Backlinks`, `Referring Domains`, and `Top Referring Domain`.
 
 Execution mode: **synchronous**.
 

@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { runStatusCommand } from '../../src/commands/status.js';
 
-const { mockRequestMarkdown } = vi.hoisted(() => ({
-  mockRequestMarkdown: vi.fn(),
+const { mockRequestApiJson } = vi.hoisted(() => ({
+  mockRequestApiJson: vi.fn(),
 }));
 
 vi.mock('../../src/client/http.js', () => ({
-  requestMarkdown: mockRequestMarkdown,
+  requestApiJson: mockRequestApiJson,
 }));
 
 describe('status command', () => {
@@ -15,9 +15,16 @@ describe('status command', () => {
     vi.clearAllMocks();
   });
 
-  it('requests connector account status markdown', async () => {
-    mockRequestMarkdown.mockResolvedValue({
-      markdown: '# Account Status',
+  it('requests connector account status and returns structured data', async () => {
+    mockRequestApiJson.mockResolvedValue({
+      data: {
+        command: 'status',
+        account: {
+          login_status: 'Logged in',
+          account_email: 'user@example.com',
+          credits_remaining: 245,
+        },
+      },
       status: 200,
     });
 
@@ -31,7 +38,15 @@ describe('status command', () => {
     const result = await runStatusCommand(config);
 
     expect(result.status).toBe(200);
-    expect(mockRequestMarkdown).toHaveBeenCalledWith({
+    expect(result.data).toEqual({
+      command: 'status',
+      account: {
+        login_status: 'Logged in',
+        account_email: 'user@example.com',
+        credits_remaining: 245,
+      },
+    });
+    expect(mockRequestApiJson).toHaveBeenCalledWith({
       config,
       pathname: '/api/connectors/status',
     });

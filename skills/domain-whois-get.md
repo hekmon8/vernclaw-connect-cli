@@ -35,6 +35,6 @@ vernclaw-cli invoke seo.domain-whois --target openai.com
 
 ## Output
 
-Markdown to `stdout` containing `Domain`, `Registrar`, `Created`, `Expires`, and `Updated`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Domain`, `Registrar`, `Created`, `Expires`, and `Updated`.
 
 Execution mode: **synchronous**.

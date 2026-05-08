@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
+import { resolveCliConfig } from '../src/config/env.js';
 import {
   ensureTrailingNewline,
   formatJsonForTerminal,
   formatMarkdownForTerminal,
+  formatResponseForTerminal,
   mapErrorCodeToExitCode,
   parseArgv,
   shouldEmitMachineErrorCode,
 } from '../src/index.js';
-import { resolveCliConfig } from '../src/config/env.js';
 
 describe('vernclaw-cli helpers', () => {
   it('maps connector error codes to exit codes', () => {
@@ -69,18 +70,35 @@ describe('vernclaw-cli helpers', () => {
         markdown: '# Account Balance\n',
         status: 200,
       })
-    ).toBe('{"status":200,"markdown":"# Account Balance\\n"}\n');
+    ).toBe('{"status":200,"data":{}}\n');
+  });
+
+  it('formats structured responses as compact JSON without markdown', () => {
+    expect(
+      formatJsonForTerminal({
+        data: {
+          summary: 'ok',
+          raw: {
+            tasks: [],
+          },
+        },
+        status: 200,
+      })
+    ).toBe('{"status":200,"data":{"summary":"ok","raw":{"tasks":[]}}}\n');
   });
 
   it('includes error codes in JSON output when present', () => {
     expect(
       formatJsonForTerminal({
-        markdown: '# Failed\n',
+        data: {
+          error_code: 'INVALID_PARAMS',
+          message: 'Failed',
+        },
         status: 400,
         errorCode: 'INVALID_PARAMS',
       })
     ).toBe(
-      '{"status":400,"markdown":"# Failed\\n","errorCode":"INVALID_PARAMS"}\n'
+      '{"status":400,"data":{"error_code":"INVALID_PARAMS","message":"Failed"},"errorCode":"INVALID_PARAMS"}\n'
     );
   });
 
@@ -136,6 +154,43 @@ describe('vernclaw-cli helpers', () => {
     expect(output).not.toContain('DataForSEO');
     expect(output).not.toContain('## Summary');
     expect(output).not.toContain('## Result');
+  });
+
+  it('includes raw JSON when pretty-printing structured job responses', () => {
+    const output = formatResponseForTerminal({
+      status: 202,
+      data: {
+        connector_name: 'Image Generate',
+        connector_id: 'generate.image',
+        job_id: 'job_123',
+        status: 'pending',
+        estimated_duration: '30-60 seconds',
+        raw: {
+          id: 'upstream_task_123',
+          status: 'pending',
+        },
+      },
+    });
+
+    expect(output).toContain('## Raw JSON');
+    expect(output).toContain('"id": "upstream_task_123"');
+  });
+
+  it('pretty-prints structured account responses from data', () => {
+    const output = formatResponseForTerminal({
+      status: 200,
+      data: {
+        command: 'balance',
+        account: {
+          account_email: 'user@example.com',
+          credits_remaining: 245,
+        },
+      },
+    });
+
+    expect(output).toContain('# Account Balance');
+    expect(output).toContain('- Account Email: user@example.com');
+    expect(output).toContain('- Credits Remaining: 245');
   });
 
   it('keeps non-invoke markdown unchanged apart from trailing newline normalization', () => {

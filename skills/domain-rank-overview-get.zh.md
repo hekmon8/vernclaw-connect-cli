@@ -29,15 +29,15 @@ vernclaw-cli invoke seo.domain-rank-overview --target openai.com --market us --l
 
 ## 参数
 
-| 标志         | 必填 | 说明                                  |
-| ------------ | ---- | ------------------------------------- |
-| `--target`   | 是   | 要检查的目标域名                      |
-| `--market`   | 否   | 可选市场代码，如 `us`                 |
-| `--language` | 否   | 可选语言名称，如 `english`            |
+| 标志         | 必填 | 说明                       |
+| ------------ | ---- | -------------------------- |
+| `--target`   | 是   | 要检查的目标域名           |
+| `--market`   | 否   | 可选市场代码，如 `us`      |
+| `--language` | 否   | 可选语言名称，如 `english` |
 
 ## 输出
 
-输出到 `stdout` 的 Markdown，包含 `Domain`、`Domain Rank`、`Organic Keywords`、`Organic Traffic` 和 `Top Keyword`。
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及 `Domain`、`Domain Rank`、`Organic Keywords`、`Organic Traffic` 和 `Top Keyword`。
 
 执行模式：**同步**。
 

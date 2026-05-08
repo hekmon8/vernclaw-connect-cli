@@ -1,16 +1,12 @@
 import process from 'node:process';
-
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const {
-  mockRunBalanceCommand,
-  mockRunStatusCommand,
-  mockResolveCliConfig,
-} = vi.hoisted(() => ({
-  mockRunBalanceCommand: vi.fn(),
-  mockRunStatusCommand: vi.fn(),
-  mockResolveCliConfig: vi.fn(),
-}));
+const { mockRunBalanceCommand, mockRunStatusCommand, mockResolveCliConfig } =
+  vi.hoisted(() => ({
+    mockRunBalanceCommand: vi.fn(),
+    mockRunStatusCommand: vi.fn(),
+    mockResolveCliConfig: vi.fn(),
+  }));
 
 vi.mock('../src/commands/balance.js', () => ({
   runBalanceCommand: mockRunBalanceCommand,
@@ -46,11 +42,21 @@ describe('cli dispatch', () => {
       registryCatalogFile: '/tmp/catalog.json',
     });
     mockRunBalanceCommand.mockResolvedValue({
-      markdown: '# Account Balance\n',
+      data: {
+        command: 'balance',
+        account: {
+          credits_remaining: 245,
+        },
+      },
       status: 200,
     });
     mockRunStatusCommand.mockResolvedValue({
-      markdown: '# Account Status\n',
+      data: {
+        command: 'status',
+        account: {
+          credits_remaining: 245,
+        },
+      },
       status: 200,
     });
     stdoutWrite.mockImplementation(() => true);
@@ -76,16 +82,18 @@ describe('cli dispatch', () => {
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(stdoutWrite).toHaveBeenCalledWith(
-      '{"status":200,"markdown":"# Account Balance\\n"}\n'
+      '{"status":200,"data":{"command":"balance","account":{"credits_remaining":245}}}\n'
     );
   });
 
-  it('prints markdown when --pretty is set', async () => {
+  it('pretty-prints structured data when --pretty is set', async () => {
     process.argv = ['node', 'vernclaw-cli', 'balance', '--pretty'];
 
     await import('../src/cli.js');
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    expect(stdoutWrite).toHaveBeenCalledWith('# Account Balance\n');
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      '# Account Balance\n\n- Credits Remaining: 245\n'
+    );
   });
 });

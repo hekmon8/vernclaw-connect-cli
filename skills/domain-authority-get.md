@@ -41,7 +41,7 @@ vernclaw-cli invoke seo.domain-authority --domain example.com,competitor.com,riv
 
 ## Output
 
-Markdown table to `stdout` containing:
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the fields below, and the full upstream `raw` payload:
 
 - **Authority Score** — 0–100 composite score
 - **Backlink Count** — total effective backlinks

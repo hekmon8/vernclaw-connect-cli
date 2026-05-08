@@ -37,7 +37,7 @@ vernclaw-cli invoke seo.keyword-search-volume --keywords "openai" --market us --
 
 ## Output
 
-Markdown to `stdout` containing `Keywords Queried`, `Top Keyword`, `Search Volume`, `Competition`, and `Competition Index`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Keywords Queried`, `Top Keyword`, `Search Volume`, `Competition`, and `Competition Index`.
 
 Execution mode: **synchronous**.
 

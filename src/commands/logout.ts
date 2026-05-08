@@ -1,8 +1,7 @@
-import { createInterface } from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
+import { createInterface } from 'node:readline/promises';
 
-import type { CliConfig } from '../config/env.js';
-import { deleteStoredCredentials } from '../config/env.js';
+import { deleteStoredCredentials, type CliConfig } from '../config/env.js';
 
 export async function runLogoutCommand(
   config: CliConfig,
@@ -17,7 +16,11 @@ export async function runLogoutCommand(
 
     if (answer.trim().toLowerCase() !== 'y') {
       return {
-        markdown: '# Logout Cancelled\n\n- No changes made.\n',
+        data: {
+          command: 'logout',
+          status: 'cancelled',
+          message: 'No changes made.',
+        },
         status: 200,
       };
     }
@@ -27,13 +30,21 @@ export async function runLogoutCommand(
 
   if (!deleted) {
     return {
-      markdown: '# Logout\n\n- No stored credentials found.\n',
+      data: {
+        command: 'logout',
+        status: 'no_credentials',
+        message: 'No stored credentials found.',
+      },
       status: 200,
     };
   }
 
   return {
-    markdown: '# Logged Out\n\n- Stored credentials removed.\n',
+    data: {
+      command: 'logout',
+      status: 'logged_out',
+      message: 'Stored credentials removed.',
+    },
     status: 200,
   };
 }

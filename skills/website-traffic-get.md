@@ -45,7 +45,7 @@ vernclaw-cli invoke seo.website-traffic --domain example.com,competitor.com
 
 ## Output
 
-Markdown table to `stdout` containing:
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the fields below, and the full upstream `raw` payload:
 
 - **Estimated Monthly Visits** — total visitor estimate
 - **Top Country** — country contributing most traffic

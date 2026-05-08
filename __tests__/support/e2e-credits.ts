@@ -23,8 +23,24 @@ type TopUpCreditsResult = {
   raw: unknown;
 };
 
-export function parseAccountEmailFromStatus(markdown: string) {
-  const match = markdown.match(/^- Account Email:\s*(.+)$/m);
+export function parseAccountEmailFromStatus(payload: string) {
+  try {
+    const parsed = JSON.parse(payload) as {
+      data?: {
+        account?: {
+          account_email?: string;
+        };
+      };
+    };
+    const email = parsed.data?.account?.account_email;
+    if (email && email !== 'Unavailable') {
+      return email;
+    }
+  } catch {
+    // Older deployments returned markdown for this endpoint.
+  }
+
+  const match = payload.match(/^- Account Email:\s*(.+)$/m);
   const email = match?.[1]?.trim();
 
   if (!email || email === 'Unavailable') {
@@ -54,7 +70,7 @@ export async function topUpCreditsForE2E({
       },
     }
   );
-  const statusMarkdown = await statusResponse.text();
+  const statusPayload = await statusResponse.text();
 
   if (!statusResponse.ok) {
     const errorCode = statusResponse.headers.get('x-error-code');
@@ -63,9 +79,11 @@ export async function topUpCreditsForE2E({
     );
   }
 
-  const email = parseAccountEmailFromStatus(statusMarkdown);
+  const email = parseAccountEmailFromStatus(statusPayload);
   if (!email) {
-    throw new Error('Unable to parse account email from connector status markdown.');
+    throw new Error(
+      'Unable to parse account email from connector status response.'
+    );
   }
 
   const args = [

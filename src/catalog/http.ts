@@ -1,6 +1,5 @@
-import type { CliConfig } from '../config/env.js';
 import { requestJson } from '../client/http.js';
-
+import type { CliConfig } from '../config/env.js';
 import { BUILTIN_BOOTSTRAP_CATALOG } from './bootstrap.js';
 import type {
   ConnectorRegistryCatalog,
@@ -46,8 +45,13 @@ function resolveInputSchema(
   const properties = Object.fromEntries(
     legacyEntries.map(([key, value]) => {
       const bootstrapProperty = bootstrapSchema.properties?.[key] || {};
-      const rawType = typeof value === 'string' ? value : String(bootstrapProperty.type || 'string');
-      const normalizedType = rawType.endsWith('?') ? rawType.slice(0, -1) : rawType;
+      const rawType =
+        typeof value === 'string'
+          ? value
+          : String(bootstrapProperty.type || 'string');
+      const normalizedType = rawType.endsWith('?')
+        ? rawType.slice(0, -1)
+        : rawType;
 
       return [
         key,
@@ -70,6 +74,10 @@ function resolveInputSchema(
   };
 }
 
+function normalizeCatalogDescription(description: string) {
+  return description.replace(/\s+with a compact Markdown result\.?$/i, '.');
+}
+
 export function normalizeRegistryCatalogResponse(
   catalog: RegistryCatalogResponse | ConnectorRegistryCatalog
 ): ConnectorRegistryCatalog {
@@ -85,16 +93,21 @@ export function normalizeRegistryCatalogResponse(
         id: entry.manifest.id,
         name: entry.manifest.name,
         category: entry.manifest.category || 'general',
-        description: entry.manifest.description || entry.manifest.name,
+        description: normalizeCatalogDescription(
+          entry.manifest.description || entry.manifest.name
+        ),
         version: entry.manifest.version,
         connectorType: entry.manifest.connector_type,
         minCliVersion: entry.manifest.min_cli_version,
         requiredCliFeatures: entry.manifest.required_cli_features,
-        inputSchema: resolveInputSchema(entry.manifest.id, entry.manifest.input_schema),
+        inputSchema: resolveInputSchema(
+          entry.manifest.id,
+          entry.manifest.input_schema
+        ),
         outputContract: {
           mode: entry.manifest.output_contract.mode,
-          resultFormat: entry.manifest.output_contract.result_format,
-          structuredPayload: entry.manifest.output_contract.structured_payload,
+          resultFormat: 'json',
+          structuredPayload: 'optional',
         },
       },
       overlay: {

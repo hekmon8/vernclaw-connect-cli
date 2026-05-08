@@ -51,9 +51,9 @@ vernclaw-cli job get img_abc123xyz
 
 ## 输出
 
-**提交时** — 包含任务 ID 和预估等待时间的 Markdown 确认。
+**提交时** — 输出包含 `status` 和 `data` 的 JSON，包含任务 ID 和预估等待时间。
 
-**完成后**（通过 `job get`）— Markdown 包含：
+**完成后**（通过 `job get`）— 输出包含 `status` 和 `data` 的 JSON，包含标准化摘要、图片 URL 元数据和完整上游 `raw` payload：
 
 - **提示词** — 用于生成的文本
 - **尺寸** — 选择的参数

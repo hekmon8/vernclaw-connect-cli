@@ -6,6 +6,12 @@ export interface MarkdownResponse {
   status: number;
 }
 
+export interface ApiJsonResponse {
+  data: unknown;
+  errorCode?: string;
+  status: number;
+}
+
 interface JsonEnvelope<T> {
   code: number;
   message: string;
@@ -74,6 +80,47 @@ export async function requestMarkdown({
   };
 }
 
+export async function requestApiJson({
+  config,
+  pathname,
+  method = 'GET',
+  body,
+}: {
+  config: CliConfig;
+  pathname: string;
+  method?: 'GET' | 'POST';
+  body?: Record<string, unknown>;
+}): Promise<ApiJsonResponse> {
+  const response = await fetch(buildUrl(config.apiBaseUrl, pathname), {
+    method,
+    headers: {
+      ...(config.apiKey
+        ? {
+            Authorization: `Bearer ${config.apiKey}`,
+          }
+        : {}),
+      ...(body
+        ? {
+            'Content-Type': 'application/json',
+          }
+        : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  const headerErrorCode = response.headers.get('x-error-code');
+  const contentType = response.headers.get('content-type') || '';
+  const data = contentType.includes('application/json')
+    ? await response.json()
+    : { text: await response.text() };
+
+  return {
+    data,
+    errorCode: inferErrorCode(response.status, headerErrorCode),
+    status: response.status,
+  };
+}
+
 export async function requestJson<T>({
   config,
   pathname,
@@ -113,7 +160,9 @@ export async function requestJson<T>({
 
   if (payload && typeof payload === 'object' && 'code' in payload) {
     if (payload.code !== 0) {
-      throw new Error(payload.message || `request failed with status ${response.status}`);
+      throw new Error(
+        payload.message || `request failed with status ${response.status}`
+      );
     }
 
     return {

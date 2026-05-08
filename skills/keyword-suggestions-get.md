@@ -37,6 +37,6 @@ vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --la
 
 ## Output
 
-Markdown to `stdout` containing `Seed Keywords`, `Suggestion Count`, `Top Suggestion`, and `Top Suggestion Volume`.
+JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the named fields, and the full upstream `raw` payload. It summarizes `Seed Keywords`, `Suggestion Count`, `Top Suggestion`, and `Top Suggestion Volume`.
 
 Execution mode: **synchronous**.

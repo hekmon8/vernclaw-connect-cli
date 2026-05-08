@@ -41,8 +41,8 @@ function bootstrapConnector({
       inputSchema,
       outputContract: {
         mode: 'sync_result' as const,
-        resultFormat: 'markdown' as const,
-        structuredPayload: 'none' as const,
+        resultFormat: 'json' as const,
+        structuredPayload: 'optional' as const,
       },
     },
     overlay: {
@@ -82,7 +82,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.website-traffic',
       name: 'Website Traffic Get',
       category: 'seo',
-      description: 'Estimate website traffic, top markets, and primary acquisition channels.',
+      description:
+        'Estimate website traffic, top markets, and primary acquisition channels.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -102,7 +103,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.backlinks',
       name: 'Backlinks Get',
       category: 'seo',
-      description: 'Fetch live backlink rows for a target domain from DataForSEO Backlinks API.',
+      description: 'Fetch live backlink rows for a target domain.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -122,7 +123,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.backlinks-summary',
       name: 'Backlinks Summary Get',
       category: 'seo',
-      description: 'Fetch aggregate backlink summary metrics for a target domain.',
+      description:
+        'Fetch aggregate backlink summary metrics for a target domain.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -206,7 +208,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.keyword-search-volume',
       name: 'Keyword Search Volume Get',
       category: 'seo',
-      description: 'Fetch search volume and competition signals for keyword seeds.',
+      description:
+        'Fetch search volume and competition signals for keyword seeds.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -230,7 +233,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.keyword-suggestions',
       name: 'Keyword Suggestions Get',
       category: 'seo',
-      description: 'Generate keyword suggestions from one or more seed keywords.',
+      description:
+        'Generate keyword suggestions from one or more seed keywords.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -318,7 +322,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.domain-authority',
       name: 'Domain Rating Get',
       category: 'seo',
-      description: 'Inspect DR, referring domains, and backlinks through the RapidAPI SEO endpoint.',
+      description: 'Inspect DR, referring domains, and backlink counts.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -334,7 +338,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'read.x.post',
       name: 'X Post Read',
       category: 'social-readers',
-      description: 'Read and summarize a public X/Twitter post with a compact Markdown result.',
+      description: 'Read and summarize a public X/Twitter post.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -350,7 +354,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'read.x.replies',
       name: 'X Post Replies Read',
       category: 'social-readers',
-      description: 'Read public replies for a referenced X post through twitterapi.io.',
+      description:
+        'Read public replies for a referenced X post through twitterapi.io.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -366,7 +371,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'read.x.article',
       name: 'X Article Read',
       category: 'social-readers',
-      description: 'Read public X article pages with normalized title, author, and excerpt output.',
+      description:
+        'Read public X article pages with normalized title, author, and excerpt output.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -382,7 +388,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'search.x',
       name: 'X Search',
       category: 'social-readers',
-      description: 'Run advanced X search queries and normalize the top matching public posts.',
+      description:
+        'Run advanced X search queries and normalize the top matching public posts.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -402,7 +409,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'search.web',
       name: 'Web Search',
       category: 'search',
-      description: 'Search the open web with Exa, then fall back to Google Custom Search and Firecrawl search.',
+      description: 'Search the open web and return ranked result summaries.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -422,7 +429,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'extract.url',
       name: 'URL Extract',
       category: 'extraction',
-      description: 'Extract readable main content from XiaoHongShu and other web pages through Firecrawl scrape.',
+      description:
+        'Extract readable main content from XiaoHongShu and other web pages.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {

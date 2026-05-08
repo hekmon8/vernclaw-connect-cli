@@ -41,7 +41,7 @@ vernclaw-cli invoke seo.domain-authority --domain example.com,competitor.com,riv
 
 ## 输出
 
-Markdown 表格输出到 `stdout`，包含：
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及：
 
 - **权威度评分** — 0–100 综合评分
 - **反向链接数** — 有效反向链接总数

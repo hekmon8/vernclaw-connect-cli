@@ -1,9 +1,12 @@
+import { requestApiJson } from '../client/http.js';
 import type { CliConfig } from '../config/env.js';
-import { requestMarkdown } from '../client/http.js';
+import { buildAccountJsonResponse } from './account.js';
 
-export function runStatusCommand(config: CliConfig) {
-  return requestMarkdown({
+export async function runStatusCommand(config: CliConfig) {
+  const result = await requestApiJson({
     config,
     pathname: '/api/connectors/status',
   });
+
+  return buildAccountJsonResponse('status', result);
 }

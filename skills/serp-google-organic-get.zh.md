@@ -40,6 +40,6 @@ vernclaw-cli invoke seo.serp-google-organic --keyword "openai" --market us --lan
 
 ## 输出
 
-输出到 `stdout` 的 Markdown，包含 `Keyword`、`Organic Results`、`Top Result`、`Top Rank` 和 `Top Result URL`。
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及 `Keyword`、`Organic Results`、`Top Result`、`Top Rank` 和 `Top Result URL`。
 
 执行模式：**同步**。

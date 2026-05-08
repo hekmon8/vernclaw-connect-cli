@@ -9,7 +9,7 @@ description: 通过 Vernclaw CLI 读取 X/Twitter 公开帖子内容、提取作
 
 ## 适用场景
 
-- 以 Markdown 格式读取和归档 X/Twitter 公开帖子
+- 使用 JSON-first CLI 输出读取和归档 X/Twitter 公开帖子
 - 监测品牌提及和竞品社交媒体动态
 - 收集行业意见领袖的内容灵感
 - 提取推文串内容用于二次创作文章或报告
@@ -42,7 +42,7 @@ vernclaw-cli invoke read.x.post \
 
 ## 输出
 
-Markdown 输出到 `stdout`，包含：
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及：
 
 - **作者** — 用户名和显示名称
 - **时间戳** — 发布日期和时间（UTC）

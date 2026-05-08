@@ -1,9 +1,12 @@
+import { requestApiJson } from '../client/http.js';
 import type { CliConfig } from '../config/env.js';
-import { requestMarkdown } from '../client/http.js';
+import { buildAccountJsonResponse } from './account.js';
 
-export function runBalanceCommand(config: CliConfig) {
-  return requestMarkdown({
+export async function runBalanceCommand(config: CliConfig) {
+  const result = await requestApiJson({
     config,
     pathname: '/api/connectors/balance',
   });
+
+  return buildAccountJsonResponse('balance', result);
 }

@@ -37,6 +37,6 @@ vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language
 
 ## 输出
 
-输出到 `stdout` 的 Markdown，包含 `Target`、`Fetched Keywords`、`Top Keyword` 和 `Top Keyword Volume`。
+输出到 `stdout` 的 JSON，包含 `status` 和 `data`。`data` 对象包含标准化摘要、完整上游 `raw` payload，以及 `Target`、`Fetched Keywords`、`Top Keyword` 和 `Top Keyword Volume`。
 
 执行模式：**同步**。

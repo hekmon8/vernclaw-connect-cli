@@ -28,15 +28,15 @@ vernclaw-cli invoke seo.google-trends --keywords "openai,chatgpt" --market us --
 
 ## Parameters
 
-| Flag       | Required | Description                                 |
-| ---------- | -------- | ------------------------------------------- |
-| `--keywords` | Yes    | Seed keyword or comma-separated keyword list |
-| `--market`   | No     | Market code such as `us`                    |
-| `--language` | No     | Language name such as `english`             |
+| Flag         | Required | Description                                  |
+| ------------ | -------- | -------------------------------------------- |
+| `--keywords` | Yes      | Seed keyword or comma-separated keyword list |
+| `--market`   | No       | Market code such as `us`                     |
+| `--language` | No       | Language name such as `english`              |
 
 ## Output
 
-Markdown to `stdout` containing `Keywords Queried`, `Trend Points`, `Top Trend Value`, and `Latest Date`.
+JSON to `stdout` with `status` and `data`. The `data` object includes normalized Google Trends fields such as `Keywords Queried`, `Result Item Types`, `Trend Points`, `Top Trend Value`, `Average Trend Value`, `Date Range`, `Latest Date`, `Latest Values`, row counts for regions/topics/queries, and the full upstream `raw` payload.
 
 Execution mode: **synchronous**.
 

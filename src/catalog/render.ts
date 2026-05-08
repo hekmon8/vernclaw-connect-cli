@@ -1,5 +1,5 @@
-import type { EffectiveConnectorView } from './types.js';
 import { normalizeInputSchema } from './input-schema.js';
+import type { EffectiveConnectorView } from './types.js';
 
 export type ViewerState = 'authenticated' | 'unauthenticated';
 type AvailabilityStatus =
@@ -45,8 +45,10 @@ function buildExampleValue(key: string, schema: Record<string, unknown>) {
   return 'example';
 }
 
-function buildExampleInvokeCommand(entry: EffectiveConnectorView) {
-  const { properties, required } = normalizeInputSchema(entry.manifest.inputSchema);
+export function buildExampleInvokeCommand(entry: EffectiveConnectorView) {
+  const { properties, required } = normalizeInputSchema(
+    entry.manifest.inputSchema
+  );
   const args = required
     .map((key) => {
       const schema = properties[key] || {};
@@ -59,7 +61,7 @@ function buildExampleInvokeCommand(entry: EffectiveConnectorView) {
   return `vernclaw-cli invoke ${entry.id}${args ? ` ${args}` : ''}`;
 }
 
-function resolveAvailability(
+export function resolveAvailability(
   entry: EffectiveConnectorView,
   viewerState: ViewerState = 'authenticated'
 ): AvailabilityStatus {
@@ -100,14 +102,14 @@ function resolveAvailability(
   return 'unavailable';
 }
 
-function resolveCanRunNow(
+export function resolveCanRunNow(
   entry: EffectiveConnectorView,
   viewerState: ViewerState = 'authenticated'
 ) {
   return resolveAvailability(entry, viewerState) === 'ready' ? 'Yes' : 'No';
 }
 
-function resolveNextStep(
+export function resolveNextStep(
   entry: EffectiveConnectorView,
   viewerState: ViewerState = 'authenticated'
 ) {
@@ -154,9 +156,7 @@ export function renderCatalogTable(
     ['STATUS', 18],
   ];
 
-  const header = columns
-    .map(([label, width]) => pad(label, width))
-    .join(' ');
+  const header = columns.map(([label, width]) => pad(label, width)).join(' ');
   const body = entries
     .map((entry) =>
       [
@@ -184,9 +184,7 @@ function renderCatalogTableDebug(entries: EffectiveConnectorView[]) {
     ['VERSION', 8],
   ] as const;
 
-  const header = columns
-    .map(([label, width]) => pad(label, width))
-    .join(' ');
+  const header = columns.map(([label, width]) => pad(label, width)).join(' ');
   const body = entries
     .map((entry) =>
       [
@@ -211,12 +209,16 @@ export function renderCatalogDescribe(
   options: { viewerState?: ViewerState } = {}
 ) {
   const viewerState = options.viewerState || 'authenticated';
-  const { properties, required } = normalizeInputSchema(entry.manifest.inputSchema);
+  const { properties, required } = normalizeInputSchema(
+    entry.manifest.inputSchema
+  );
   const inputFields = Object.entries(properties);
   const cliFlags = inputFields.map(([key, value]) => {
     const schema = value as Record<string, unknown>;
     const description =
-      typeof schema.description === 'string' ? schema.description : 'No description';
+      typeof schema.description === 'string'
+        ? schema.description
+        : 'No description';
     const type = typeof schema.type === 'string' ? schema.type : 'string';
     const flagLabel = required.includes(key)
       ? `${toCliFlagName(key)} (required)`

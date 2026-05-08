@@ -13,7 +13,7 @@ import { resolveCliConfig } from './config/env.js';
 import { buildHelpText } from './help.js';
 import {
   formatJsonForTerminal,
-  formatMarkdownForTerminal,
+  formatResponseForTerminal,
   mapErrorCodeToExitCode,
   parseArgv,
   shouldEmitMachineErrorCode,
@@ -50,7 +50,8 @@ async function main() {
 
   let response:
     | {
-        markdown: string;
+        markdown?: string;
+        data?: unknown;
         status: number;
         errorCode?: string;
       }
@@ -91,7 +92,7 @@ async function main() {
 
   process.stdout.write(
     pretty
-      ? formatMarkdownForTerminal(response.markdown, { command, subcommand })
+      ? formatResponseForTerminal(response, { command, subcommand })
       : formatJsonForTerminal(response)
   );
 

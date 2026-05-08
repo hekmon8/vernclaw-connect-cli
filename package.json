@@ -1,7 +1,7 @@
 {
   "name": "vernclaw-connect-cli",
   "version": "0.1.4",
-  "description": "Official Vernclaw connector CLI with markdown-first output.",
+  "description": "Official Vernclaw connector CLI with JSON-first output.",
   "keywords": [
     "vernclaw",
     "connector",
@@ -40,7 +40,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run",
+    "test": "vitest run --exclude \"__tests__/support/**\"",
     "prepack": "npm run build"
   },
   "devDependencies": {

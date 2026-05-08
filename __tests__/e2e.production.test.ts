@@ -103,6 +103,7 @@ function invokeFlagsFor(connectorId: string) {
     'seo.website-traffic': ['--domain', 'openai.com', '--market', 'us'],
     'seo.domain-authority': ['--domain', 'openai.com'],
     'seo.backlinks': ['--target', 'openai.com', '--limit', '3'],
+    'seo.google-trends': ['--keywords', 'openai', '--market', 'us', '--language', 'english'],
     'read.x.post': ['--url', 'https://x.com/openai/status/1882525602612259214'],
     'read.x.replies': ['--url', 'https://x.com/openai/status/1882525602612259214'],
     'read.x.article': ['--url', 'https://x.com/OpenAI/article/1893029015563155908'],

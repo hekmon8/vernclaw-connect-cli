@@ -7,8 +7,27 @@ type TerminalFormatOptions = {
   subcommand?: string;
 };
 
+export type CliCommandResponse = {
+  markdown: string;
+  status: number;
+  errorCode?: string;
+};
+
 export function ensureTrailingNewline(value: string) {
   return value.endsWith('\n') ? value : `${value}\n`;
+}
+
+export function formatJsonForTerminal(response: CliCommandResponse) {
+  const payload: Record<string, unknown> = {
+    status: response.status,
+    markdown: response.markdown,
+  };
+
+  if (response.errorCode) {
+    payload.errorCode = response.errorCode;
+  }
+
+  return ensureTrailingNewline(JSON.stringify(payload));
 }
 
 function extractBulletLabel(line: string) {
@@ -93,6 +112,12 @@ function compactMarkdownLines(lines: string[]) {
   }
 
   return ensureTrailingNewline(compacted.join('\n'));
+}
+
+function isProviderSourceLine(line: string) {
+  return /^-\s*(dataforseo|rapidapi|aiapi|firecrawl|exa|twitterapi|google custom search|nokia)\b/i.test(
+    line
+  );
 }
 
 function shouldSanitizeInvokeOutput(options: TerminalFormatOptions) {
@@ -224,7 +249,14 @@ export function formatMarkdownForTerminal(
       continue;
     }
 
-    if (section === 'notes' || section === 'sources') {
+    if (section === 'sources') {
+      continue;
+    }
+
+    if (section === 'notes') {
+      if ((label && resultLabels.has(label)) || isProviderSourceLine(trimmed)) {
+        continue;
+      }
       noteLines.push(trimmed);
       continue;
     }

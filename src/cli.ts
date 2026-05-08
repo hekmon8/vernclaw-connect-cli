@@ -12,6 +12,7 @@ import { runStatusCommand } from './commands/status.js';
 import { resolveCliConfig } from './config/env.js';
 import { buildHelpText } from './help.js';
 import {
+  formatJsonForTerminal,
   formatMarkdownForTerminal,
   mapErrorCodeToExitCode,
   parseArgv,
@@ -27,11 +28,14 @@ async function main() {
   const { positionals, flags } = parseArgv(process.argv.slice(2));
   const command = positionals[0];
   const subcommand = positionals[1];
+  const pretty = flags.pretty === true;
 
   if (!command || flags['help'] === true) {
     printHelp();
     return 0;
   }
+
+  delete flags.pretty;
 
   const config = resolveCliConfig({
     apiKey:
@@ -86,7 +90,9 @@ async function main() {
   }
 
   process.stdout.write(
-    formatMarkdownForTerminal(response.markdown, { command, subcommand })
+    pretty
+      ? formatMarkdownForTerminal(response.markdown, { command, subcommand })
+      : formatJsonForTerminal(response)
   );
 
   if (shouldEmitMachineErrorCode(response.errorCode, process.stderr.isTTY)) {

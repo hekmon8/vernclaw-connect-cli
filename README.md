@@ -1,6 +1,6 @@
 # vernclaw-connect-cli
 
-Official command-line interface for [Vernclaw Connectors](https://vernclaw.com/connectors) — query SEO metrics, read social media content, and generate images from your terminal with Markdown-first output.
+Official command-line interface for [Vernclaw Connectors](https://vernclaw.com/connectors) — query SEO metrics, read social media content, and generate images from your terminal with JSON-first output.
 
 [![npm](https://img.shields.io/npm/v/vernclaw-connect-cli)](https://www.npmjs.com/package/vernclaw-connect-cli)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
@@ -51,7 +51,7 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 | `vernclaw-cli logout`                       | Remove stored credentials                              |
 | `vernclaw-cli list`                         | List available connectors                              |
 | `vernclaw-cli describe <connectorId>`       | Show connector details and parameters                  |
-| `vernclaw-cli invoke <connectorId> [flags]` | Run a connector and print Markdown output              |
+| `vernclaw-cli invoke <connectorId> [flags]` | Run a connector and print JSON output                  |
 | `vernclaw-cli job get <jobId>`              | Check status of an async job                           |
 | `vernclaw-cli status`                       | Display current login, subscription, and credit status |
 
@@ -120,7 +120,7 @@ vernclaw-cli status
 
 ## Output Contract
 
-All connector output is **Markdown-first**: structured Markdown is printed to `stdout`. Error metadata is written to `stderr` as `ERROR_CODE=<code>`.
+All connector output is **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable Markdown instead. Error metadata is written to `stderr` as `ERROR_CODE=<code>`.
 
 ### Exit Codes
 

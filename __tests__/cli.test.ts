@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   ensureTrailingNewline,
+  formatJsonForTerminal,
   formatMarkdownForTerminal,
   mapErrorCodeToExitCode,
   parseArgv,
@@ -62,6 +63,27 @@ describe('vernclaw-cli helpers', () => {
     expect(ensureTrailingNewline('# Heading\n')).toBe('# Heading\n');
   });
 
+  it('formats command responses as compact JSON by default', () => {
+    expect(
+      formatJsonForTerminal({
+        markdown: '# Account Balance\n',
+        status: 200,
+      })
+    ).toBe('{"status":200,"markdown":"# Account Balance\\n"}\n');
+  });
+
+  it('includes error codes in JSON output when present', () => {
+    expect(
+      formatJsonForTerminal({
+        markdown: '# Failed\n',
+        status: 400,
+        errorCode: 'INVALID_PARAMS',
+      })
+    ).toBe(
+      '{"status":400,"markdown":"# Failed\\n","errorCode":"INVALID_PARAMS"}\n'
+    );
+  });
+
   it('suppresses machine-readable error codes on interactive terminals', () => {
     expect(shouldEmitMachineErrorCode(undefined, false)).toBe(false);
     expect(shouldEmitMachineErrorCode('PROVIDER_ERROR', true)).toBe(false);
@@ -88,6 +110,11 @@ describe('vernclaw-cli helpers', () => {
         '## Notes',
         '',
         '- Rendered through AIAPI Center.',
+        '- Prompt: dog swiming in the river',
+        '',
+        '## Sources',
+        '',
+        '- DataForSEO',
         '',
       ].join('\n'),
       { command: 'invoke' }
@@ -106,6 +133,7 @@ describe('vernclaw-cli helpers', () => {
     );
     expect(output).not.toContain('rendered successfully');
     expect(output).not.toContain('## Notes');
+    expect(output).not.toContain('DataForSEO');
     expect(output).not.toContain('## Summary');
     expect(output).not.toContain('## Result');
   });

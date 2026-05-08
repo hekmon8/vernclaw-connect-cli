@@ -30,13 +30,15 @@ vi.mock('../src/config/env.js', async () => {
 
 describe('cli dispatch', () => {
   const originalArgv = process.argv.slice();
-  const stdoutWrite = vi.spyOn(process.stdout, 'write');
-  const stderrWrite = vi.spyOn(process.stderr, 'write');
+  let stdoutWrite: ReturnType<typeof vi.spyOn>;
+  let stderrWrite: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
     process.argv = ['node', 'vernclaw-cli', 'balance'];
+    stdoutWrite = vi.spyOn(process.stdout, 'write');
+    stderrWrite = vi.spyOn(process.stderr, 'write');
     mockResolveCliConfig.mockReturnValue({
       apiBaseUrl: 'https://api.example.com',
       apiKey: 'key_123',
@@ -67,5 +69,23 @@ describe('cli dispatch', () => {
 
     expect(mockRunBalanceCommand).toHaveBeenCalledTimes(1);
     expect(mockRunStatusCommand).not.toHaveBeenCalled();
+  });
+
+  it('prints JSON by default', async () => {
+    await import('../src/cli.js');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      '{"status":200,"markdown":"# Account Balance\\n"}\n'
+    );
+  });
+
+  it('prints markdown when --pretty is set', async () => {
+    process.argv = ['node', 'vernclaw-cli', 'balance', '--pretty'];
+
+    await import('../src/cli.js');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(stdoutWrite).toHaveBeenCalledWith('# Account Balance\n');
   });
 });

@@ -29,6 +29,7 @@ async function main() {
   const command = positionals[0];
   const subcommand = positionals[1];
   const pretty = flags.pretty === true;
+  const json = flags.json === true;
 
   if (!command || flags['help'] === true) {
     printHelp();
@@ -36,6 +37,7 @@ async function main() {
   }
 
   delete flags.pretty;
+  delete flags.json;
 
   const config = resolveCliConfig({
     apiKey:
@@ -91,7 +93,7 @@ async function main() {
   }
 
   process.stdout.write(
-    pretty
+    pretty || (command === 'list' && !json)
       ? formatResponseForTerminal(response, { command, subcommand })
       : formatJsonForTerminal(response)
   );

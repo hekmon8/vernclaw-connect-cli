@@ -1,15 +1,24 @@
 import process from 'node:process';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { mockRunBalanceCommand, mockRunStatusCommand, mockResolveCliConfig } =
-  vi.hoisted(() => ({
-    mockRunBalanceCommand: vi.fn(),
-    mockRunStatusCommand: vi.fn(),
-    mockResolveCliConfig: vi.fn(),
-  }));
+const {
+  mockRunBalanceCommand,
+  mockRunListCommand,
+  mockRunStatusCommand,
+  mockResolveCliConfig,
+} = vi.hoisted(() => ({
+  mockRunBalanceCommand: vi.fn(),
+  mockRunListCommand: vi.fn(),
+  mockRunStatusCommand: vi.fn(),
+  mockResolveCliConfig: vi.fn(),
+}));
 
 vi.mock('../src/commands/balance.js', () => ({
   runBalanceCommand: mockRunBalanceCommand,
+}));
+
+vi.mock('../src/commands/list.js', () => ({
+  runListCommand: mockRunListCommand,
 }));
 
 vi.mock('../src/commands/status.js', () => ({
@@ -47,6 +56,24 @@ describe('cli dispatch', () => {
         account: {
           credits_remaining: 245,
         },
+      },
+      status: 200,
+    });
+    mockRunListCommand.mockResolvedValue({
+      data: {
+        command: 'list',
+        count: 1,
+        connectors: [
+          {
+            id: 'seo.website-traffic',
+            category: 'seo',
+            description: 'Estimate website traffic.',
+            status: 'ready',
+          },
+        ],
+        hints: [
+          'Run `vernclaw-cli describe <connector>` to inspect flags and example commands.',
+        ],
       },
       status: 200,
     });
@@ -94,6 +121,32 @@ describe('cli dispatch', () => {
 
     expect(stdoutWrite).toHaveBeenCalledWith(
       '# Account Balance\n\n- Credits Remaining: 245\n'
+    );
+  });
+
+  it('prints a connector table for list by default', async () => {
+    process.argv = ['node', 'vernclaw-cli', 'list'];
+
+    await import('../src/cli.js');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(mockRunListCommand).toHaveBeenCalledTimes(1);
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.stringContaining('CONNECTOR')
+    );
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.stringContaining('seo.website-traffic')
+    );
+  });
+
+  it('prints JSON for list when --json is set', async () => {
+    process.argv = ['node', 'vernclaw-cli', 'list', '--json'];
+
+    await import('../src/cli.js');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      '{"status":200,"data":{"command":"list","count":1,"connectors":[{"id":"seo.website-traffic","category":"seo","description":"Estimate website traffic.","status":"ready"}],"hints":["Run `vernclaw-cli describe <connector>` to inspect flags and example commands."]}}\n'
     );
   });
 });

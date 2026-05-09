@@ -1,6 +1,6 @@
 # vernclaw-connect-cli
 
-Official command-line interface for [Vernclaw Connectors](https://vernclaw.com/connectors) — query SEO metrics, read social media content, and generate images from your terminal with JSON-first output.
+Official command-line interface for [Vernclaw Connectors](https://vernclaw.com/connectors) — query SEO metrics, read social media content, and generate images from your terminal with JSON-first connector output.
 
 [![npm](https://img.shields.io/npm/v/vernclaw-connect-cli)](https://www.npmjs.com/package/vernclaw-connect-cli)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
@@ -55,6 +55,8 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 | `vernclaw-cli job get <jobId>`              | Check status of an async job                           |
 | `vernclaw-cli status`                       | Display current login, subscription, and credit status |
 
+`list` prints a human-readable connector table by default. Use `vernclaw-cli list --json` when an agent or script needs the structured catalog payload.
+
 ## Available Connectors
 
 | Connector ID                | Category | Mode  | Skill                                                                                          |
@@ -64,8 +66,8 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 | `seo.backlinks`             | SEO      | sync  | [EN](./skills/backlinks-get.md) / [中文](./skills/backlinks-get.zh.md)                         |
 | `seo.backlinks-summary`     | SEO      | sync  | [EN](./skills/backlinks-summary-get.md) / [中文](./skills/backlinks-summary-get.zh.md)         |
 | `seo.serp-google-organic`   | SEO      | sync  | [EN](./skills/serp-google-organic-get.md) / [中文](./skills/serp-google-organic-get.zh.md)     |
-| `seo.google-trends`         | SEO      | sync  | [EN](./skills/google-trends-get.md) / [中文](./skills/google-trends-get.zh.md)                   |
-| `seo.domain-rank-overview`  | SEO      | sync  | [EN](./skills/domain-rank-overview-get.md) / [中文](./skills/domain-rank-overview-get.zh.md) |
+| `seo.google-trends`         | SEO      | sync  | [EN](./skills/google-trends-get.md) / [中文](./skills/google-trends-get.zh.md)                 |
+| `seo.domain-rank-overview`  | SEO      | sync  | [EN](./skills/domain-rank-overview-get.md) / [中文](./skills/domain-rank-overview-get.zh.md)   |
 | `seo.keyword-search-volume` | SEO      | sync  | [EN](./skills/keyword-search-volume-get.md) / [中文](./skills/keyword-search-volume-get.zh.md) |
 | `seo.keyword-suggestions`   | SEO      | sync  | [EN](./skills/keyword-suggestions-get.md) / [中文](./skills/keyword-suggestions-get.zh.md)     |
 | `seo.site-keywords`         | SEO      | sync  | [EN](./skills/site-keywords-get.md) / [中文](./skills/site-keywords-get.zh.md)                 |

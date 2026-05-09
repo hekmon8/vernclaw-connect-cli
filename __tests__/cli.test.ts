@@ -193,6 +193,36 @@ describe('vernclaw-cli helpers', () => {
     expect(output).toContain('- Credits Remaining: 245');
   });
 
+  it('pretty-prints connector lists as terminal tables', () => {
+    const output = formatResponseForTerminal({
+      status: 200,
+      data: {
+        command: 'list',
+        count: 1,
+        connectors: [
+          {
+            id: 'seo.website-traffic',
+            category: 'seo',
+            description:
+              'Estimate website traffic, top markets, and audience signals.',
+            status: 'ready',
+          },
+        ],
+        hints: [
+          'Run `vernclaw-cli describe <connector>` to inspect flags and example commands.',
+        ],
+      },
+    });
+
+    expect(output).toContain('CONNECTOR');
+    expect(output).toContain('seo.website-traffic');
+    expect(output).toContain('ready');
+    expect(output).toContain(
+      'Run `vernclaw-cli describe <connector>` to inspect flags and example commands.'
+    );
+    expect(output).not.toContain('"connectors"');
+  });
+
   it('keeps non-invoke markdown unchanged apart from trailing newline normalization', () => {
     const input = '# SEO Website Traffic\n\n## Summary\n\nTraffic lookup';
 

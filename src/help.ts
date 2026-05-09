@@ -16,6 +16,7 @@ export function buildHelpText(cliVersion: string) {
     'Options:',
     '  --help                   Show this help message',
     '  --pretty                 Print human-readable terminal output instead of JSON',
+    '  --json                   Print JSON output for commands with human-readable defaults',
     '  --api-key <key>          Use a specific API key',
     '  --api-base-url <url>     Override the API base URL',
     '',

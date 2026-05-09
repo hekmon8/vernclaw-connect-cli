@@ -71,6 +71,64 @@ function formatGenericObject(record: Record<string, unknown>) {
     .filter((line): line is string => Boolean(line));
 }
 
+function truncateColumn(value: unknown, width: number) {
+  const formatted = formatScalar(value) || '';
+  if (formatted.length <= width) {
+    return formatted;
+  }
+
+  if (width <= 3) {
+    return formatted.slice(0, width);
+  }
+
+  return `${formatted.slice(0, width - 3)}...`;
+}
+
+function padColumn(value: unknown, width: number) {
+  return truncateColumn(value, width).padEnd(width, ' ');
+}
+
+function formatConnectorListTable(record: Record<string, unknown>) {
+  const connectors = Array.isArray(record.connectors) ? record.connectors : [];
+  const widths = {
+    connector: 28,
+    category: 18,
+    description: 36,
+    status: 18,
+  };
+
+  const lines = [
+    [
+      padColumn('CONNECTOR', widths.connector),
+      padColumn('CATEGORY', widths.category),
+      padColumn('DESCRIPTION', widths.description),
+      padColumn('STATUS', widths.status),
+    ].join(' '),
+  ];
+
+  for (const item of connectors) {
+    if (!item || typeof item !== 'object') {
+      continue;
+    }
+
+    const connector = item as Record<string, unknown>;
+    lines.push(
+      [
+        padColumn(connector.id, widths.connector),
+        padColumn(connector.category, widths.category),
+        padColumn(connector.description, widths.description),
+        padColumn(connector.status, widths.status),
+      ].join(' ')
+    );
+  }
+
+  if (Array.isArray(record.hints) && record.hints.length > 0) {
+    lines.push('', ...record.hints.map((hint) => String(hint)));
+  }
+
+  return ensureTrailingNewline(lines.join('\n'));
+}
+
 function formatStructuredDataForTerminal(data: unknown) {
   if (!data || typeof data !== 'object') {
     return ensureTrailingNewline(JSON.stringify(data, null, 2));
@@ -79,40 +137,7 @@ function formatStructuredDataForTerminal(data: unknown) {
   const record = data as Record<string, unknown>;
 
   if (record.command === 'list' && Array.isArray(record.connectors)) {
-    const lines = [
-      '# Connectors',
-      '',
-      `- Count: ${formatScalar(record.count) || record.connectors.length}`,
-      '',
-      '## Result',
-      '',
-      ...record.connectors
-        .map((item) => {
-          if (!item || typeof item !== 'object') {
-            return undefined;
-          }
-          const connector = item as Record<string, unknown>;
-          return [
-            `- ${formatScalar(connector.id) || 'unknown'}`,
-            `  Name: ${formatScalar(connector.name) || 'Unknown'}`,
-            `  Category: ${formatScalar(connector.category) || 'unknown'}`,
-            `  Status: ${formatScalar(connector.status) || 'unknown'}`,
-            `  Description: ${formatScalar(connector.description) || ''}`,
-          ].join('\n');
-        })
-        .filter((line): line is string => Boolean(line)),
-    ];
-
-    if (Array.isArray(record.hints) && record.hints.length > 0) {
-      lines.push(
-        '',
-        '## Hints',
-        '',
-        ...record.hints.map((hint) => `- ${String(hint)}`)
-      );
-    }
-
-    return ensureTrailingNewline(lines.join('\n'));
+    return formatConnectorListTable(record);
   }
 
   if (record.command === 'status' || record.command === 'balance') {

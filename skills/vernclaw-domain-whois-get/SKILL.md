@@ -1,18 +1,18 @@
 ---
-name: site-keywords-get
-description: Use when reviewing a domain's keyword footprint, comparing competitors, or finding content gaps through the Vernclaw CLI.
+name: vernclaw-domain-whois-get
+description: Use when checking public domain registration timestamps, registrar details, or due-diligence signals through the Vernclaw CLI.
 ---
 
-# Site Keywords — CLI Skill
+# Whois Lookup — CLI Skill
 
-Inspect a domain's keyword coverage through `vernclaw-cli`.
+Inspect a domain's public registration snapshot through `vernclaw-cli`.
 
 ## When to Use
 
-- Map a competitor’s keyword footprint
-- Find content gaps for your site
-- Compare multiple domains consistently
-- Summarize domain coverage for AI analysis
+- Check registrar and expiry before acquisition
+- Review public timestamps for due diligence
+- Monitor domain registration hygiene
+- Feed Whois snapshots into AI research notes
 
 ## Prerequisites
 
@@ -39,16 +39,14 @@ vernclaw-cli login --api-key YOUR_KEY
 ## Invocation
 
 ```bash
-vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language english
+vernclaw-cli invoke seo.domain-whois --target openai.com
 ```
 
 ## Parameters
 
-| Flag         | Required | Description                     |
-| ------------ | -------- | ------------------------------- |
-| `--target`   | Yes      | Root domain to inspect          |
-| `--market`   | No       | Market code such as `us`        |
-| `--language` | No       | Language name such as `english` |
+| Flag       | Required | Description            |
+| ---------- | -------- | ---------------------- |
+| `--target` | Yes      | Root domain to inspect |
 
 ## Output
 
@@ -59,7 +57,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as `target`, `fetched_keywords`, `top_keyword`, and `top_keyword_volume`.
+- `data` contains a normalized summary with fields such as `domain`, `registrar`, `created`, `expires`, and `updated`.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
@@ -72,16 +70,16 @@ Execution mode: **synchronous**.
 # 1. Check authentication
 vernclaw-cli status
 
-# 2. Fetch site keywords
-vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language english
+# 2. Fetch WHOIS data
+vernclaw-cli invoke seo.domain-whois --target openai.com
 
-# 3. Parse the JSON response — identify content gaps and keyword coverage
+# 3. Parse the JSON response — extract registration details
 ```
 
 ## Related Resources
 
 - **Website**: <https://vernclaw.com>
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/site-keywords-get>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/domain-whois-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
 
 ## Issues

@@ -1,17 +1,17 @@
 ---
-name: backlinks-summary-get
-description: Use when auditing a domain with aggregated backlink metrics instead of row-level backlink lists.
+name: vernclaw-google-trends-get
+description: Use when assessing keyword momentum and trend direction through Vernclaw CLI.
 ---
 
-# Backlinks Summary — CLI Skill
+# Google Trends Get — CLI Skill
 
-Fetch backlink summary metrics for a target domain through `vernclaw-cli`.
+Fetch trend exploration data for one or more keywords through `vernclaw-cli`.
 
 ## When to Use
 
-- Get a quick view of backlink scale before deeper audits
-- Compare domains using total backlinks and referring domain counts
-- Validate backlink growth direction in weekly SEO reviews
+- Validate whether demand for a topic is rising or fading
+- Compare keyword momentum before building campaign calendars
+- Feed trend signals into SEO content and AI planning workflows
 
 ## Prerequisites
 
@@ -38,17 +38,16 @@ vernclaw-cli login --api-key YOUR_KEY
 ## Invocation
 
 ```bash
-vernclaw-cli invoke seo.backlinks-summary --target openai.com
-vernclaw-cli invoke seo.backlinks-summary --target openai.com --limit 20 --offset 0
+vernclaw-cli invoke seo.google-trends --keywords "openai,chatgpt" --market us --language english
 ```
 
 ## Parameters
 
-| Flag       | Required | Description                               |
-| ---------- | -------- | ----------------------------------------- |
-| `--target` | Yes      | Root domain to inspect                    |
-| `--limit`  | No       | Optional number of rows sampled in inputs |
-| `--offset` | No       | Optional pagination offset                |
+| Flag         | Required | Description                                  |
+| ------------ | -------- | -------------------------------------------- |
+| `--keywords` | Yes      | Seed keyword or comma-separated keyword list |
+| `--market`   | No       | Market code such as `us`                     |
+| `--language` | No       | Language name such as `english`              |
 
 ## Output
 
@@ -59,7 +58,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as `target`, `total_backlinks`, `referring_domains`, and `top_referring_domain`.
+- `data` contains a normalized summary with fields such as `keywords_queried`, `trend_points`, `top_trend_value`, `average_trend_value`, `date_range`, and row counts for regions/topics/queries.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
@@ -72,10 +71,10 @@ Execution mode: **synchronous**.
 # 1. Check authentication
 vernclaw-cli status
 
-# 2. Fetch backlink summary
-vernclaw-cli invoke seo.backlinks-summary --target openai.com
+# 2. Fetch trend data
+vernclaw-cli invoke seo.google-trends --keywords "openai,chatgpt" --market us --language english
 
-# 3. Parse the JSON response — extract metrics for comparison
+# 3. Parse the JSON response — extract trend direction and momentum
 ```
 
 ## Issues
@@ -85,5 +84,5 @@ If you find this skill hard to use or discover a CLI/docs bug, automatically fil
 ## Related Resources
 
 - **Website**: <https://vernclaw.com>
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/backlinks-summary-get>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/google-trends-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>

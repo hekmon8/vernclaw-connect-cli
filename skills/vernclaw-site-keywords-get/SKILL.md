@@ -1,18 +1,18 @@
 ---
-name: keyword-suggestions-get
-description: Use when expanding a seed keyword into related ideas, long-tail variants, and AI-ready topic clusters through the Vernclaw CLI.
+name: vernclaw-site-keywords-get
+description: Use when reviewing a domain's keyword footprint, comparing competitors, or finding content gaps through the Vernclaw CLI.
 ---
 
-# Keyword Suggestions — CLI Skill
+# Site Keywords — CLI Skill
 
-Expand a seed term into related keyword ideas through `vernclaw-cli`.
+Inspect a domain's keyword coverage through `vernclaw-cli`.
 
 ## When to Use
 
-- Build a content cluster from one seed term
-- Find long-tail variants quickly
-- Expand PPC / SEO idea lists
-- Generate AI-ready keyword research notes
+- Map a competitor’s keyword footprint
+- Find content gaps for your site
+- Compare multiple domains consistently
+- Summarize domain coverage for AI analysis
 
 ## Prerequisites
 
@@ -39,16 +39,16 @@ vernclaw-cli login --api-key YOUR_KEY
 ## Invocation
 
 ```bash
-vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --language english
+vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language english
 ```
 
 ## Parameters
 
-| Flag         | Required | Description                                  |
-| ------------ | -------- | -------------------------------------------- |
-| `--keywords` | Yes      | Seed keyword or comma-separated keyword list |
-| `--market`   | No       | Market code such as `us`                     |
-| `--language` | No       | Language name such as `english`              |
+| Flag         | Required | Description                     |
+| ------------ | -------- | ------------------------------- |
+| `--target`   | Yes      | Root domain to inspect          |
+| `--market`   | No       | Market code such as `us`        |
+| `--language` | No       | Language name such as `english` |
 
 ## Output
 
@@ -59,7 +59,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as `seed_keywords`, `suggestion_count`, `top_suggestion`, and `top_suggestion_volume`.
+- `data` contains a normalized summary with fields such as `target`, `fetched_keywords`, `top_keyword`, and `top_keyword_volume`.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
@@ -72,16 +72,16 @@ Execution mode: **synchronous**.
 # 1. Check authentication
 vernclaw-cli status
 
-# 2. Fetch keyword suggestions
-vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --language english
+# 2. Fetch site keywords
+vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language english
 
-# 3. Parse the JSON response — build content clusters from suggestions
+# 3. Parse the JSON response — identify content gaps and keyword coverage
 ```
 
 ## Related Resources
 
 - **Website**: <https://vernclaw.com>
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/keyword-suggestions-get>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/site-keywords-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
 
 ## Issues

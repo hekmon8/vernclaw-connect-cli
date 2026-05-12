@@ -1,5 +1,5 @@
 ---
-name: x-post-read
+name: vernclaw-x-post-read
 description: Use when reading X/Twitter public post content, extracting author info, engagement data, or thread content via the Vernclaw CLI.
 ---
 

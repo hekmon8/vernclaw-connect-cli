@@ -1,5 +1,5 @@
 ---
-name: domain-authority-get
+name: vernclaw-domain-authority-get
 description: Use when checking domain authority scores, analyzing backlink profiles, or comparing SEO competitiveness across websites via the Vernclaw CLI.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: website-traffic-get
+name: vernclaw-website-traffic-get
 description: Use when estimating website traffic, analyzing traffic sources and geographic distribution, or benchmarking competitor traffic via the Vernclaw CLI.
 ---
 

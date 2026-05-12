@@ -1,18 +1,18 @@
 ---
-name: domain-whois-get
-description: Use when checking public domain registration timestamps, registrar details, or due-diligence signals through the Vernclaw CLI.
+name: vernclaw-site-technologies-get
+description: Use when detecting a site's public stack, planning migrations, or qualifying technical leads through the Vernclaw CLI.
 ---
 
-# Whois Lookup — CLI Skill
+# Site Technologies — CLI Skill
 
-Inspect a domain's public registration snapshot through `vernclaw-cli`.
+Detect a site's public technology stack through `vernclaw-cli`.
 
 ## When to Use
 
-- Check registrar and expiry before acquisition
-- Review public timestamps for due diligence
-- Monitor domain registration hygiene
-- Feed Whois snapshots into AI research notes
+- Review a competitor’s public stack
+- Plan a migration based on visible tooling
+- Qualify leads by detected technologies
+- Prepare a technical snapshot for AI analysis
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ vernclaw-cli login --api-key YOUR_KEY
 ## Invocation
 
 ```bash
-vernclaw-cli invoke seo.domain-whois --target openai.com
+vernclaw-cli invoke seo.site-technologies --target openai.com
 ```
 
 ## Parameters
@@ -57,7 +57,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as `domain`, `registrar`, `created`, `expires`, and `updated`.
+- `data` contains a normalized summary with fields such as `target`, `detected_technologies`, and `top_technology`.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
@@ -70,16 +70,16 @@ Execution mode: **synchronous**.
 # 1. Check authentication
 vernclaw-cli status
 
-# 2. Fetch WHOIS data
-vernclaw-cli invoke seo.domain-whois --target openai.com
+# 2. Detect site technologies
+vernclaw-cli invoke seo.site-technologies --target openai.com
 
-# 3. Parse the JSON response — extract registration details
+# 3. Parse the JSON response — review detected stack
 ```
 
 ## Related Resources
 
 - **Website**: <https://vernclaw.com>
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/domain-whois-get>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/site-technologies-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
 
 ## Issues

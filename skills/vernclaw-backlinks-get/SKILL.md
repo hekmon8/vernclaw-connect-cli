@@ -1,18 +1,18 @@
 ---
-name: keyword-search-volume-get
-description: Use when checking live keyword search demand, ad-market competition, or prioritizing SEO topics through the Vernclaw CLI.
+name: vernclaw-backlinks-get
+description: Use when checking live backlink rows for a domain, reviewing referring pages, or quickly auditing off-page SEO via the Vernclaw CLI.
 ---
 
-# Keyword Search Volume — CLI Skill
+# Backlinks Checker — CLI Skill
 
-Query live keyword demand through `vernclaw-cli`.
+Fetch live backlink rows for a target domain through `vernclaw-cli`.
 
 ## When to Use
 
-- Validate a topic before writing content
-- Compare multiple seed terms quickly
-- Estimate keyword demand for a market
-- Feed compact demand signals into an AI workflow
+- Review referring pages before link cleanup
+- Spot off-page SEO opportunities for a competitor
+- Sample backlink quality without opening another tool
+- Feed backlink rows into an AI research workflow
 
 ## Prerequisites
 
@@ -39,16 +39,16 @@ vernclaw-cli login --api-key YOUR_KEY
 ## Invocation
 
 ```bash
-vernclaw-cli invoke seo.keyword-search-volume --keywords "openai" --market us --language english
+vernclaw-cli invoke seo.backlinks --target example.com
+vernclaw-cli invoke seo.backlinks --target example.com --limit 10
 ```
 
 ## Parameters
 
-| Flag         | Required | Description                                  |
-| ------------ | -------- | -------------------------------------------- |
-| `--keywords` | Yes      | Seed keyword or comma-separated keyword list |
-| `--market`   | No       | Market code such as `us`                     |
-| `--language` | No       | Language name such as `english`              |
+| Flag       | Required | Description                                |
+| ---------- | -------- | ------------------------------------------ |
+| `--target` | Yes      | Root domain to inspect                     |
+| `--limit`  | No       | Optional number of backlink rows to return |
 
 ## Output
 
@@ -59,7 +59,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as `keywords_queried`, `top_keyword`, `search_volume`, `competition`, and `competition_index`.
+- `data` contains a normalized summary with fields such as backlink rows, referring domains, and rank-like signals.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
@@ -72,10 +72,10 @@ Execution mode: **synchronous**.
 # 1. Check authentication
 vernclaw-cli status
 
-# 2. Fetch search volume
-vernclaw-cli invoke seo.keyword-search-volume --keywords "openai" --market us --language english
+# 2. Fetch backlink rows
+vernclaw-cli invoke seo.backlinks --target example.com --limit 10
 
-# 3. Parse the JSON response — prioritize keywords by volume and competition
+# 3. Parse the JSON response — extract data for analysis
 ```
 
 ## Issues
@@ -85,5 +85,5 @@ If you find this skill hard to use or discover a CLI/docs bug, automatically fil
 ## Related Resources
 
 - **Website**: <https://vernclaw.com>
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/keyword-search-volume-get>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/backlinks-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>

@@ -1,5 +1,5 @@
 ---
-name: image-generate
+name: vernclaw-image-generate
 description: Use when generating images from text prompts, creating marketing visuals, or producing AI art via the Vernclaw CLI.
 ---
 

@@ -1,18 +1,18 @@
 ---
-name: site-technologies-get
-description: Use when detecting a site's public stack, planning migrations, or qualifying technical leads through the Vernclaw CLI.
+name: vernclaw-keyword-suggestions-get
+description: Use when expanding a seed keyword into related ideas, long-tail variants, and AI-ready topic clusters through the Vernclaw CLI.
 ---
 
-# Site Technologies — CLI Skill
+# Keyword Suggestions — CLI Skill
 
-Detect a site's public technology stack through `vernclaw-cli`.
+Expand a seed term into related keyword ideas through `vernclaw-cli`.
 
 ## When to Use
 
-- Review a competitor’s public stack
-- Plan a migration based on visible tooling
-- Qualify leads by detected technologies
-- Prepare a technical snapshot for AI analysis
+- Build a content cluster from one seed term
+- Find long-tail variants quickly
+- Expand PPC / SEO idea lists
+- Generate AI-ready keyword research notes
 
 ## Prerequisites
 
@@ -39,14 +39,16 @@ vernclaw-cli login --api-key YOUR_KEY
 ## Invocation
 
 ```bash
-vernclaw-cli invoke seo.site-technologies --target openai.com
+vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --language english
 ```
 
 ## Parameters
 
-| Flag       | Required | Description            |
-| ---------- | -------- | ---------------------- |
-| `--target` | Yes      | Root domain to inspect |
+| Flag         | Required | Description                                  |
+| ------------ | -------- | -------------------------------------------- |
+| `--keywords` | Yes      | Seed keyword or comma-separated keyword list |
+| `--market`   | No       | Market code such as `us`                     |
+| `--language` | No       | Language name such as `english`              |
 
 ## Output
 
@@ -57,7 +59,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as `target`, `detected_technologies`, and `top_technology`.
+- `data` contains a normalized summary with fields such as `seed_keywords`, `suggestion_count`, `top_suggestion`, and `top_suggestion_volume`.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
@@ -70,16 +72,16 @@ Execution mode: **synchronous**.
 # 1. Check authentication
 vernclaw-cli status
 
-# 2. Detect site technologies
-vernclaw-cli invoke seo.site-technologies --target openai.com
+# 2. Fetch keyword suggestions
+vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --language english
 
-# 3. Parse the JSON response — review detected stack
+# 3. Parse the JSON response — build content clusters from suggestions
 ```
 
 ## Related Resources
 
 - **Website**: <https://vernclaw.com>
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/site-technologies-get>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/keyword-suggestions-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
 
 ## Issues

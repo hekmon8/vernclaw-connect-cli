@@ -1,17 +1,18 @@
 ---
-name: domain-rank-overview-get
-description: Use when checking aggregate domain rank/visibility signals and top keyword snapshots.
+name: vernclaw-keyword-search-volume-get
+description: Use when checking live keyword search demand, ad-market competition, or prioritizing SEO topics through the Vernclaw CLI.
 ---
 
-# Domain Rank Overview — CLI Skill
+# Keyword Search Volume — CLI Skill
 
-Fetch aggregate domain rank metrics for a target domain through `vernclaw-cli`.
+Query live keyword demand through `vernclaw-cli`.
 
 ## When to Use
 
-- Compare domain visibility across a portfolio
-- Screen potential partner or competitor domains quickly
-- Feed rank overview snapshots into competitive intelligence workflows
+- Validate a topic before writing content
+- Compare multiple seed terms quickly
+- Estimate keyword demand for a market
+- Feed compact demand signals into an AI workflow
 
 ## Prerequisites
 
@@ -38,17 +39,16 @@ vernclaw-cli login --api-key YOUR_KEY
 ## Invocation
 
 ```bash
-vernclaw-cli invoke seo.domain-rank-overview --target openai.com
-vernclaw-cli invoke seo.domain-rank-overview --target openai.com --market us --language english
+vernclaw-cli invoke seo.keyword-search-volume --keywords "openai" --market us --language english
 ```
 
 ## Parameters
 
-| Flag         | Required | Description                              |
-| ------------ | -------- | ---------------------------------------- |
-| `--target`   | Yes      | Target domain to inspect                 |
-| `--market`   | No       | Optional market code such as `us`        |
-| `--language` | No       | Optional language name such as `english` |
+| Flag         | Required | Description                                  |
+| ------------ | -------- | -------------------------------------------- |
+| `--keywords` | Yes      | Seed keyword or comma-separated keyword list |
+| `--market`   | No       | Market code such as `us`                     |
+| `--language` | No       | Language name such as `english`              |
 
 ## Output
 
@@ -59,7 +59,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as `domain`, `domain_rank`, `organic_keywords`, `organic_traffic`, and `top_keyword`.
+- `data` contains a normalized summary with fields such as `keywords_queried`, `top_keyword`, `search_volume`, `competition`, and `competition_index`.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
@@ -72,10 +72,10 @@ Execution mode: **synchronous**.
 # 1. Check authentication
 vernclaw-cli status
 
-# 2. Fetch rank overview
-vernclaw-cli invoke seo.domain-rank-overview --target openai.com --market us --language english
+# 2. Fetch search volume
+vernclaw-cli invoke seo.keyword-search-volume --keywords "openai" --market us --language english
 
-# 3. Parse the JSON response — compare domain visibility
+# 3. Parse the JSON response — prioritize keywords by volume and competition
 ```
 
 ## Issues
@@ -85,5 +85,5 @@ If you find this skill hard to use or discover a CLI/docs bug, automatically fil
 ## Related Resources
 
 - **Website**: <https://vernclaw.com>
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/domain-rank-overview-get>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/keyword-search-volume-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>

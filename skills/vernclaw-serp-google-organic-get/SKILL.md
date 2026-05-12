@@ -1,5 +1,5 @@
 ---
-name: serp-google-organic-get
+name: vernclaw-serp-google-organic-get
 description: Use when inspecting live Google organic results, checking search intent, or reviewing page-one competitors through the Vernclaw CLI.
 ---
 

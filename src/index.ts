@@ -18,10 +18,31 @@ export function ensureTrailingNewline(value: string) {
   return value.endsWith('\n') ? value : `${value}\n`;
 }
 
+function stripRawPayloads(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map((item) => stripRawPayloads(item));
+  }
+
+  if (!value || typeof value !== 'object') {
+    return value;
+  }
+
+  return Object.entries(value as Record<string, unknown>).reduce<
+    Record<string, unknown>
+  >((result, [key, nextValue]) => {
+    if (key === 'raw') {
+      return result;
+    }
+
+    result[key] = stripRawPayloads(nextValue);
+    return result;
+  }, {});
+}
+
 export function formatJsonForTerminal(response: CliCommandResponse) {
   const payload: Record<string, unknown> = {
     status: response.status,
-    data: response.data !== undefined ? response.data : {},
+    data: response.data !== undefined ? stripRawPayloads(response.data) : {},
   };
 
   if (response.errorCode) {
@@ -130,6 +151,8 @@ function formatConnectorListTable(record: Record<string, unknown>) {
 }
 
 function formatStructuredDataForTerminal(data: unknown) {
+  data = stripRawPayloads(data);
+
   if (!data || typeof data !== 'object') {
     return ensureTrailingNewline(JSON.stringify(data, null, 2));
   }
@@ -258,16 +281,6 @@ function formatStructuredDataForTerminal(data: unknown) {
     if (record.next_command) {
       lines.push('', '## Next Steps', '', `- ${record.next_command}`);
     }
-    if (record.raw !== undefined) {
-      lines.push(
-        '',
-        '## Raw JSON',
-        '',
-        '```json',
-        JSON.stringify(record.raw, null, 2),
-        '```'
-      );
-    }
     return ensureTrailingNewline(lines.join('\n'));
   }
 
@@ -315,19 +328,30 @@ function formatStructuredDataForTerminal(data: unknown) {
     lines.push(`- Preview URL: ${record.preview_url}`);
   }
 
-  if (Array.isArray(record.notes) && record.notes.length > 0) {
-    lines.push('', '## Notes', '', ...record.notes.map((note) => `- ${note}`));
-  }
-
-  if (record.raw !== undefined) {
+  if (Array.isArray(record.items) && record.items.length > 0) {
     lines.push(
       '',
-      '## Raw JSON',
+      '## Items',
       '',
       '```json',
-      JSON.stringify(record.raw, null, 2),
+      JSON.stringify(record.items, null, 2),
       '```'
     );
+  }
+
+  if (Array.isArray(record.series) && record.series.length > 0) {
+    lines.push(
+      '',
+      '## Series',
+      '',
+      '```json',
+      JSON.stringify(record.series, null, 2),
+      '```'
+    );
+  }
+
+  if (Array.isArray(record.notes) && record.notes.length > 0) {
+    lines.push('', '## Notes', '', ...record.notes.map((note) => `- ${note}`));
   }
 
   return ensureTrailingNewline(lines.join('\n'));

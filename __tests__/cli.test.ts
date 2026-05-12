@@ -73,7 +73,7 @@ describe('vernclaw-cli helpers', () => {
     ).toBe('{"status":200,"data":{}}\n');
   });
 
-  it('formats structured responses as compact JSON without markdown', () => {
+  it('formats structured responses as compact JSON without markdown or raw payloads', () => {
     expect(
       formatJsonForTerminal({
         data: {
@@ -84,7 +84,7 @@ describe('vernclaw-cli helpers', () => {
         },
         status: 200,
       })
-    ).toBe('{"status":200,"data":{"summary":"ok","raw":{"tasks":[]}}}\n');
+    ).toBe('{"status":200,"data":{"summary":"ok"}}\n');
   });
 
   it('includes error codes in JSON output when present', () => {
@@ -156,7 +156,7 @@ describe('vernclaw-cli helpers', () => {
     expect(output).not.toContain('## Result');
   });
 
-  it('includes raw JSON when pretty-printing structured job responses', () => {
+  it('strips raw JSON when pretty-printing structured job responses', () => {
     const output = formatResponseForTerminal({
       status: 202,
       data: {
@@ -172,8 +172,8 @@ describe('vernclaw-cli helpers', () => {
       },
     });
 
-    expect(output).toContain('## Raw JSON');
-    expect(output).toContain('"id": "upstream_task_123"');
+    expect(output).not.toContain('## Raw JSON');
+    expect(output).not.toContain('upstream_task_123');
   });
 
   it('pretty-prints structured account responses from data', () => {

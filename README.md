@@ -87,15 +87,18 @@ vernclaw-cli invoke seo.website-traffic --domain example.com
 
 # Expand a seed keyword
 vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --language english
+vernclaw-cli invoke seo.keyword-suggestions --keywords "openai" --market us --limit 20
 
 # Review a domain's keyword footprint
 vernclaw-cli invoke seo.site-keywords --target openai.com --market us --language english
+vernclaw-cli invoke seo.site-keywords --target openai.com --market us --all
 
 # Inspect live Google organic results
 vernclaw-cli invoke seo.serp-google-organic --keyword "openai" --market us --language english --device desktop --os windows --depth 5
 
 # Inspect keyword trend trajectory
 vernclaw-cli invoke seo.google-trends --keywords "openai" --market us --language english
+vernclaw-cli invoke seo.google-trends --keywords "openai" --market us --points 50
 
 # Fetch backlink summary snapshot
 vernclaw-cli invoke seo.backlinks-summary --target openai.com
@@ -122,7 +125,9 @@ vernclaw-cli status
 
 ## Output Contract
 
-All connector output is **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable Markdown instead. Error metadata is written to `stderr` as `ERROR_CODE=<code>`.
+All connector output is **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable terminal text instead. Error metadata is written to `stderr` as `ERROR_CODE=<code>`.
+
+SEO connector output is optimized for agents: full upstream `raw` payloads are never printed by the CLI. List-style SEO connectors return normalized `items` with semantic snake_case fields and default to 10 rows; pass `--limit <n>` for more rows or `--all` for all normalized rows. Google Trends returns summary metrics plus a normalized `series` with 20 points by default; pass `--points <n>` or `--all` to expand it.
 
 ### Exit Codes
 

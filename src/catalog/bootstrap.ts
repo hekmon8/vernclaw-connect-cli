@@ -200,6 +200,14 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
             type: 'string',
             description: 'Optional language name such as english.',
           },
+          points: {
+            type: 'number',
+            description: 'Optional trend point count. Defaults to 20.',
+          },
+          all: {
+            type: 'boolean',
+            description: 'Return all normalized trend points.',
+          },
         },
         ['keywords']
       ),
@@ -224,6 +232,14 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
           language: {
             type: 'string',
             description: 'Optional language name such as english.',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional normalized row count. Defaults to 10.',
+          },
+          all: {
+            type: 'boolean',
+            description: 'Return all normalized rows.',
           },
         },
         ['keywords']
@@ -250,6 +266,14 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
             type: 'string',
             description: 'Optional language name such as english.',
           },
+          limit: {
+            type: 'number',
+            description: 'Optional normalized row count. Defaults to 10.',
+          },
+          all: {
+            type: 'boolean',
+            description: 'Return all normalized rows.',
+          },
         },
         ['keywords']
       ),
@@ -273,6 +297,14 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
           language: {
             type: 'string',
             description: 'Optional language name such as english.',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional normalized row count. Defaults to 10.',
+          },
+          all: {
+            type: 'boolean',
+            description: 'Return all normalized rows.',
           },
         },
         ['target']

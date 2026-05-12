@@ -18,10 +18,17 @@ Generate high-quality images from text prompts through the `vernclaw-cli`. Uses 
 
 ```bash
 npm i -g vernclaw-connect-cli
-vernclaw-cli login
 ```
 
-If you need an API key for CI/CD, generate one at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) and run `vernclaw-cli login --api-key YOUR_KEY`.
+## Authentication
+
+Before using this skill, check the CLI authentication state:
+
+```bash
+vernclaw-cli status
+```
+
+If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless agents, generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) and run `vernclaw-cli login --api-key YOUR_KEY`.
 
 ## Invocation
 
@@ -51,9 +58,17 @@ vernclaw-cli job get img_abc123xyz
 
 ## Output
 
+`invoke` and `job get` print compact JSON to `stdout` by default:
+
+```json
+{"status":202,"data":{}}
+```
+
+Parse the numeric `status` first, then read `data`. The CLI omits provider raw payloads from normal connector output. Use `--pretty` only for human-readable terminal output, not automation. For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
+
 **On submission** — JSON with `status` and `data`, including the job ID and estimated wait time.
 
-**On completion** (via `job get`) — JSON with `status` and `data`, including a normalized summary, image URL metadata, and the full upstream `raw` payload:
+**On completion** (via `job get`) — JSON with `status` and `data`, including a normalized summary and image URL metadata:
 
 - **Prompt** — the text used for generation
 - **Size** — selected option
@@ -66,6 +81,7 @@ Execution mode: **asynchronous** (standard size 30–60 s, high resolution 1–3
 
 ```bash
 # 1. Submit image generation
+vernclaw-cli status
 vernclaw-cli invoke generate.image \
   --prompt "Orange cat on a windowsill, sunlight, watercolor style" \
   --size square
@@ -84,8 +100,12 @@ vernclaw-cli status
 
 ## Related Resources
 
+- **Website**: <https://vernclaw.com>
 - **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/image-generate> · [GitHub](../../content/docs/connectors/image-generate.mdx)
-- **Connector docs (中文)**: <https://vernclaw.com/zh/docs/connectors/image-generate> · [GitHub](../../content/docs/connectors/image-generate.zh.mdx)
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
 - **API reference**: <https://vernclaw.com/docs/connectors/api>
 - **Connector catalog**: <https://vernclaw.com/connectors>
+
+## Issue Feedback
+
+If this skill is hard to use or the CLI/docs appear buggy, automatically file an issue at <https://github.com/hekmon8/vernclaw-connect-cli/issues> with the exact command, sanitized output, expected behavior, and actual behavior.

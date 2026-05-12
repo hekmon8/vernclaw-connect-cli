@@ -18,10 +18,17 @@ Extract complete public post content, author information, and engagement metrics
 
 ```bash
 npm i -g vernclaw-connect-cli
-vernclaw-cli login
 ```
 
-If you need an API key for CI/CD, generate one at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) and run `vernclaw-cli login --api-key YOUR_KEY`.
+## Authentication
+
+Before using this skill, check the CLI authentication state:
+
+```bash
+vernclaw-cli status
+```
+
+If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless agents, generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) and run `vernclaw-cli login --api-key YOUR_KEY`.
 
 ## Invocation
 
@@ -42,7 +49,15 @@ vernclaw-cli invoke read.x.post \
 
 ## Output
 
-JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the fields below, and the full upstream `raw` payload:
+`invoke` prints compact JSON to `stdout` by default:
+
+```json
+{"status":200,"data":{}}
+```
+
+Parse the numeric `status` first, then read `data`. The CLI omits provider raw payloads from normal connector output. Use `--pretty` only for human-readable terminal output, not automation. For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
+
+The `data` object includes a normalized summary and fields such as:
 
 - **Author** — username and display name
 - **Timestamp** — publish date and time (UTC)
@@ -57,6 +72,7 @@ Execution mode: **synchronous** (results returned in 1–3 seconds).
 
 ```bash
 # 1. Read a KOL's analysis thread
+vernclaw-cli status
 vernclaw-cli invoke read.x.post --url "https://x.com/expert/status/123"
 
 # 2. Generate a companion image for the content
@@ -68,8 +84,12 @@ vernclaw-cli status
 
 ## Related Resources
 
+- **Website**: <https://vernclaw.com>
 - **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/x-post-read> · [GitHub](../../content/docs/connectors/x-post-read.mdx)
-- **Connector docs (中文)**: <https://vernclaw.com/zh/docs/connectors/x-post-read> · [GitHub](../../content/docs/connectors/x-post-read.zh.mdx)
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
 - **API reference**: <https://vernclaw.com/docs/connectors/api>
 - **Connector catalog**: <https://vernclaw.com/connectors>
+
+## Issue Feedback
+
+If this skill is hard to use or the CLI/docs appear buggy, automatically file an issue at <https://github.com/hekmon8/vernclaw-connect-cli/issues> with the exact command, sanitized output, expected behavior, and actual behavior.

@@ -17,7 +17,22 @@ Fetch trend exploration data for one or more keywords through `vernclaw-cli`.
 
 ```bash
 npm i -g vernclaw-connect-cli
+```
+
+## Authentication
+
+Before using this skill, verify you are authenticated:
+
+```bash
+vernclaw-cli status
+```
+
+If not authenticated, run:
+
+```bash
 vernclaw-cli login
+# or for CI/CD:
+vernclaw-cli login --api-key YOUR_KEY
 ```
 
 ## Invocation
@@ -36,12 +51,38 @@ vernclaw-cli invoke seo.google-trends --keywords "openai,chatgpt" --market us --
 
 ## Output
 
-JSON to `stdout` with `status` and `data`. The `data` object includes normalized Google Trends fields such as `Keywords Queried`, `Result Item Types`, `Trend Points`, `Top Trend Value`, `Average Trend Value`, `Date Range`, `Latest Date`, `Latest Values`, row counts for regions/topics/queries, and the full upstream `raw` payload.
+The `invoke` command prints compact JSON to stdout by default:
+
+```json
+{"status":200,"data":{}}
+```
+
+- Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
+- `data` contains a normalized summary with fields such as `keywords_queried`, `trend_points`, `top_trend_value`, `average_trend_value`, `date_range`, and row counts for regions/topics/queries.
+- `--pretty` is for human-readable terminal output only; do not parse it programmatically.
+- For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
+- The CLI omits provider raw payloads from normal connector output.
 
 Execution mode: **synchronous**.
 
+## Workflow
+
+```bash
+# 1. Check authentication
+vernclaw-cli status
+
+# 2. Fetch trend data
+vernclaw-cli invoke seo.google-trends --keywords "openai,chatgpt" --market us --language english
+
+# 3. Parse the JSON response — extract trend direction and momentum
+```
+
+## Issues
+
+If you find this skill hard to use or discover a CLI/docs bug, automatically file an issue at <https://github.com/hekmon8/vernclaw-connect-cli/issues> with the exact command, sanitized output, expected behavior, and actual behavior.
+
 ## Related Resources
 
+- **Website**: <https://vernclaw.com>
 - **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/google-trends-get>
-- **Connector docs (中文)**: <https://vernclaw.com/zh/docs/connectors/google-trends-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>

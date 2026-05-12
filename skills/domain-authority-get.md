@@ -18,10 +18,25 @@ Check any domain's authority score (0–100), backlink count, and link quality t
 
 ```bash
 npm i -g vernclaw-connect-cli
-vernclaw-cli login
 ```
 
-If you need an API key for CI/CD, generate one at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) and run `vernclaw-cli login --api-key YOUR_KEY`.
+## Authentication
+
+Before using this skill, verify you are authenticated:
+
+```bash
+vernclaw-cli status
+```
+
+If not authenticated, run:
+
+```bash
+vernclaw-cli login
+# or for CI/CD:
+vernclaw-cli login --api-key YOUR_KEY
+```
+
+Generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors).
 
 ## Invocation
 
@@ -41,31 +56,42 @@ vernclaw-cli invoke seo.domain-authority --domain example.com,competitor.com,riv
 
 ## Output
 
-JSON to `stdout` with `status` and `data`. The `data` object includes a normalized summary, the fields below, and the full upstream `raw` payload:
+The `invoke` command prints compact JSON to stdout by default:
 
-- **Authority Score** — 0–100 composite score
-- **Backlink Count** — total effective backlinks
-- **Link Quality** — distribution across high / medium / low tiers
+```json
+{"status":200,"data":{}}
+```
+
+- Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
+- `data` contains a normalized summary with fields such as:
+  - **authority_score** — 0–100 composite score
+  - **backlink_count** — total effective backlinks
+  - **link_quality** — distribution across high / medium / low tiers
+- `--pretty` is for human-readable terminal output only; do not parse it programmatically.
+- For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
+- The CLI omits provider raw payloads from normal connector output.
 
 Execution mode: **synchronous** (results returned immediately).
 
-## Example Workflow
+## Workflow
 
 ```bash
-# 1. Check your own domain
+# 1. Check authentication
+vernclaw-cli status
+
+# 2. Check your own domain
 vernclaw-cli invoke seo.domain-authority --domain mysite.com
 
-# 2. Compare with top competitors
+# 3. Compare with top competitors
 vernclaw-cli invoke seo.domain-authority --domain mysite.com,competitor1.com,competitor2.com
-
-# 3. Check account status
-vernclaw-cli status
 ```
+
+## Issues
+
+If you find this skill hard to use or discover a CLI/docs bug, automatically file an issue at <https://github.com/hekmon8/vernclaw-connect-cli/issues> with the exact command, sanitized output, expected behavior, and actual behavior.
 
 ## Related Resources
 
-- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/domain-authority-get> · [GitHub](../../content/docs/connectors/domain-authority-get.mdx)
-- **Connector docs (中文)**: <https://vernclaw.com/zh/docs/connectors/domain-authority-get> · [GitHub](../../content/docs/connectors/domain-authority-get.zh.mdx)
+- **Website**: <https://vernclaw.com>
+- **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/domain-authority-get>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
-- **API reference**: <https://vernclaw.com/docs/connectors/api>
-- **Connector catalog**: <https://vernclaw.com/connectors>

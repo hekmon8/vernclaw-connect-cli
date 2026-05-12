@@ -59,22 +59,22 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 
 ## Available Connectors
 
-| Connector ID                | Category | Mode  | Skill                                                                                          |
-| --------------------------- | -------- | ----- | ---------------------------------------------------------------------------------------------- |
-| `seo.domain-authority`      | SEO      | sync  | [EN](./skills/domain-authority-get.md) / [中文](./skills/domain-authority-get.zh.md)           |
-| `seo.website-traffic`       | SEO      | sync  | [EN](./skills/website-traffic-get.md) / [中文](./skills/website-traffic-get.zh.md)             |
-| `seo.backlinks`             | SEO      | sync  | [EN](./skills/backlinks-get.md) / [中文](./skills/backlinks-get.zh.md)                         |
-| `seo.backlinks-summary`     | SEO      | sync  | [EN](./skills/backlinks-summary-get.md) / [中文](./skills/backlinks-summary-get.zh.md)         |
-| `seo.serp-google-organic`   | SEO      | sync  | [EN](./skills/serp-google-organic-get.md) / [中文](./skills/serp-google-organic-get.zh.md)     |
-| `seo.google-trends`         | SEO      | sync  | [EN](./skills/google-trends-get.md) / [中文](./skills/google-trends-get.zh.md)                 |
-| `seo.domain-rank-overview`  | SEO      | sync  | [EN](./skills/domain-rank-overview-get.md) / [中文](./skills/domain-rank-overview-get.zh.md)   |
-| `seo.keyword-search-volume` | SEO      | sync  | [EN](./skills/keyword-search-volume-get.md) / [中文](./skills/keyword-search-volume-get.zh.md) |
-| `seo.keyword-suggestions`   | SEO      | sync  | [EN](./skills/keyword-suggestions-get.md) / [中文](./skills/keyword-suggestions-get.zh.md)     |
-| `seo.site-keywords`         | SEO      | sync  | [EN](./skills/site-keywords-get.md) / [中文](./skills/site-keywords-get.zh.md)                 |
-| `seo.site-technologies`     | SEO      | sync  | [EN](./skills/site-technologies-get.md) / [中文](./skills/site-technologies-get.zh.md)         |
-| `seo.domain-whois`          | SEO      | sync  | [EN](./skills/domain-whois-get.md) / [中文](./skills/domain-whois-get.zh.md)                   |
-| `read.x.post`               | Social   | sync  | [EN](./skills/x-post-read.md) / [中文](./skills/x-post-read.zh.md)                             |
-| `generate.image`            | AI       | async | [EN](./skills/image-generate.md) / [中文](./skills/image-generate.zh.md)                       |
+| Connector ID                | Category | Mode  | Skill                                                     |
+| --------------------------- | -------- | ----- | --------------------------------------------------------- |
+| `seo.domain-authority`      | SEO      | sync  | [Skill](./skills/domain-authority-get.md)                 |
+| `seo.website-traffic`       | SEO      | sync  | [Skill](./skills/website-traffic-get.md)                  |
+| `seo.backlinks`             | SEO      | sync  | [Skill](./skills/backlinks-get.md)                        |
+| `seo.backlinks-summary`     | SEO      | sync  | [Skill](./skills/backlinks-summary-get.md)                |
+| `seo.serp-google-organic`   | SEO      | sync  | [Skill](./skills/serp-google-organic-get.md)              |
+| `seo.google-trends`         | SEO      | sync  | [Skill](./skills/google-trends-get.md)                    |
+| `seo.domain-rank-overview`  | SEO      | sync  | [Skill](./skills/domain-rank-overview-get.md)             |
+| `seo.keyword-search-volume` | SEO      | sync  | [Skill](./skills/keyword-search-volume-get.md)            |
+| `seo.keyword-suggestions`   | SEO      | sync  | [Skill](./skills/keyword-suggestions-get.md)              |
+| `seo.site-keywords`         | SEO      | sync  | [Skill](./skills/site-keywords-get.md)                    |
+| `seo.site-technologies`     | SEO      | sync  | [Skill](./skills/site-technologies-get.md)                |
+| `seo.domain-whois`          | SEO      | sync  | [Skill](./skills/domain-whois-get.md)                     |
+| `read.x.post`               | Social   | sync  | [Skill](./skills/x-post-read.md)                          |
+| `generate.image`            | AI       | async | [Skill](./skills/image-generate.md)                       |
 
 ## Quick Examples
 

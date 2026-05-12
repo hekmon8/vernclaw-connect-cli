@@ -59,22 +59,22 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 
 ## Available Connectors
 
-| Connector ID                | Category | Mode  | Skill                                                     |
-| --------------------------- | -------- | ----- | --------------------------------------------------------- |
-| `seo.domain-authority`      | SEO      | sync  | [Skill](./skills/domain-authority-get.md)                 |
-| `seo.website-traffic`       | SEO      | sync  | [Skill](./skills/website-traffic-get.md)                  |
-| `seo.backlinks`             | SEO      | sync  | [Skill](./skills/backlinks-get.md)                        |
-| `seo.backlinks-summary`     | SEO      | sync  | [Skill](./skills/backlinks-summary-get.md)                |
-| `seo.serp-google-organic`   | SEO      | sync  | [Skill](./skills/serp-google-organic-get.md)              |
-| `seo.google-trends`         | SEO      | sync  | [Skill](./skills/google-trends-get.md)                    |
-| `seo.domain-rank-overview`  | SEO      | sync  | [Skill](./skills/domain-rank-overview-get.md)             |
-| `seo.keyword-search-volume` | SEO      | sync  | [Skill](./skills/keyword-search-volume-get.md)            |
-| `seo.keyword-suggestions`   | SEO      | sync  | [Skill](./skills/keyword-suggestions-get.md)              |
-| `seo.site-keywords`         | SEO      | sync  | [Skill](./skills/site-keywords-get.md)                    |
-| `seo.site-technologies`     | SEO      | sync  | [Skill](./skills/site-technologies-get.md)                |
-| `seo.domain-whois`          | SEO      | sync  | [Skill](./skills/domain-whois-get.md)                     |
-| `read.x.post`               | Social   | sync  | [Skill](./skills/x-post-read.md)                          |
-| `generate.image`            | AI       | async | [Skill](./skills/image-generate.md)                       |
+| Connector ID                | Category | Mode  | Skill                                          |
+| --------------------------- | -------- | ----- | ---------------------------------------------- |
+| `seo.domain-authority`      | SEO      | sync  | [Skill](./skills/domain-authority-get.md)      |
+| `seo.website-traffic`       | SEO      | sync  | [Skill](./skills/website-traffic-get.md)       |
+| `seo.backlinks`             | SEO      | sync  | [Skill](./skills/backlinks-get.md)             |
+| `seo.backlinks-summary`     | SEO      | sync  | [Skill](./skills/backlinks-summary-get.md)     |
+| `seo.serp-google-organic`   | SEO      | sync  | [Skill](./skills/serp-google-organic-get.md)   |
+| `seo.google-trends`         | SEO      | sync  | [Skill](./skills/google-trends-get.md)         |
+| `seo.domain-rank-overview`  | SEO      | sync  | [Skill](./skills/domain-rank-overview-get.md)  |
+| `seo.keyword-search-volume` | SEO      | sync  | [Skill](./skills/keyword-search-volume-get.md) |
+| `seo.keyword-suggestions`   | SEO      | sync  | [Skill](./skills/keyword-suggestions-get.md)   |
+| `seo.site-keywords`         | SEO      | sync  | [Skill](./skills/site-keywords-get.md)         |
+| `seo.site-technologies`     | SEO      | sync  | [Skill](./skills/site-technologies-get.md)     |
+| `seo.domain-whois`          | SEO      | sync  | [Skill](./skills/domain-whois-get.md)          |
+| `read.x.post`               | Social   | sync  | [Skill](./skills/x-post-read.md)               |
+| `generate.image`            | AI       | async | [Skill](./skills/image-generate.md)            |
 
 ## Quick Examples
 
@@ -99,6 +99,8 @@ vernclaw-cli invoke seo.serp-google-organic --keyword "openai" --market us --lan
 # Inspect keyword trend trajectory
 vernclaw-cli invoke seo.google-trends --keywords "openai" --market us --language english
 vernclaw-cli invoke seo.google-trends --keywords "openai" --market us --points 50
+vernclaw-cli invoke seo.google-trends --keywords "translator" --market us --language english --time-range past_7_days --type web --item-types google_trends_queries_list
+vernclaw-cli invoke seo.google-trends --keywords "mcp server,translator" --market us --language english --time-range past_30_days --item-types google_trends_graph
 
 # Fetch backlink summary snapshot
 vernclaw-cli invoke seo.backlinks-summary --target openai.com
@@ -127,7 +129,7 @@ vernclaw-cli status
 
 All connector output is **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable terminal text instead. Error metadata is written to `stderr` as `ERROR_CODE=<code>`.
 
-SEO connector output is optimized for agents: full upstream `raw` payloads are never printed by the CLI. List-style SEO connectors return normalized `items` with semantic snake_case fields and default to 10 rows; pass `--limit <n>` for more rows or `--all` for all normalized rows. Google Trends returns summary metrics plus a normalized `series` with 20 points by default; pass `--points <n>` or `--all` to expand it.
+SEO connector output is optimized for agents: full upstream `raw` payloads are never printed by the CLI. List-style SEO connectors return normalized `items` with semantic snake_case fields and default to 10 rows; pass `--limit <n>` for more rows or `--all` for all normalized rows. Google Trends returns summary metrics plus a normalized `series` with 20 points by default; pass `--points <n>` or `--all` to expand it. Use `--time-range`, `--date-from`, `--date-to`, `--type`, `--category-code`, and `--item-types` to control Google Trends Explore requests. Related query/topic item types require exactly one keyword and return normalized `top` and `rising` rows.
 
 ### Exit Codes
 

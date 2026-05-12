@@ -330,4 +330,22 @@ describe('registry compatibility engine', () => {
     expect(output).toContain('--domain (required)');
     expect(output).toContain('--market (optional)');
   });
+
+  it('includes Google Trends exploration flags in the built-in catalog', async () => {
+    const { BUILTIN_BOOTSTRAP_CATALOG } = await import(
+      '../src/catalog/bootstrap.js'
+    );
+    const googleTrends = BUILTIN_BOOTSTRAP_CATALOG.connectors.find(
+      (entry) => entry.manifest.id === 'seo.google-trends'
+    );
+
+    expect(googleTrends?.manifest.inputSchema.properties).toMatchObject({
+      'time-range': expect.objectContaining({ type: 'string' }),
+      'date-from': expect.objectContaining({ type: 'string' }),
+      'date-to': expect.objectContaining({ type: 'string' }),
+      type: expect.objectContaining({ type: 'string' }),
+      'category-code': expect.objectContaining({ type: 'number' }),
+      'item-types': expect.objectContaining({ type: 'array' }),
+    });
+  });
 });

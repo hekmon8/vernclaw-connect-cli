@@ -126,6 +126,67 @@ describe('invoke command', () => {
     });
   });
 
+  it('normalizes Google Trends exploration flags before sending invoke requests', async () => {
+    mockGetEffectiveConnectorById.mockResolvedValue({
+      id: 'seo.google-trends',
+      name: 'Google Trends Get',
+      compatibilityState: 'supported',
+      manifest: {
+        inputSchema: {
+          type: 'object',
+          properties: {
+            keywords: {
+              type: 'string',
+              description: 'Seed keyword list.',
+            },
+            'category-code': {
+              type: 'number',
+              description: 'Google Trends category code.',
+            },
+            'item-types': {
+              type: 'array',
+              description: 'Google Trends item types.',
+            },
+          },
+          required: ['keywords'],
+        },
+      },
+    });
+    mockRequestApiJson.mockResolvedValue({
+      data: { summary: 'ok' },
+      status: 200,
+    });
+
+    const result = await runInvokeCommand(
+      {
+        apiBaseUrl: 'https://api.example.com',
+        apiKey: 'key_123',
+        credentialsFile: '/tmp/cred.json',
+        registryCatalogFile: '/tmp/catalog.json',
+      },
+      'seo.google-trends',
+      {
+        keywords: 'translator',
+        'category-code': '0',
+        'item-types': 'google_trends_queries_list,google_trends_topics_list',
+      }
+    );
+
+    expect(result.status).toBe(200);
+    expect(mockRequestApiJson).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: {
+          keywords: 'translator',
+          'category-code': 0,
+          'item-types': [
+            'google_trends_queries_list',
+            'google_trends_topics_list',
+          ],
+        },
+      })
+    );
+  });
+
   it('blocks local invoke when a typed flag cannot be coerced', async () => {
     mockGetEffectiveConnectorById.mockResolvedValue({
       id: 'search.x',

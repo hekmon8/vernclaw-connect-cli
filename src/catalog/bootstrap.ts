@@ -200,6 +200,51 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
             type: 'string',
             description: 'Optional language name such as english.',
           },
+          'time-range': {
+            type: 'string',
+            description:
+              'Optional preset range such as past_7_days or past_30_days.',
+            enum: [
+              'past_hour',
+              'past_4_hours',
+              'past_day',
+              'past_7_days',
+              'past_30_days',
+              'past_90_days',
+              'past_12_months',
+              'past_5_years',
+              '2004_present',
+              '2008_present',
+            ],
+          },
+          'date-from': {
+            type: 'string',
+            description: 'Optional custom start date in YYYY-MM-DD format.',
+          },
+          'date-to': {
+            type: 'string',
+            description: 'Optional custom end date in YYYY-MM-DD format.',
+          },
+          type: {
+            type: 'string',
+            description: 'Optional Google Trends type.',
+            enum: ['web', 'news', 'youtube', 'images', 'froogle'],
+          },
+          'category-code': {
+            type: 'number',
+            description: 'Optional Google Trends category code.',
+          },
+          'item-types': {
+            type: 'array',
+            description:
+              'Optional item types such as google_trends_graph or google_trends_queries_list.',
+            enum: [
+              'google_trends_graph',
+              'google_trends_map',
+              'google_trends_topics_list',
+              'google_trends_queries_list',
+            ],
+          },
           points: {
             type: 'number',
             description: 'Optional trend point count. Defaults to 20.',

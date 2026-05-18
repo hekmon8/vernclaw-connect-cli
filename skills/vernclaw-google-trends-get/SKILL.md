@@ -72,7 +72,7 @@ The `invoke` command prints compact JSON to stdout by default:
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
 
-Execution mode: **synchronous**.
+Execution mode: **synchronous**. Requests may wait up to 60 seconds when upstream Google Trends graph data is slow, especially for longer time ranges or multi-keyword comparisons.
 
 ## Workflow
 

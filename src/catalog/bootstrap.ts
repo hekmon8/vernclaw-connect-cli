@@ -184,7 +184,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.google-trends',
       name: 'Google Trends Get',
       category: 'seo',
-      description: 'Fetch trend indicator points for one or more keywords.',
+      description:
+        'Fetch trend indicator points for one or more keywords. Synchronous requests may wait up to 60 seconds when upstream trend data is slow.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {

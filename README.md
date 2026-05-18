@@ -129,7 +129,7 @@ vernclaw-cli status
 
 All connector output is **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable terminal text instead. Error metadata is written to `stderr` as `ERROR_CODE=<code>`.
 
-SEO connector output is optimized for agents: full upstream `raw` payloads are never printed by the CLI. List-style SEO connectors return normalized `items` with semantic snake_case fields and default to 10 rows; pass `--limit <n>` for more rows or `--all` for all normalized rows. Google Trends returns summary metrics plus a normalized `series` with 20 points by default; pass `--points <n>` or `--all` to expand it. Use `--time-range`, `--date-from`, `--date-to`, `--type`, `--category-code`, and `--item-types` to control Google Trends Explore requests. Related query/topic item types require exactly one keyword and return normalized `top` and `rising` rows.
+SEO connector output is optimized for agents: full upstream `raw` payloads are never printed by the CLI. List-style SEO connectors return normalized `items` with semantic snake_case fields and default to 10 rows; pass `--limit <n>` for more rows or `--all` for all normalized rows. Google Trends returns summary metrics plus a normalized `series` with 20 points by default; pass `--points <n>` or `--all` to expand it. Google Trends is synchronous and may wait up to 60 seconds when DataForSEO is slow, especially for graph requests over longer time windows. Use `--time-range`, `--date-from`, `--date-to`, `--type`, `--category-code`, and `--item-types` to control Google Trends Explore requests. Related query/topic item types require exactly one keyword and return normalized `top` and `rising` rows.
 
 ### Exit Codes
 

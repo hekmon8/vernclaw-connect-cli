@@ -484,6 +484,127 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       ),
     }),
     bootstrapConnector({
+      id: 'search.youtube',
+      name: 'YouTube Search',
+      category: 'social-readers',
+      description:
+        'Search public YouTube videos and return normalized metadata, metrics, and source limitations.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          query: {
+            type: 'string',
+            description: 'Keyword query to search on YouTube.',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional number of videos to return.',
+          },
+          order: {
+            type: 'string',
+            description:
+              'Optional YouTube order: date, rating, relevance, title, or viewCount.',
+          },
+          region_code: {
+            type: 'string',
+            description: 'Optional ISO 3166-1 alpha-2 region code, such as US.',
+          },
+          relevance_language: {
+            type: 'string',
+            description: 'Optional relevance language, such as en or zh-Hans.',
+          },
+        },
+        ['query']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'read.youtube.video',
+      name: 'YouTube Video Read',
+      category: 'social-readers',
+      description:
+        'Read a public YouTube video by URL or ID and return normalized metadata and metrics.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          url: {
+            type: 'string',
+            description: 'Public YouTube video URL.',
+          },
+          id: {
+            type: 'string',
+            description: 'Optional 11-character YouTube video ID.',
+          },
+        },
+        []
+      ),
+    }),
+    bootstrapConnector({
+      id: 'search.producthunt',
+      name: 'Product Hunt Search',
+      category: 'social-readers',
+      description:
+        'Search Product Hunt launches and return normalized product evidence rows.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          query: {
+            type: 'string',
+            description: 'Keyword query to search Product Hunt launches.',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional number of launches to return.',
+          },
+          from_date: {
+            type: 'string',
+            description: 'Optional lower date bound in YYYY-MM-DD format.',
+          },
+          to_date: {
+            type: 'string',
+            description: 'Optional upper date bound in YYYY-MM-DD format.',
+          },
+          sort: {
+            type: 'string',
+            description: 'Optional managed provider sort mode.',
+          },
+        },
+        ['query']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'list.producthunt.launches',
+      name: 'Product Hunt Launches List',
+      category: 'social-readers',
+      description:
+        'List Product Hunt launches for a date or date window and return normalized rows.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          date: {
+            type: 'string',
+            description: 'Optional launch date in YYYY-MM-DD format.',
+          },
+          from_date: {
+            type: 'string',
+            description: 'Optional lower date bound in YYYY-MM-DD format.',
+          },
+          to_date: {
+            type: 'string',
+            description: 'Optional upper date bound in YYYY-MM-DD format.',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional number of launches to return.',
+          },
+          featured_only: {
+            type: 'boolean',
+            description: 'Optional flag to request featured launches only.',
+          },
+        },
+        []
+      ),
+    }),
+    bootstrapConnector({
       id: 'search.web',
       name: 'Web Search',
       category: 'search',

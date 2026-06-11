@@ -191,7 +191,8 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
         {
           keywords: {
             type: 'string',
-            description: 'Seed keyword or comma-separated keyword list.',
+            description:
+              'Seed keyword or comma-separated keyword list. Maximum 5 keywords; any extras are truncated automatically.',
           },
           market: {
             type: 'string',

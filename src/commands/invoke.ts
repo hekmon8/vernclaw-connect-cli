@@ -2,8 +2,10 @@ import { readFileSync } from 'node:fs';
 
 import { validateAndNormalizeInvokePayload } from '../catalog/input-schema.js';
 import { getEffectiveConnectorById } from '../catalog/service.js';
+import type { EffectiveConnectorView } from '../catalog/types.js';
 import { requestApiJson } from '../client/http.js';
 import type { CliConfig } from '../config/env.js';
+import { buildConnectorDetails } from './describe.js';
 
 export function buildInvokePayload(flags: Record<string, string | boolean>) {
   if (typeof flags['input-file'] === 'string') {
@@ -23,17 +25,18 @@ export function buildInvokePayload(flags: Record<string, string | boolean>) {
 }
 
 function buildLocalInvalidParamsResponse(
-  connectorId: string,
-  connectorName: string,
+  entry: EffectiveConnectorView,
+  viewerState: 'authenticated' | 'unauthenticated',
   message: string
 ) {
   return {
     data: {
-      connector_id: connectorId,
-      connector_name: connectorName,
+      connector_id: entry.id,
+      connector_name: entry.name,
       error_code: 'INVALID_PARAMS',
       message,
-      next_command: `vernclaw-cli describe ${connectorId}`,
+      next_command: `vernclaw-cli describe ${entry.id}`,
+      describe: buildConnectorDetails(entry, viewerState),
     },
     status: 400,
     errorCode: 'INVALID_PARAMS',
@@ -99,8 +102,8 @@ export async function runInvokeCommand(
 
   if (!payloadValidation.ok) {
     return buildLocalInvalidParamsResponse(
-      connectorId,
-      entry.name,
+      entry,
+      config.apiKey ? 'authenticated' : 'unauthenticated',
       payloadValidation.error
     );
   }

@@ -51,7 +51,7 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 | `vernclaw-cli logout`                       | Remove stored credentials                              |
 | `vernclaw-cli list`                         | List available connectors                              |
 | `vernclaw-cli describe <connectorId>`       | Show connector details and parameters                  |
-| `vernclaw-cli invoke <connectorId> [flags]` | Run a connector and print JSON output                  |
+| `vernclaw-cli invoke <connectorId> [flags]` | Run a connector and print connector output             |
 | `vernclaw-cli job get <jobId>`              | Check status of an async job                           |
 | `vernclaw-cli status`                       | Display current login, subscription, and credit status |
 
@@ -127,7 +127,7 @@ vernclaw-cli status
 
 ## Output Contract
 
-All connector output is **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable terminal text instead. Error metadata is written to `stderr` as `ERROR_CODE=<code>`.
+Connector success and provider responses are **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable terminal text instead. Local `invoke` parameter validation errors are rendered as Markdown by default, showing the parameter error followed by the same connector details as `vernclaw-cli describe <connectorId>`. Other error metadata is written to `stderr` as `ERROR_CODE=<code>`.
 
 SEO connector output is optimized for agents: full upstream `raw` payloads are never printed by the CLI. List-style SEO connectors return normalized `items` with semantic snake_case fields and default to 10 rows; pass `--limit <n>` for more rows or `--all` for all normalized rows. Google Trends returns summary metrics plus a normalized `series` with 20 points by default; pass `--points <n>` or `--all` to expand it. Google Trends is synchronous and may wait up to 60 seconds when DataForSEO is slow, especially for graph requests over longer time windows. Use `--time-range`, `--date-from`, `--date-to`, `--type`, `--category-code`, and `--item-types` to control Google Trends Explore requests. Related query/topic item types require exactly one keyword and return normalized `top` and `rising` rows.
 

@@ -3,11 +3,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const {
   mockRunBalanceCommand,
+  mockRunInvokeCommand,
   mockRunListCommand,
   mockRunStatusCommand,
   mockResolveCliConfig,
 } = vi.hoisted(() => ({
   mockRunBalanceCommand: vi.fn(),
+  mockRunInvokeCommand: vi.fn(),
   mockRunListCommand: vi.fn(),
   mockRunStatusCommand: vi.fn(),
   mockResolveCliConfig: vi.fn(),
@@ -15,6 +17,10 @@ const {
 
 vi.mock('../src/commands/balance.js', () => ({
   runBalanceCommand: mockRunBalanceCommand,
+}));
+
+vi.mock('../src/commands/invoke.js', () => ({
+  runInvokeCommand: mockRunInvokeCommand,
 }));
 
 vi.mock('../src/commands/list.js', () => ({
@@ -58,6 +64,48 @@ describe('cli dispatch', () => {
         },
       },
       status: 200,
+    });
+    mockRunInvokeCommand.mockResolvedValue({
+      data: {
+        connector_id: 'search.x',
+        connector_name: 'X Search',
+        error_code: 'INVALID_PARAMS',
+        message: 'Missing required parameter: `query`.',
+        next_command: 'vernclaw-cli describe search.x',
+        describe: {
+          connector_id: 'search.x',
+          name: 'X Search',
+          category: 'search',
+          description: 'Search posts on X.',
+          version: '1.0.0',
+          min_cli_version: '0.1.0',
+          compatibility: 'supported',
+          status: 'ready',
+          can_run_now: true,
+          next_step:
+            'Run `vernclaw-cli invoke search.x --query "best ai tools"`.',
+          cli_usage: {
+            describe: 'vernclaw-cli describe search.x',
+            invoke: 'vernclaw-cli invoke search.x --query "best ai tools"',
+          },
+          cli_flags: [
+            {
+              name: '--query',
+              key: 'query',
+              required: true,
+              type: 'string',
+              description: 'Search query to run on X.',
+            },
+          ],
+          output_contract: {
+            mode: 'sync_result',
+            result_format: 'json',
+            structured_payload: 'optional',
+          },
+        },
+      },
+      status: 400,
+      errorCode: 'INVALID_PARAMS',
     });
     mockRunListCommand.mockResolvedValue({
       data: {
@@ -148,5 +196,32 @@ describe('cli dispatch', () => {
     expect(stdoutWrite).toHaveBeenCalledWith(
       '{"status":200,"data":{"command":"list","count":1,"connectors":[{"id":"seo.website-traffic","category":"seo","description":"Estimate website traffic.","status":"ready"}],"hints":["Run `vernclaw-cli describe <connector>` to inspect flags and example commands."]}}\n'
     );
+  });
+
+  it('prints local invoke parameter errors as markdown by default', async () => {
+    process.argv = ['node', 'vernclaw-cli', 'invoke', 'search.x'];
+
+    await import('../src/cli.js');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.stringContaining('# Parameter Error')
+    );
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.stringContaining('Missing required parameter: `query`.')
+    );
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.stringContaining('# X Search')
+    );
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.not.stringContaining('"status":400')
+    );
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.not.stringContaining('next_command')
+    );
+    expect(stdoutWrite).toHaveBeenCalledWith(
+      expect.not.stringContaining('Error Code')
+    );
+    expect(stderrWrite).not.toHaveBeenCalledWith('ERROR_CODE=INVALID_PARAMS\n');
   });
 });

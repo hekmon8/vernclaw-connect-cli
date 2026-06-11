@@ -46,6 +46,11 @@ describe('invoke command', () => {
           },
           required: ['query'],
         },
+        outputContract: {
+          mode: 'sync_result',
+          resultFormat: 'json',
+          structuredPayload: 'optional',
+        },
       },
     });
 
@@ -64,6 +69,14 @@ describe('invoke command', () => {
     expect(getResponseData(result)).toMatchObject({
       error_code: 'INVALID_PARAMS',
       message: 'Missing required parameter: `query`.',
+      describe: {
+        connector_id: 'search.x',
+        name: 'X Search',
+        cli_usage: {
+          describe: 'vernclaw-cli describe search.x',
+          invoke: 'vernclaw-cli invoke search.x --query "best ai tools"',
+        },
+      },
     });
     expect(mockRequestApiJson).not.toHaveBeenCalled();
   });
@@ -87,6 +100,11 @@ describe('invoke command', () => {
             },
           },
           required: ['query'],
+        },
+        outputContract: {
+          mode: 'sync_result',
+          resultFormat: 'json',
+          structuredPayload: 'optional',
         },
       },
     });
@@ -206,6 +224,11 @@ describe('invoke command', () => {
             },
           },
           required: ['query'],
+        },
+        outputContract: {
+          mode: 'sync_result',
+          resultFormat: 'json',
+          structuredPayload: 'optional',
         },
       },
     });

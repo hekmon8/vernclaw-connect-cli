@@ -9,7 +9,7 @@ import { getEffectiveConnectorById } from '../catalog/service.js';
 import type { EffectiveConnectorView } from '../catalog/types.js';
 import type { CliConfig } from '../config/env.js';
 
-function buildConnectorDetails(
+export function buildConnectorDetails(
   entry: EffectiveConnectorView,
   viewerState: 'authenticated' | 'unauthenticated'
 ) {

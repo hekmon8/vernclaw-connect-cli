@@ -92,6 +92,10 @@ function formatGenericObject(record: Record<string, unknown>) {
     .filter((line): line is string => Boolean(line));
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
 function truncateColumn(value: unknown, width: number) {
   const formatted = formatScalar(value) || '';
   if (formatted.length <= width) {
@@ -150,7 +154,7 @@ function formatConnectorListTable(record: Record<string, unknown>) {
   return ensureTrailingNewline(lines.join('\n'));
 }
 
-function formatStructuredDataForTerminal(data: unknown) {
+function formatStructuredDataForTerminal(data: unknown): string {
   data = stripRawPayloads(data);
 
   if (!data || typeof data !== 'object') {
@@ -158,6 +162,18 @@ function formatStructuredDataForTerminal(data: unknown) {
   }
 
   const record = data as Record<string, unknown>;
+
+  if (record.error_code === 'INVALID_PARAMS' && isRecord(record.describe)) {
+    return ensureTrailingNewline(
+      [
+        '# Parameter Error',
+        '',
+        String(record.message || 'Invalid connector parameters.'),
+        '',
+        formatStructuredDataForTerminal(record.describe).trimEnd(),
+      ].join('\n')
+    );
+  }
 
   if (record.command === 'list' && Array.isArray(record.connectors)) {
     return formatConnectorListTable(record);

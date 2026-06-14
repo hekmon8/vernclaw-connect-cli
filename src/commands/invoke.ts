@@ -5,7 +5,6 @@ import { getEffectiveConnectorById } from '../catalog/service.js';
 import type { EffectiveConnectorView } from '../catalog/types.js';
 import { requestApiJson } from '../client/http.js';
 import type { CliConfig } from '../config/env.js';
-import { buildConnectorDetails } from './describe.js';
 
 export function buildInvokePayload(flags: Record<string, string | boolean>) {
   if (typeof flags['input-file'] === 'string') {
@@ -25,18 +24,13 @@ export function buildInvokePayload(flags: Record<string, string | boolean>) {
 }
 
 function buildLocalInvalidParamsResponse(
-  entry: EffectiveConnectorView,
-  viewerState: 'authenticated' | 'unauthenticated',
+  _entry: EffectiveConnectorView,
+  _viewerState: 'authenticated' | 'unauthenticated',
   message: string
 ) {
   return {
     data: {
-      connector_id: entry.id,
-      connector_name: entry.name,
-      error_code: 'INVALID_PARAMS',
       message,
-      next_command: `vernclaw-cli describe ${entry.id}`,
-      describe: buildConnectorDetails(entry, viewerState),
     },
     status: 400,
     errorCode: 'INVALID_PARAMS',
@@ -51,9 +45,7 @@ export async function runInvokeCommand(
   if (!connectorId) {
     return {
       data: {
-        error_code: 'INVALID_PARAMS',
         message: 'No connector ID provided.',
-        next_command: 'vernclaw-cli list',
       },
       status: 400,
       errorCode: 'INVALID_PARAMS',
@@ -69,8 +61,6 @@ export async function runInvokeCommand(
   if (!entry) {
     return {
       data: {
-        connector_id: connectorId,
-        error_code: 'INVALID_PARAMS',
         message: 'Unknown connector.',
       },
       status: 404,
@@ -85,9 +75,6 @@ export async function runInvokeCommand(
 
     return {
       data: {
-        connector_id: entry.id,
-        connector_name: entry.name,
-        error_code: 'CLI_UPGRADE_REQUIRED',
         message: summary,
       },
       status: 409,

@@ -60,7 +60,7 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary plus one `items` row with video ID, URL, title, channel, publish time, duration, metrics, `source`, `source_mode`, and limitations.
+- `data` contains a normalized summary plus one compact `items` row with video ID, URL, title, channel, publish time, duration, and public metrics.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.

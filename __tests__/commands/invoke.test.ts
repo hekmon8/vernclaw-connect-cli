@@ -67,16 +67,7 @@ describe('invoke command', () => {
 
     expect(result.errorCode).toBe('INVALID_PARAMS');
     expect(getResponseData(result)).toMatchObject({
-      error_code: 'INVALID_PARAMS',
       message: 'Missing required parameter: `query`.',
-      describe: {
-        connector_id: 'search.x',
-        name: 'X Search',
-        cli_usage: {
-          describe: 'vernclaw-cli describe search.x',
-          invoke: 'vernclaw-cli invoke search.x --query "best ai tools"',
-        },
-      },
     });
     expect(mockRequestApiJson).not.toHaveBeenCalled();
   });
@@ -249,7 +240,6 @@ describe('invoke command', () => {
 
     expect(result.errorCode).toBe('INVALID_PARAMS');
     expect(getResponseData(result)).toMatchObject({
-      error_code: 'INVALID_PARAMS',
       message: 'Parameter `limit` must be a valid number.',
     });
     expect(mockRequestApiJson).not.toHaveBeenCalled();
@@ -281,7 +271,6 @@ describe('invoke command', () => {
 
     expect(result.errorCode).toBe('CLI_UPGRADE_REQUIRED');
     expect(getResponseData(result)).toMatchObject({
-      error_code: 'CLI_UPGRADE_REQUIRED',
       message: 'Requires vernclaw-cli >= 0.2.0',
     });
     expect(mockRequestApiJson).not.toHaveBeenCalled();

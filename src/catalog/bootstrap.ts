@@ -401,7 +401,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'seo.domain-authority',
       name: 'Domain Rating Get',
       category: 'seo',
-      description: 'Inspect DR, referring domains, and backlink counts.',
+      description: 'Inspect free Domain Rating (DR) for a target domain.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -489,7 +489,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       name: 'YouTube Search',
       category: 'social-readers',
       description:
-        'Search public YouTube videos and return normalized metadata, metrics, and source limitations.',
+        'Search public YouTube videos and return compact metadata and metrics.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {

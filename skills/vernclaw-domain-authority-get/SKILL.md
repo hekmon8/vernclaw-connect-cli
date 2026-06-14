@@ -1,17 +1,17 @@
 ---
 name: vernclaw-domain-authority-get
-description: Use when checking domain authority scores, analyzing backlink profiles, or comparing SEO competitiveness across websites via the Vernclaw CLI.
+description: Use when checking free Domain Rating (DR) scores or comparing SEO competitiveness across websites via the Vernclaw CLI.
 ---
 
 # Domain Authority Checker — CLI Skill
 
-Check any domain's authority score (0–100), backlink count, and link quality through the `vernclaw-cli`.
+Check any domain's free Domain Rating (DR) score through the `vernclaw-cli`.
 
 ## When to Use
 
 - Evaluate a website's SEO strength and ranking potential
 - Compare authority across competitor domains
-- Audit backlink quality before link-building campaigns
+- Screen link-building prospects by DR before deeper backlink analysis
 - Assess domain value for acquisition or partnership decisions
 
 ## Prerequisites
@@ -59,17 +59,19 @@ vernclaw-cli invoke seo.domain-authority --domain example.com,competitor.com,riv
 The `invoke` command prints compact JSON to stdout by default:
 
 ```json
-{"status":200,"data":{}}
+{ "status": 200, "data": {} }
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary with fields such as:
-  - **authority_score** — 0–100 composite score
-  - **backlink_count** — total effective backlinks
-  - **link_quality** — distribution across high / medium / low tiers
+- `data` contains a normalized summary and `metrics` with fields such as:
+  - **domain** — normalized target domain
+  - **domain_rating** — DR score on a 0–100 scale
+  - **ahrefs_rank** — returned when the upstream free endpoint provides it
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.
+
+This connector is free to invoke (`credits_cost` is 0). The free DR endpoint does not include detailed backlink or referring-domain counts; use backlink connectors for link-level evidence.
 
 Execution mode: **synchronous** (results returned immediately).
 

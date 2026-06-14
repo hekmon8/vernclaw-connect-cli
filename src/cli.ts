@@ -24,25 +24,6 @@ function printHelp() {
   process.stdout.write(buildHelpText(CLI_VERSION));
 }
 
-function isLocalInvokeParameterError(
-  command: string | undefined,
-  response: {
-    data?: unknown;
-    errorCode?: string;
-  }
-) {
-  if (command !== 'invoke' || response.errorCode !== 'INVALID_PARAMS') {
-    return false;
-  }
-
-  const data =
-    response.data && typeof response.data === 'object'
-      ? (response.data as Record<string, unknown>)
-      : undefined;
-
-  return Boolean(data?.describe);
-}
-
 async function main() {
   const { positionals, flags } = parseArgv(process.argv.slice(2));
   const command = positionals[0];
@@ -111,10 +92,7 @@ async function main() {
     return 3;
   }
 
-  const shouldPrintMarkdown =
-    pretty ||
-    (command === 'list' && !json) ||
-    (!json && isLocalInvokeParameterError(command, response));
+  const shouldPrintMarkdown = pretty || (command === 'list' && !json);
 
   process.stdout.write(
     shouldPrintMarkdown
@@ -122,10 +100,7 @@ async function main() {
       : formatJsonForTerminal(response)
   );
 
-  if (
-    !isLocalInvokeParameterError(command, response) &&
-    shouldEmitMachineErrorCode(response.errorCode, process.stderr.isTTY)
-  ) {
+  if (shouldEmitMachineErrorCode(response.errorCode, process.stderr.isTTY)) {
     process.stderr.write(`ERROR_CODE=${response.errorCode}\n`);
   }
 

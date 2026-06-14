@@ -127,9 +127,9 @@ vernclaw-cli status
 
 ## Output Contract
 
-Connector success and provider responses are **JSON-first**: a JSON envelope is printed to `stdout` by default. Add `--pretty` to print human-readable terminal text instead. Local `invoke` parameter validation errors are rendered as Markdown by default, showing the parameter error followed by the same connector details as `vernclaw-cli describe <connectorId>`. Other error metadata is written to `stderr` as `ERROR_CODE=<code>`.
+Connector success and provider responses are **JSON-first**: a compact JSON envelope with `status` and `data` is printed to `stdout` by default. Add `--pretty` to print human-readable terminal text instead. Local `invoke` parameter validation errors also return compact JSON by default. Error codes are exposed through the top-level `errorCode` field and, for API responses, the `x-error-code` header.
 
-SEO connector output is optimized for agents: full upstream `raw` payloads are never printed by the CLI. List-style SEO connectors return normalized `items` with semantic snake_case fields and default to 10 rows; pass `--limit <n>` for more rows or `--all` for all normalized rows. Google Trends returns summary metrics plus a normalized `series` with 20 points by default; pass `--points <n>` or `--all` to expand it. Google Trends is synchronous and may wait up to 60 seconds when DataForSEO is slow, especially for graph requests over longer time windows. Use `--time-range`, `--date-from`, `--date-to`, `--type`, `--category-code`, and `--item-types` to control Google Trends Explore requests. Related query/topic item types require exactly one keyword and return normalized `top` and `rising` rows.
+Connector output is optimized for agents: default `invoke` responses omit connector metadata, echoed input, provider names, and full upstream `raw` payloads. Metric tools return `data.summary` plus `data.metrics`; list tools return `data.summary`, `data.stats`, and `data.items`; trend tools return `data.stats`, `data.metrics`, and `data.series`; extract tools return `data.document`. Use `vernclaw-cli list --json` for structured catalog discovery.
 
 ### Exit Codes
 

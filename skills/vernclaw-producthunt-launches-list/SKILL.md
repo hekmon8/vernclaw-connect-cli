@@ -61,7 +61,8 @@ The `invoke` command prints compact JSON to stdout by default:
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded, and non-2xx means the agent should inspect the error payload.
-- `data` contains a normalized summary plus `items` rows with rank, Product Hunt URL, website URL, name, tagline, makers, topics, public votes, comments, `source`, `source_mode`, and limitations.
+- `data` contains a normalized summary, `stats`, and compact `items` rows with `rank`, `name`, `tagline`, direct `product_url`, `producthunt_url`, public votes, comments, and featured timestamp when available.
+- `product_url` is resolved to the direct product website when Product Hunt provides a redirect URL; unresolved product URLs are returned as `null`.
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.

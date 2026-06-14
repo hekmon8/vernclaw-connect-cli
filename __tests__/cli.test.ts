@@ -91,14 +91,13 @@ describe('vernclaw-cli helpers', () => {
     expect(
       formatJsonForTerminal({
         data: {
-          error_code: 'INVALID_PARAMS',
           message: 'Failed',
         },
         status: 400,
         errorCode: 'INVALID_PARAMS',
       })
     ).toBe(
-      '{"status":400,"data":{"error_code":"INVALID_PARAMS","message":"Failed"},"errorCode":"INVALID_PARAMS"}\n'
+      '{"status":400,"data":{"message":"Failed"},"errorCode":"INVALID_PARAMS"}\n'
     );
   });
 

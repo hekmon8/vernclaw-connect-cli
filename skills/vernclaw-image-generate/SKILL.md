@@ -64,6 +64,12 @@ vernclaw-cli job get img_abc123xyz
 {"status":202,"data":{}}
 ```
 
+Completed or synchronous connector responses use the same compact envelope shape, for example:
+
+```json
+{"status":200,"data":{}}
+```
+
 Parse the numeric `status` first, then read `data`. The CLI omits provider raw payloads from normal connector output. Use `--pretty` only for human-readable terminal output, not automation. For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 
 **On submission** — JSON with `status` and `data`, including the job ID and estimated wait time.

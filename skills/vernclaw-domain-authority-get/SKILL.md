@@ -59,7 +59,7 @@ vernclaw-cli invoke seo.domain-authority --domain example.com,competitor.com,riv
 The `invoke` command prints compact JSON to stdout by default:
 
 ```json
-{ "status": 200, "data": {} }
+{"status":200,"data":{}}
 ```
 
 - Parse the numeric `status` first; 2xx means the request succeeded or was accepted, and non-2xx means the agent should inspect the error payload.

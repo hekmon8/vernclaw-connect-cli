@@ -1,5 +1,6 @@
 ---
 name: vernclaw-domain-whois-get
+license: MIT
 description: Use when checking public domain registration timestamps, registrar details, or due-diligence signals through the Vernclaw CLI.
 ---
 

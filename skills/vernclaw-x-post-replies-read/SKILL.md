@@ -1,5 +1,6 @@
 ---
 name: vernclaw-x-post-replies-read
+license: MIT
 description: Use when reading public replies for an X/Twitter post via the Vernclaw CLI.
 ---
 

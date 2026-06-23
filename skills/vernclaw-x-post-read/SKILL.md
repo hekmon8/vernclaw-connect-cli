@@ -1,5 +1,6 @@
 ---
 name: vernclaw-x-post-read
+license: MIT
 description: Use when reading X/Twitter public post content, extracting author info, engagement data, or thread content via the Vernclaw CLI.
 ---
 

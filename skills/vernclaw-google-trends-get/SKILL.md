@@ -1,5 +1,6 @@
 ---
 name: vernclaw-google-trends-get
+license: MIT
 description: Use when assessing keyword momentum and trend direction through Vernclaw CLI.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: vernclaw-serp-google-organic-get
+license: MIT
 description: Use when inspecting live Google organic results, checking search intent, or reviewing page-one competitors through the Vernclaw CLI.
 ---
 

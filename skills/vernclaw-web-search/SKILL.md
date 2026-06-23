@@ -1,5 +1,6 @@
 ---
 name: vernclaw-web-search
+license: MIT
 description: Use when searching the open web through Vernclaw's managed retrieval stack via the Vernclaw CLI.
 ---
 

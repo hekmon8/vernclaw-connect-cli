@@ -1,5 +1,6 @@
 ---
 name: vernclaw-x-article-read
+license: MIT
 description: Use when reading public X/Twitter article metadata via the Vernclaw CLI.
 ---
 

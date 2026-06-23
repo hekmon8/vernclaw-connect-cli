@@ -1,5 +1,6 @@
 ---
 name: vernclaw-site-technologies-get
+license: MIT
 description: Use when detecting a site's public stack, planning migrations, or qualifying technical leads through the Vernclaw CLI.
 ---
 

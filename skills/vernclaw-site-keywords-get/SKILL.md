@@ -1,5 +1,6 @@
 ---
 name: vernclaw-site-keywords-get
+license: MIT
 description: Use when reviewing a domain's keyword footprint, comparing competitors, or finding content gaps through the Vernclaw CLI.
 ---
 

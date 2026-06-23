@@ -1,5 +1,6 @@
 ---
 name: vernclaw-url-extract
+license: MIT
 description: Use when extracting readable content from a public URL via the Vernclaw CLI.
 ---
 

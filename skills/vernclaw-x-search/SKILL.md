@@ -1,5 +1,6 @@
 ---
 name: vernclaw-x-search
+license: MIT
 description: Use when searching public X/Twitter posts via the Vernclaw CLI.
 ---
 

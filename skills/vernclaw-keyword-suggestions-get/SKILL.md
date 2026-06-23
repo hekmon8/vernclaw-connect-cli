@@ -1,5 +1,6 @@
 ---
 name: vernclaw-keyword-suggestions-get
+license: MIT
 description: Use when expanding a seed keyword into related ideas, long-tail variants, and AI-ready topic clusters through the Vernclaw CLI.
 ---
 

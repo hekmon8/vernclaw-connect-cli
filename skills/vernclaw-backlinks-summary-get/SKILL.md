@@ -1,5 +1,6 @@
 ---
 name: vernclaw-backlinks-summary-get
+license: MIT
 description: Use when auditing a domain with aggregated backlink metrics instead of row-level backlink lists through the Vernclaw CLI.
 ---
 

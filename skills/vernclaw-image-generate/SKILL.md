@@ -1,5 +1,6 @@
 ---
 name: vernclaw-image-generate
+license: MIT
 description: Use when generating images from text prompts, creating marketing visuals, or producing AI art via the Vernclaw CLI.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: vernclaw-youtube-video-read
+license: MIT
 description: Use when reading public YouTube video metadata through Vernclaw CLI.
 ---
 

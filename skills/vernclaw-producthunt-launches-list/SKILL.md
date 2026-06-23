@@ -1,5 +1,6 @@
 ---
 name: vernclaw-producthunt-launches-list
+license: MIT
 description: Use when listing Product Hunt launches through Vernclaw CLI.
 ---
 

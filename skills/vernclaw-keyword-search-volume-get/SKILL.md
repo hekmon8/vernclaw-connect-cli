@@ -1,5 +1,6 @@
 ---
 name: vernclaw-keyword-search-volume-get
+license: MIT
 description: Use when checking live keyword search demand, ad-market competition, or prioritizing SEO topics through the Vernclaw CLI.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: vernclaw-domain-rank-overview-get
+license: MIT
 description: Use when checking aggregate domain rank/visibility signals and top keyword snapshots through the Vernclaw CLI.
 ---
 

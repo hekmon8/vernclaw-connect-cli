@@ -1,5 +1,6 @@
 ---
 name: vernclaw-producthunt-search
+license: MIT
 description: Use when searching Product Hunt launches through Vernclaw CLI.
 ---
 

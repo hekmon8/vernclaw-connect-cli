@@ -1,5 +1,6 @@
 ---
 name: vernclaw-domain-authority-get
+license: MIT
 description: Use when checking free Domain Rating (DR) scores or comparing SEO competitiveness across websites via the Vernclaw CLI.
 ---
 

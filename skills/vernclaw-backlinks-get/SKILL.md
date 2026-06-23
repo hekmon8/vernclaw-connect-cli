@@ -1,5 +1,6 @@
 ---
 name: vernclaw-backlinks-get
+license: MIT
 description: Use when checking live backlink rows for a domain, reviewing referring pages, or quickly auditing off-page SEO via the Vernclaw CLI.
 ---
 

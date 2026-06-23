@@ -1,5 +1,6 @@
 ---
 name: vernclaw-youtube-search
+license: MIT
 description: Use when discovering public YouTube videos through Vernclaw CLI.
 ---
 

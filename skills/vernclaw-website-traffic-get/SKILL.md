@@ -1,5 +1,6 @@
 ---
 name: vernclaw-website-traffic-get
+license: MIT
 description: Use when estimating website traffic, analyzing traffic sources and geographic distribution, or benchmarking competitor traffic via the Vernclaw CLI.
 ---
 

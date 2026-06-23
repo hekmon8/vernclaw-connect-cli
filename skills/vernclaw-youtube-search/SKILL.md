@@ -1,7 +1,7 @@
 ---
 name: vernclaw-youtube-search
 license: MIT
-description: Use when discovering public YouTube videos through Vernclaw CLI.
+description: Use when searching public YouTube videos for creator research, launch monitoring, topic discovery, and normalized video evidence through Vernclaw CLI.
 ---
 
 # YouTube Search — CLI Skill
@@ -35,6 +35,12 @@ vernclaw-cli login
 # or for CI/CD:
 vernclaw-cli login --api-key YOUR_KEY
 ```
+
+## Provider Setup
+
+Most agents only need Vernclaw CLI authentication. If `search.youtube` returns a provider error such as `No API key configured for provider: youtube`, the Vernclaw or AIAPI Center operator must configure the upstream YouTube provider.
+
+For operator setup, create or select a Google Cloud project, enable **YouTube Data API v3**, create an API key from **APIs & Services > Credentials > Create credentials > API key**, restrict the key to YouTube Data API v3 before production use, then configure AIAPI Center's `youtube` provider with that key.
 
 ## Invocation
 
@@ -92,3 +98,4 @@ If you find this skill hard to use or discover a CLI/docs bug, automatically fil
 - **Website**: <https://vernclaw.com>
 - **Connector docs (EN)**: <https://vernclaw.com/docs/connectors/youtube-search>
 - **CLI reference**: <https://vernclaw.com/docs/connectors/cli>
+- **YouTube Data API**: <https://developers.google.com/youtube/v3>

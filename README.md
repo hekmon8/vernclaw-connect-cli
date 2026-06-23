@@ -1,6 +1,6 @@
 # vernclaw-connect-cli
 
-Official command-line interface for [Vernclaw Connectors](https://vernclaw.com/connectors) — query SEO metrics, read social media content, and generate images from your terminal with JSON-first connector output.
+Official command-line interface for [Vernclaw Connectors](https://vernclaw.com/connectors). Vernclaw Connect CLI gives AI agents and automation scripts JSON-first access to SEO metrics, YouTube research, X/Twitter readers, Product Hunt discovery, web search, URL extraction, and AI image generation.
 
 [![npm](https://img.shields.io/npm/v/vernclaw-connect-cli)](https://www.npmjs.com/package/vernclaw-connect-cli)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
@@ -32,6 +32,12 @@ Generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/s
 
 By default, the CLI targets `https://vernclaw.com`. For local or self-hosted environments, pass `--api-base-url` or set `VERNCLAW_CLI_API_BASE_URL`.
 
+## Provider Keys
+
+Most CLI users only need Vernclaw authentication. Provider API keys are configured by the Vernclaw or AIAPI Center operator, not by each CLI user.
+
+For YouTube connectors, create or select a Google Cloud project, enable **YouTube Data API v3**, then create an API key from **APIs & Services → Credentials → Create credentials → API key**. Restrict the key to YouTube Data API v3 before production use, then configure AIAPI Center's `youtube` provider with that key.
+
 ## Local Development Against a Local Vernclaw App
 
 ```bash
@@ -59,22 +65,31 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 
 ## Available Connectors
 
-| Connector ID                | Category | Mode  | Skill                                          |
-| --------------------------- | -------- | ----- | ---------------------------------------------- |
-| `seo.domain-authority`      | SEO      | sync  | [Skill](./skills/domain-authority-get.md)      |
-| `seo.website-traffic`       | SEO      | sync  | [Skill](./skills/website-traffic-get.md)       |
-| `seo.backlinks`             | SEO      | sync  | [Skill](./skills/backlinks-get.md)             |
-| `seo.backlinks-summary`     | SEO      | sync  | [Skill](./skills/backlinks-summary-get.md)     |
-| `seo.serp-google-organic`   | SEO      | sync  | [Skill](./skills/serp-google-organic-get.md)   |
-| `seo.google-trends`         | SEO      | sync  | [Skill](./skills/google-trends-get.md)         |
-| `seo.domain-rank-overview`  | SEO      | sync  | [Skill](./skills/domain-rank-overview-get.md)  |
-| `seo.keyword-search-volume` | SEO      | sync  | [Skill](./skills/keyword-search-volume-get.md) |
-| `seo.keyword-suggestions`   | SEO      | sync  | [Skill](./skills/keyword-suggestions-get.md)   |
-| `seo.site-keywords`         | SEO      | sync  | [Skill](./skills/site-keywords-get.md)         |
-| `seo.site-technologies`     | SEO      | sync  | [Skill](./skills/site-technologies-get.md)     |
-| `seo.domain-whois`          | SEO      | sync  | [Skill](./skills/domain-whois-get.md)          |
-| `read.x.post`               | Social   | sync  | [Skill](./skills/x-post-read.md)               |
-| `generate.image`            | AI       | async | [Skill](./skills/image-generate.md)            |
+| Connector ID                | Category | Mode  | Skill                                                         |
+| --------------------------- | -------- | ----- | ------------------------------------------------------------- |
+| `generate.image`            | AI       | async | [Skill](./skills/vernclaw-image-generate/SKILL.md)            |
+| `seo.website-traffic`       | SEO      | sync  | [Skill](./skills/vernclaw-website-traffic-get/SKILL.md)       |
+| `seo.backlinks`             | SEO      | sync  | [Skill](./skills/vernclaw-backlinks-get/SKILL.md)             |
+| `seo.serp-google-organic`   | SEO      | sync  | [Skill](./skills/vernclaw-serp-google-organic-get/SKILL.md)   |
+| `seo.google-trends`         | SEO      | sync  | [Skill](./skills/vernclaw-google-trends-get/SKILL.md)         |
+| `seo.keyword-search-volume` | SEO      | sync  | [Skill](./skills/vernclaw-keyword-search-volume-get/SKILL.md) |
+| `seo.keyword-suggestions`   | SEO      | sync  | [Skill](./skills/vernclaw-keyword-suggestions-get/SKILL.md)   |
+| `seo.site-keywords`         | SEO      | sync  | [Skill](./skills/vernclaw-site-keywords-get/SKILL.md)         |
+| `seo.site-technologies`     | SEO      | sync  | [Skill](./skills/vernclaw-site-technologies-get/SKILL.md)     |
+| `seo.backlinks-summary`     | SEO      | sync  | [Skill](./skills/vernclaw-backlinks-summary-get/SKILL.md)     |
+| `seo.domain-rank-overview`  | SEO      | sync  | [Skill](./skills/vernclaw-domain-rank-overview-get/SKILL.md)  |
+| `seo.domain-whois`          | SEO      | sync  | [Skill](./skills/vernclaw-domain-whois-get/SKILL.md)          |
+| `seo.domain-authority`      | SEO      | sync  | [Skill](./skills/vernclaw-domain-authority-get/SKILL.md)      |
+| `read.x.post`               | Social   | sync  | [Skill](./skills/vernclaw-x-post-read/SKILL.md)               |
+| `read.x.replies`            | Social   | sync  | [Skill](./skills/vernclaw-x-post-replies-read/SKILL.md)       |
+| `read.x.article`            | Social   | sync  | [Skill](./skills/vernclaw-x-article-read/SKILL.md)            |
+| `search.x`                  | Social   | sync  | [Skill](./skills/vernclaw-x-search/SKILL.md)                  |
+| `search.youtube`            | Video    | sync  | [Skill](./skills/vernclaw-youtube-search/SKILL.md)            |
+| `read.youtube.video`        | Video    | sync  | [Skill](./skills/vernclaw-youtube-video-read/SKILL.md)        |
+| `search.producthunt`        | Product  | sync  | [Skill](./skills/vernclaw-producthunt-search/SKILL.md)        |
+| `list.producthunt.launches` | Product  | sync  | [Skill](./skills/vernclaw-producthunt-launches-list/SKILL.md) |
+| `search.web`                | Search   | sync  | [Skill](./skills/vernclaw-web-search/SKILL.md)                |
+| `extract.url`               | Extract  | sync  | [Skill](./skills/vernclaw-url-extract/SKILL.md)               |
 
 ## Quick Examples
 
@@ -116,6 +131,19 @@ vernclaw-cli invoke seo.domain-whois --target openai.com
 
 # Read an X/Twitter post
 vernclaw-cli invoke read.x.post --url "https://x.com/user/status/123"
+
+# Search YouTube videos
+vernclaw-cli invoke search.youtube --query "AI agent workflows" --limit 5 --order date --region-code US
+
+# Read YouTube video metadata
+vernclaw-cli invoke read.youtube.video --url "https://www.youtube.com/watch?v=abc123def45"
+
+# Search Product Hunt launches
+vernclaw-cli invoke search.producthunt --query "AI agents" --limit 5
+
+# Search the web or extract a URL
+vernclaw-cli invoke search.web --query "Vernclaw connector CLI" --limit 5
+vernclaw-cli invoke extract.url --url "https://vernclaw.com/connectors"
 
 # Generate an image (async — returns a job ID)
 vernclaw-cli invoke generate.image --prompt "sunset over mountains"

@@ -135,8 +135,8 @@ vernclaw-cli invoke read.x.post --url "https://x.com/user/status/123"
 # Search YouTube videos
 vernclaw-cli invoke search.youtube --query "AI agent workflows" --limit 5 --order date --region-code US
 
-# Read YouTube video metadata
-vernclaw-cli invoke read.youtube.video --url "https://www.youtube.com/watch?v=abc123def45"
+# Read YouTube video metadata; replace VIDEO_ID_HERE before running
+vernclaw-cli invoke read.youtube.video --url "https://www.youtube.com/watch?v=VIDEO_ID_HERE"
 
 # Search Product Hunt launches
 vernclaw-cli invoke search.producthunt --query "AI agents" --limit 5

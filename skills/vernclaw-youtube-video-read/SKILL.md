@@ -45,8 +45,9 @@ For operator setup, create or select a Google Cloud project, enable **YouTube Da
 ## Invocation
 
 ```bash
-vernclaw-cli invoke read.youtube.video --url "https://www.youtube.com/watch?v=abc123def45"
-vernclaw-cli invoke read.youtube.video --id abc123def45
+# Replace VIDEO_ID_HERE with a real public YouTube video ID before running.
+vernclaw-cli invoke read.youtube.video --url "https://www.youtube.com/watch?v=VIDEO_ID_HERE"
+vernclaw-cli invoke read.youtube.video --id VIDEO_ID_HERE
 ```
 
 ## Parameters
@@ -81,7 +82,7 @@ Execution mode: **synchronous**.
 vernclaw-cli status
 
 # 2. Read video metadata
-vernclaw-cli invoke read.youtube.video --url "https://www.youtube.com/watch?v=abc123def45"
+vernclaw-cli invoke read.youtube.video --url "https://www.youtube.com/watch?v=VIDEO_ID_HERE"
 
 # 3. Parse JSON response and use data.items[0] as the normalized video row
 ```

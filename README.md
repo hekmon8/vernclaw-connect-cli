@@ -5,12 +5,23 @@ Official command-line interface for [Vernclaw Connectors](https://vernclaw.com/c
 [![npm](https://img.shields.io/npm/v/vernclaw-connect-cli)](https://www.npmjs.com/package/vernclaw-connect-cli)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![skills.sh](https://skills.sh/b/hekmon8/vernclaw-connect-cli)](https://skills.sh/hekmon8/vernclaw-connect-cli)
 
 ## Install
 
 ```bash
 npm i -g vernclaw-connect-cli
 ```
+
+## Use as Agent Skills
+
+Each connector ships as an [Agent Skill](https://skills.sh/) (a `SKILL.md` under [`skills/`](./skills)). Install them straight into your AI agent:
+
+```bash
+npx skills add hekmon8/vernclaw-connect-cli
+```
+
+Listed on the agent-skill ecosystem: [skills.sh](https://skills.sh/hekmon8/vernclaw-connect-cli) · [AgentSkillsHub](https://agentskillshub.dev/) · [MCP Servers](https://mcpservers.org/).
 
 ## Authentication
 

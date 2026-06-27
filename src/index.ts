@@ -321,6 +321,27 @@ function formatStructuredDataForTerminal(data: unknown): string {
     lines.push('', '## Summary', '', String(record.summary));
   }
 
+  if (record.document && typeof record.document === 'object') {
+    const doc = record.document as Record<string, unknown>;
+    const docTitle = formatScalar(doc.title);
+    const docUrl = formatScalar(doc.url);
+    const docContent = formatScalar(doc.content);
+    if (docTitle || docUrl) {
+      lines.push(
+        '',
+        '## Document',
+        '',
+        ...formatRecordBullets({
+          ...(docTitle ? { Title: docTitle } : {}),
+          ...(docUrl ? { URL: docUrl } : {}),
+        })
+      );
+    }
+    if (docContent) {
+      lines.push('', '## Content', '', docContent);
+    }
+  }
+
   if (Array.isArray(record.result)) {
     lines.push(
       '',

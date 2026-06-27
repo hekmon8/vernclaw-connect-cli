@@ -229,4 +229,28 @@ describe('vernclaw-cli helpers', () => {
       '# SEO Website Traffic\n\n## Summary\n\nTraffic lookup\n'
     );
   });
+
+  it('renders extract.url document content in terminal output', () => {
+    const output = formatResponseForTerminal({
+      status: 200,
+      data: {
+        connector_name: 'URL Extract',
+        connector_id: 'extract.url',
+        summary: 'The requested page was extracted successfully.',
+        document: {
+          title: 'Example Article',
+          url: 'https://example.com/article',
+          content: 'Full extracted text content of the page goes here.',
+        },
+      },
+    });
+
+    expect(output).toContain('## Document');
+    expect(output).toContain('- Title: Example Article');
+    expect(output).toContain('- URL: https://example.com/article');
+    expect(output).toContain('## Content');
+    expect(output).toContain('Full extracted text content of the page goes here.');
+    expect(output).not.toContain('content_length');
+    expect(output).not.toContain('content_preview');
+  });
 });

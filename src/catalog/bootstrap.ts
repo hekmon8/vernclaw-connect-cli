@@ -13,6 +13,115 @@ function buildInputSchema(
   };
 }
 
+const TIKHUB_PLATFORM_BOOTSTRAP_CONNECTORS = [
+  ['tiktok', 'TikTok', ['general_search', 'resolve_user_ids']],
+  [
+    'douyin',
+    'Douyin',
+    [
+      'video_detail',
+      'video_statistics',
+      'live_hot_search',
+      'hot_search',
+      'add_video_play_count',
+    ],
+  ],
+  [
+    'instagram',
+    'Instagram',
+    ['user_info_by_username', 'general_search', 'user_profile'],
+  ],
+  [
+    'linkedin',
+    'LinkedIn',
+    ['user_profile', 'user_posts', 'search_people', 'post_detail'],
+  ],
+  [
+    'reddit',
+    'Reddit',
+    ['home_feed', 'popular_feed', 'post_detail', 'trending_searches'],
+  ],
+  [
+    'threads',
+    'Threads',
+    ['user_info', 'user_info_by_id', 'user_posts', 'post_detail'],
+  ],
+  [
+    'wechat',
+    'WeChat',
+    [
+      'channels_search_videos',
+      'channels_user_profile',
+      'channels_video_detail',
+      'mp_article_detail',
+      'mp_account_profile',
+      'mp_article_stats',
+      'search',
+      'search_videos',
+    ],
+  ],
+  [
+    'weibo',
+    'Weibo',
+    [
+      'user_info',
+      'user_info_detail',
+      'user_timeline',
+      'user_profile_feed',
+      'status_detail',
+      'hot_search',
+    ],
+  ],
+  [
+    'xiaohongshu',
+    'Xiaohongshu',
+    [
+      'image_note_detail',
+      'video_note_detail',
+      'note_comments',
+      'note_sub_comments',
+      'user_info',
+      'search_notes',
+      'topic_info',
+      'topic_feed',
+      'creator_inspiration_feed',
+      'creator_hot_inspiration_feed',
+      'web_note_detail',
+      'search_suggest',
+      'hot_list',
+      'web_note_comments',
+      'pgy_blogger_detail',
+      'pgy_blogger_core_data',
+      'pgy_blogger_fans_summary',
+      'pgy_blogger_fans_history',
+    ],
+  ],
+  ['youtube', 'YouTube', ['search_suggestions']],
+  ['zhihu', 'Zhihu', ['hot_list', 'column_article_detail']],
+] as const;
+
+function buildTikhubInputSchema(operations: readonly string[]) {
+  return buildInputSchema(
+    {
+      operation: {
+        type: 'string',
+        description:
+          'Optional TikHub operation name. Defaults to the first supported operation.',
+        enum: [...operations],
+      },
+      params: {
+        type: 'object',
+        description: 'TikHub operation parameters as a JSON object.',
+      },
+      raw: {
+        type: 'boolean',
+        description: 'Return the raw AIAPI Center envelope when true.',
+      },
+    },
+    ['params']
+  );
+}
+
 function bootstrapConnector({
   id,
   name,
@@ -52,6 +161,21 @@ function bootstrapConnector({
       emergencyDisable: false,
     },
   };
+}
+
+function bootstrapTikhubConnector([
+  platform,
+  name,
+  operations,
+]: (typeof TIKHUB_PLATFORM_BOOTSTRAP_CONNECTORS)[number]) {
+  return bootstrapConnector({
+    id: `social.tikhub.${platform}`,
+    name: `${name} Social Data`,
+    category: 'social-readers',
+    description: `Call TikHub-backed ${name} operations through AIAPI Center and return normalized social data for agents.`,
+    connectorType: 'read_only',
+    inputSchema: buildTikhubInputSchema(operations),
+  });
 }
 
 export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
@@ -539,6 +663,91 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
         []
       ),
     }),
+    bootstrapConnector({
+      id: 'search.tiktok',
+      name: 'TikTok Search',
+      category: 'social-readers',
+      description:
+        'Search public TikTok videos through managed Apify provider and return normalized evidence rows.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          query: {
+            type: 'string',
+            description: 'Keyword query to search TikTok videos.',
+          },
+          hashtag: {
+            type: 'string',
+            description: 'Optional hashtag to search (without #).',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional number of videos to return.',
+          },
+        },
+        ['query']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'read.tiktok.video',
+      name: 'TikTok Video Read',
+      category: 'social-readers',
+      description:
+        'Read a public TikTok video by URL through managed Apify provider and return normalized metadata and metrics.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          url: {
+            type: 'string',
+            description: 'Public TikTok video URL.',
+          },
+        },
+        ['url']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'search.instagram',
+      name: 'Instagram Search',
+      category: 'social-readers',
+      description:
+        'Search public Instagram posts through managed Apify provider and return normalized evidence rows.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          query: {
+            type: 'string',
+            description: 'Keyword query to search Instagram posts.',
+          },
+          hashtag: {
+            type: 'string',
+            description: 'Optional hashtag to search (without #).',
+          },
+          limit: {
+            type: 'number',
+            description: 'Optional number of posts to return.',
+          },
+        },
+        ['query']
+      ),
+    }),
+    bootstrapConnector({
+      id: 'read.instagram.post',
+      name: 'Instagram Post Read',
+      category: 'social-readers',
+      description:
+        'Read a public Instagram post or Reel by URL through managed Apify provider and return normalized metadata and metrics.',
+      connectorType: 'read_only',
+      inputSchema: buildInputSchema(
+        {
+          url: {
+            type: 'string',
+            description: 'Public Instagram post URL.',
+          },
+        },
+        ['url']
+      ),
+    }),
+    ...TIKHUB_PLATFORM_BOOTSTRAP_CONNECTORS.map(bootstrapTikhubConnector),
     bootstrapConnector({
       id: 'search.producthunt',
       name: 'Product Hunt Search',

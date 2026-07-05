@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { BUILTIN_BOOTSTRAP_CATALOG } from '../../src/catalog/bootstrap.js';
 import type { CachedCatalogEnvelope } from '../../src/catalog/cache.js';
 import { resolveRegistryCatalog } from '../../src/catalog/service.js';
 import type { RegistryCatalogResponse } from '../../src/catalog/types.js';
@@ -179,5 +180,27 @@ describe('registry catalog service', () => {
 
     expect(result.source).toBe('cache');
     expect(fetchVersion).not.toHaveBeenCalled();
+  });
+
+  it('keeps TikHub social connectors in the offline bootstrap catalog', () => {
+    const ids = BUILTIN_BOOTSTRAP_CATALOG.connectors.map(
+      (entry) => entry.manifest.id
+    );
+
+    expect(ids).toEqual(
+      expect.arrayContaining([
+        'social.tikhub.tiktok',
+        'social.tikhub.douyin',
+        'social.tikhub.instagram',
+        'social.tikhub.linkedin',
+        'social.tikhub.reddit',
+        'social.tikhub.threads',
+        'social.tikhub.wechat',
+        'social.tikhub.weibo',
+        'social.tikhub.xiaohongshu',
+        'social.tikhub.youtube',
+        'social.tikhub.zhihu',
+      ])
+    );
   });
 });

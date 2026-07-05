@@ -45,13 +45,13 @@ vernclaw-cli invoke search.producthunt --query "launch analytics" --limit 10 --f
 
 ## Parameters
 
-| Flag          | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| `--query`     | Yes      | Product Hunt search query           |
-| `--limit`     | No       | Number of launches to return        |
-| `--from-date` | No       | Lower date bound in `YYYY-MM-DD`    |
-| `--to-date`   | No       | Upper date bound in `YYYY-MM-DD`    |
-| `--sort`      | No       | Optional managed provider sort mode |
+| Flag          | Required | Description                                            |
+| ------------- | -------- | ------------------------------------------------------ |
+| `--query`     | Yes      | Product Hunt search query                              |
+| `--limit`     | No       | Number of launches to return                           |
+| `--from-date` | No       | Lower date bound in `YYYY-MM-DD`                       |
+| `--to-date`   | No       | Upper date bound in `YYYY-MM-DD`                       |
+| `--sort`      | No       | One of `featured_at`, `votes`, `comments`, or `recent` |
 
 ## Output
 

@@ -776,6 +776,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
           sort: {
             type: 'string',
             description: 'Optional managed provider sort mode.',
+            enum: ['featured_at', 'votes', 'comments', 'recent'],
           },
         },
         ['query']

@@ -31,10 +31,11 @@ vernclaw-cli status
 If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless agents, generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) and run `vernclaw-cli login --api-key YOUR_KEY`.
 
 ## Invocation
+**Note:** The `social.tikhub.youtube` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
 
 ```bash
-vernclaw-cli invoke social.tikhub.youtube --operation search_suggestions --params '{"keyword":"AI tools"}'
-vernclaw-cli describe social.tikhub.youtube
+# vernclaw-cli invoke social.tikhub.youtube --operation search_suggestions --params '{"keyword":"AI tools"}'
+# vernclaw-cli describe social.tikhub.youtube
 ```
 
 ## Parameters
@@ -71,16 +72,17 @@ The `data` object includes normalized fields such as:
 Execution mode: **synchronous**.
 
 ## Workflow
+**Note:** The `social.tikhub.youtube` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
 
 ```bash
 # 1. Check authentication
 vernclaw-cli status
 
 # 2. Inspect the connector schema
-vernclaw-cli describe social.tikhub.youtube
+# vernclaw-cli describe social.tikhub.youtube
 
 # 3. Run a YouTube operation
-vernclaw-cli invoke social.tikhub.youtube --operation search_suggestions --params '{"keyword":"AI tools"}'
+# vernclaw-cli invoke social.tikhub.youtube --operation search_suggestions --params '{"keyword":"AI tools"}'
 ```
 
 ## Limits

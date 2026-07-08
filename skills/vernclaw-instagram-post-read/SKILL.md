@@ -32,9 +32,11 @@ If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless
 
 ## Invocation
 
+**Note:** The `read.instagram.post` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
+
 ```bash
-vernclaw-cli invoke read.instagram.post --url "https://www.instagram.com/p/POST_ID/"
-vernclaw-cli describe read.instagram.post
+# vernclaw-cli invoke read.instagram.post --url "https://www.instagram.com/p/POST_ID/"
+# vernclaw-cli describe read.instagram.post
 ```
 
 ## Parameters
@@ -59,15 +61,17 @@ Execution mode: **synchronous**.
 
 ## Workflow
 
+**Note:** The `read.instagram.post` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
+
 ```bash
 # 1. Check authentication
 vernclaw-cli status
 
 # 2. Inspect the connector schema
-vernclaw-cli describe read.instagram.post
+# vernclaw-cli describe read.instagram.post
 
 # 3. Run the connector
-vernclaw-cli invoke read.instagram.post --url "https://www.instagram.com/p/POST_ID/"
+# vernclaw-cli invoke read.instagram.post --url "https://www.instagram.com/p/POST_ID/"
 ```
 
 ## Limits

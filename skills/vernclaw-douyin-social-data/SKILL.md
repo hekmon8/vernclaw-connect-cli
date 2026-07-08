@@ -32,9 +32,11 @@ If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless
 
 ## Invocation
 
+**Note:** The `social.tikhub.douyin` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
+
 ```bash
-vernclaw-cli invoke social.tikhub.douyin --operation video_detail --params '{"aweme_id":"7123456789012345678"}'
-vernclaw-cli describe social.tikhub.douyin
+# vernclaw-cli invoke social.tikhub.douyin --operation video_detail --params '{"aweme_id":"7123456789012345678"}'
+# vernclaw-cli describe social.tikhub.douyin
 ```
 
 ## Parameters
@@ -76,15 +78,17 @@ Execution mode: **synchronous**.
 
 ## Workflow
 
+**Note:** The `social.tikhub.douyin` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
+
 ```bash
 # 1. Check authentication
 vernclaw-cli status
 
 # 2. Inspect the connector schema
-vernclaw-cli describe social.tikhub.douyin
+# vernclaw-cli describe social.tikhub.douyin
 
 # 3. Run a Douyin operation
-vernclaw-cli invoke social.tikhub.douyin --operation video_detail --params '{"aweme_id":"7123456789012345678"}'
+# vernclaw-cli invoke social.tikhub.douyin --operation video_detail --params '{"aweme_id":"7123456789012345678"}'
 ```
 
 ## Limits

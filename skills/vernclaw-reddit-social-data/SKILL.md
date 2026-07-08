@@ -32,9 +32,11 @@ If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless
 
 ## Invocation
 
+**Note:** The `social.tikhub.reddit` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
+
 ```bash
-vernclaw-cli invoke social.tikhub.reddit --operation home_feed --params '{}'
-vernclaw-cli describe social.tikhub.reddit
+# vernclaw-cli invoke social.tikhub.reddit --operation home_feed --params '{}'
+# vernclaw-cli describe social.tikhub.reddit
 ```
 
 ## Parameters
@@ -75,15 +77,17 @@ Execution mode: **synchronous**.
 
 ## Workflow
 
+**Note:** The `social.tikhub.reddit` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
+
 ```bash
 # 1. Check authentication
 vernclaw-cli status
 
 # 2. Inspect the connector schema
-vernclaw-cli describe social.tikhub.reddit
+# vernclaw-cli describe social.tikhub.reddit
 
 # 3. Run a Reddit operation
-vernclaw-cli invoke social.tikhub.reddit --operation home_feed --params '{}'
+# vernclaw-cli invoke social.tikhub.reddit --operation home_feed --params '{}'
 ```
 
 ## Limits

@@ -32,13 +32,7 @@ If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless
 
 ## Invocation
 
-**Note:** The `search.instagram` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
-
-```bash
-# vernclaw-cli invoke search.instagram --query "AI tools" --limit 5
-# vernclaw-cli invoke search.instagram --query "AI tools" --hashtag aitools
-# vernclaw-cli describe search.instagram
-```
+This connector is currently not available in the offline catalog.
 
 ## Parameters
 
@@ -64,18 +58,7 @@ Execution mode: **synchronous**.
 
 ## Workflow
 
-**Note:** The `search.instagram` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
-
-```bash
-# 1. Check authentication
-vernclaw-cli status
-
-# 2. Inspect the connector schema
-# vernclaw-cli describe search.instagram
-
-# 3. Run the connector
-# vernclaw-cli invoke search.instagram --query "AI tools" --limit 5
-```
+This connector is currently not available in the offline catalog.
 
 ## Limits
 

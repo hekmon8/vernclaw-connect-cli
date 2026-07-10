@@ -32,12 +32,7 @@ If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless
 
 ## Invocation
 
-**Note:** The `social.tikhub.instagram` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
-
-```bash
-# vernclaw-cli invoke social.tikhub.instagram --operation user_info_by_username --params '{"username":"instagram"}'
-# vernclaw-cli describe social.tikhub.instagram
-```
+This connector is currently not available in the offline catalog.
 
 ## Parameters
 
@@ -76,19 +71,7 @@ Execution mode: **synchronous**.
 
 ## Workflow
 
-**Note:** The `social.tikhub.instagram` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
-
-```bash
-# 1. Check authentication
-vernclaw-cli status
-
-# 2. Inspect the connector schema
-# vernclaw-cli describe social.tikhub.instagram
-
-# 3. Run a Instagram operation
-# vernclaw-cli invoke social.tikhub.instagram --operation user_info_by_username --params '{"username":"instagram"}'
-```
-
+This connector is currently not available in the offline catalog.
 ## Limits
 
 - Only public or provider-accessible data supported by TikHub is returned.

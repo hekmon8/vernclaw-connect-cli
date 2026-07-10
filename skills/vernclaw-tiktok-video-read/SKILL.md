@@ -32,12 +32,7 @@ If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless
 
 ## Invocation
 
-**Note:** The `read.tiktok.video` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
-
-```bash
-# vernclaw-cli invoke read.tiktok.video --url "https://www.tiktok.com/@user/video/1234567890"
-# vernclaw-cli describe read.tiktok.video
-```
+This connector is currently not available in the offline catalog.
 
 ## Parameters
 
@@ -61,19 +56,7 @@ Execution mode: **synchronous**.
 
 ## Workflow
 
-**Note:** The `read.tiktok.video` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
-
-```bash
-# 1. Check authentication
-vernclaw-cli status
-
-# 2. Inspect the connector schema
-# vernclaw-cli describe read.tiktok.video
-
-# 3. Run the connector
-# vernclaw-cli invoke read.tiktok.video --url "https://www.tiktok.com/@user/video/1234567890"
-```
-
+This connector is currently not available in the offline catalog.
 ## Limits
 
 - Only public provider-accessible content is returned.

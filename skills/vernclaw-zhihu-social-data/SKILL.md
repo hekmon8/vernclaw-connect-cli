@@ -31,12 +31,8 @@ vernclaw-cli status
 If the CLI is not authenticated, run `vernclaw-cli login`. For CI/CD or headless agents, generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/settings/connectors) and run `vernclaw-cli login --api-key YOUR_KEY`.
 
 ## Invocation
-**Note:** The `social.tikhub.zhihu` connector is currently not available in the offline catalog. The following examples are preserved for reference when this connector becomes available.
 
-```bash
-# vernclaw-cli invoke social.tikhub.zhihu --operation hot_list --params '{}'
-# vernclaw-cli describe social.tikhub.zhihu
-```
+This connector is currently not available in the offline catalog.
 
 ## Parameters
 
@@ -73,19 +69,8 @@ The `data` object includes normalized fields such as:
 Execution mode: **synchronous**.
 
 ## Workflow
-**Note:** The `social.tikhub.zhihu` connector is currently not available in the offline catalog. The following workflow is preserved for reference when this connector becomes available.
 
-```bash
-# 1. Check authentication
-vernclaw-cli status
-
-# 2. Inspect the connector schema
-# vernclaw-cli describe social.tikhub.zhihu
-
-# 3. Run a Zhihu operation
-# vernclaw-cli invoke social.tikhub.zhihu --operation hot_list --params '{}'
-```
-
+This connector is currently not available in the offline catalog.
 ## Limits
 
 - Only public or provider-accessible data supported by TikHub is returned.

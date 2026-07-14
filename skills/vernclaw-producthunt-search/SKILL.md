@@ -70,7 +70,7 @@ The `invoke` command prints compact JSON to stdout by default:
 
 Execution mode: **synchronous**.
 
-Limits: Product Hunt API v2 does not expose global post full-text search, so AIAPI Center filters fetched public launches by keyword. Effective Product Hunt page size is capped at 20 to stay within upstream GraphQL complexity limits.
+Limits: Product Hunt API v2 does not expose global post full-text search, so Vernclaw filters fetched public launches by keyword. Effective Product Hunt page size is capped at 20.
 
 ## Workflow
 

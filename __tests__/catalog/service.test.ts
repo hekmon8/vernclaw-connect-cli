@@ -182,24 +182,24 @@ describe('registry catalog service', () => {
     expect(fetchVersion).not.toHaveBeenCalled();
   });
 
-  it('keeps TikHub social connectors in the offline bootstrap catalog', () => {
+  it('keeps social connectors in the offline bootstrap catalog', () => {
     const ids = BUILTIN_BOOTSTRAP_CATALOG.connectors.map(
       (entry) => entry.manifest.id
     );
 
     expect(ids).toEqual(
       expect.arrayContaining([
-        'social.tikhub.tiktok',
-        'social.tikhub.douyin',
-        'social.tikhub.instagram',
-        'social.tikhub.linkedin',
-        'social.tikhub.reddit',
-        'social.tikhub.threads',
-        'social.tikhub.wechat',
-        'social.tikhub.weibo',
-        'social.tikhub.xiaohongshu',
-        'social.tikhub.youtube',
-        'social.tikhub.zhihu',
+        'social.tiktok',
+        'social.douyin',
+        'social.instagram',
+        'social.linkedin',
+        'social.reddit',
+        'social.threads',
+        'social.wechat',
+        'social.weibo',
+        'social.xiaohongshu',
+        'social.youtube',
+        'social.zhihu',
       ])
     );
   });

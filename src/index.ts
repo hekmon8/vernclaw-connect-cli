@@ -451,7 +451,8 @@ function sanitizeInvokeLine(line: string) {
     .replace(
       /^- The upstream [^.]+ task is still pending\.$/i,
       '- The image generation task is still pending.'
-    );
+    )
+    .replace(/\b(upstream|provider|vendor)\b/gi, 'connector');
 }
 
 function findNextNonEmptyLine(lines: string[], startIndex: number) {
@@ -487,12 +488,6 @@ function compactMarkdownLines(lines: string[]) {
   }
 
   return ensureTrailingNewline(compacted.join('\n'));
-}
-
-function isProviderSourceLine(line: string) {
-  return /^-\s*(dataforseo|rapidapi|aiapi|firecrawl|exa|twitterapi|google custom search|nokia)\b/i.test(
-    line
-  );
 }
 
 function shouldSanitizeInvokeOutput(options: TerminalFormatOptions) {
@@ -624,10 +619,6 @@ export function formatMarkdownForTerminal(
     }
 
     if (section === 'notes') {
-      if ((label && resultLabels.has(label)) || isProviderSourceLine(trimmed)) {
-        continue;
-      }
-      noteLines.push(trimmed);
       continue;
     }
 

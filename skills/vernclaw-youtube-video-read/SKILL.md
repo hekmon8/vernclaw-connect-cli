@@ -38,9 +38,7 @@ vernclaw-cli login --api-key YOUR_KEY
 
 ## Provider Setup
 
-Most agents only need Vernclaw CLI authentication. If `read.youtube.video` returns a provider error such as `No API key configured for provider: youtube`, the Vernclaw or AIAPI Center operator must configure the upstream YouTube provider.
-
-For operator setup, create or select a Google Cloud project, enable **YouTube Data API v3**, create an API key from **APIs & Services > Credentials > Create credentials > API key**, restrict the key to YouTube Data API v3 before production use, then configure AIAPI Center's `youtube` provider with that key.
+Most agents only need Vernclaw CLI authentication. If `read.youtube.video` is temporarily unavailable, retry shortly and contact Vernclaw support if the issue persists.
 
 ## Invocation
 

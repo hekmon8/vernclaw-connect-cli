@@ -45,19 +45,19 @@ vernclaw-cli invoke seo.google-trends --keywords "translator" --market us --lang
 
 ## Parameters
 
-| Flag              | Required | Description                                                                                                                       |
-| ----------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `--keywords`      | Yes      | Seed keyword or comma-separated keyword list. Use one keyword for related rows.                                                   |
-| `--market`        | No       | Market code such as `us`                                                                                                          |
-| `--language`      | No       | Language name such as `english`                                                                                                   |
-| `--time-range`    | No       | Preset range such as `past_7_days`, `past_30_days`, or `past_12_months`                                                           |
-| `--date-from`     | No       | Custom start date in `YYYY-MM-DD` format. Takes precedence over time range when used with `--date-to`.                            |
-| `--date-to`       | No       | Custom end date in `YYYY-MM-DD` format                                                                                            |
-| `--type`          | No       | Search type: `web`, `news`, `youtube`, `images`, or `froogle`                                                                     |
-| `--category-code` | No       | Google Trends category code, default `0`                                                                                          |
-| `--item-types`    | No       | Comma-separated item types: `google_trends_graph`, `google_trends_map`, `google_trends_topics_list`, `google_trends_queries_list` |
-| `--points`        | No       | Number of graph points to include in normalized `series`; defaults to `20`                                                        |
-| `--all`           | No       | Return all normalized graph points                                                                                                |
+| Flag              | Required | Description                                                                                                                                                |
+| ----------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--keywords`      | Yes      | Seed keyword or comma-separated keyword list. Use one keyword for related rows.                                                                            |
+| `--market`        | No       | Market code such as `us`                                                                                                                                   |
+| `--language`      | No       | Language name such as `english`                                                                                                                            |
+| `--time-range`    | No       | Preset range such as `past_7_days`, `past_30_days`, or `past_12_months`; common Google aliases such as `30d`, `now 7-d`, and `today 3-m` are also accepted |
+| `--date-from`     | No       | Custom start date in `YYYY-MM-DD` format. Takes precedence over time range when used with `--date-to`.                                                     |
+| `--date-to`       | No       | Custom end date in `YYYY-MM-DD` format                                                                                                                     |
+| `--type`          | No       | Search type: `web`, `news`, `youtube`, `images`, or `froogle`                                                                                              |
+| `--category-code` | No       | Google Trends category code, default `0`                                                                                                                   |
+| `--item-types`    | No       | Comma-separated item types: `google_trends_graph`, `google_trends_map`, `google_trends_topics_list`, `google_trends_queries_list`                          |
+| `--points`        | No       | Number of graph points to include in normalized `series`; defaults to `20`                                                                                 |
+| `--all`           | No       | Return all normalized graph points                                                                                                                         |
 
 ## Output
 

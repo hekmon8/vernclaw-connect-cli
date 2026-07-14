@@ -67,7 +67,7 @@ The `invoke` command prints compact JSON to stdout by default:
 - `data` contains a normalized summary and `metrics` with fields such as:
   - **domain** — normalized target domain
   - **domain_rating** — DR score on a 0–100 scale
-  - **ahrefs_rank** — returned when the upstream free endpoint provides it
+  - **external_rank** — optional rank signal when available
 - `--pretty` is for human-readable terminal output only; do not parse it programmatically.
 - For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 - The CLI omits provider raw payloads from normal connector output.

@@ -43,11 +43,9 @@ Generate an API key at [vernclaw.com/settings/connectors](https://vernclaw.com/s
 
 By default, the CLI targets `https://vernclaw.com`. For local or self-hosted environments, pass `--api-base-url` or set `VERNCLAW_CLI_API_BASE_URL`.
 
-## Provider Keys
+## Managed Connector Access
 
-Most CLI users only need Vernclaw authentication. Provider API keys are configured by the Vernclaw or AIAPI Center operator, not by each CLI user.
-
-For YouTube connectors, create or select a Google Cloud project, enable **YouTube Data API v3**, then create an API key from **APIs & Services → Credentials → Create credentials → API key**. Restrict the key to YouTube Data API v3 before production use, then configure AIAPI Center's `youtube` provider with that key.
+Most CLI users only need Vernclaw authentication. Connector access is managed by Vernclaw, so individual CLI users do not need to configure separate service credentials.
 
 ## Local Development Against a Local Vernclaw App
 
@@ -99,17 +97,17 @@ The `login` command stores the local `apiBaseUrl` in `~/.vernclaw-cli.json`, so 
 | `read.tiktok.video`         | Social   | sync  | [Skill](./skills/vernclaw-tiktok-video-read/SKILL.md)         |
 | `search.instagram`          | Social   | sync  | [Skill](./skills/vernclaw-instagram-search/SKILL.md)          |
 | `read.instagram.post`       | Social   | sync  | [Skill](./skills/vernclaw-instagram-post-read/SKILL.md)       |
-| `social.tikhub.tiktok`      | Social   | sync  | [Skill](./skills/vernclaw-tiktok-social-data/SKILL.md)        |
-| `social.tikhub.douyin`      | Social   | sync  | [Skill](./skills/vernclaw-douyin-social-data/SKILL.md)        |
-| `social.tikhub.instagram`   | Social   | sync  | [Skill](./skills/vernclaw-instagram-social-data/SKILL.md)     |
-| `social.tikhub.linkedin`    | Social   | sync  | [Skill](./skills/vernclaw-linkedin-social-data/SKILL.md)      |
-| `social.tikhub.reddit`      | Social   | sync  | [Skill](./skills/vernclaw-reddit-social-data/SKILL.md)        |
-| `social.tikhub.threads`     | Social   | sync  | [Skill](./skills/vernclaw-threads-social-data/SKILL.md)       |
-| `social.tikhub.wechat`      | Social   | sync  | [Skill](./skills/vernclaw-wechat-social-data/SKILL.md)        |
-| `social.tikhub.weibo`       | Social   | sync  | [Skill](./skills/vernclaw-weibo-social-data/SKILL.md)         |
-| `social.tikhub.xiaohongshu` | Social   | sync  | [Skill](./skills/vernclaw-xiaohongshu-social-data/SKILL.md)   |
-| `social.tikhub.youtube`     | Social   | sync  | [Skill](./skills/vernclaw-youtube-social-data/SKILL.md)       |
-| `social.tikhub.zhihu`       | Social   | sync  | [Skill](./skills/vernclaw-zhihu-social-data/SKILL.md)         |
+| `social.tiktok`             | Social   | sync  | [Skill](./skills/vernclaw-tiktok-social-data/SKILL.md)        |
+| `social.douyin`             | Social   | sync  | [Skill](./skills/vernclaw-douyin-social-data/SKILL.md)        |
+| `social.instagram`          | Social   | sync  | [Skill](./skills/vernclaw-instagram-social-data/SKILL.md)     |
+| `social.linkedin`           | Social   | sync  | [Skill](./skills/vernclaw-linkedin-social-data/SKILL.md)      |
+| `social.reddit`             | Social   | sync  | [Skill](./skills/vernclaw-reddit-social-data/SKILL.md)        |
+| `social.threads`            | Social   | sync  | [Skill](./skills/vernclaw-threads-social-data/SKILL.md)       |
+| `social.wechat`             | Social   | sync  | [Skill](./skills/vernclaw-wechat-social-data/SKILL.md)        |
+| `social.weibo`              | Social   | sync  | [Skill](./skills/vernclaw-weibo-social-data/SKILL.md)         |
+| `social.xiaohongshu`        | Social   | sync  | [Skill](./skills/vernclaw-xiaohongshu-social-data/SKILL.md)   |
+| `social.youtube`            | Social   | sync  | [Skill](./skills/vernclaw-youtube-social-data/SKILL.md)       |
+| `social.zhihu`              | Social   | sync  | [Skill](./skills/vernclaw-zhihu-social-data/SKILL.md)         |
 | `search.youtube`            | Video    | sync  | [Skill](./skills/vernclaw-youtube-search/SKILL.md)            |
 | `read.youtube.video`        | Video    | sync  | [Skill](./skills/vernclaw-youtube-video-read/SKILL.md)        |
 | `search.producthunt`        | Product  | sync  | [Skill](./skills/vernclaw-producthunt-search/SKILL.md)        |

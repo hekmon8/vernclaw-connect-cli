@@ -106,16 +106,12 @@ function buildTikhubInputSchema(operations: readonly string[]) {
       operation: {
         type: 'string',
         description:
-          'Optional TikHub operation name. Defaults to the first supported operation.',
+          'Optional operation name. Defaults to the first supported operation.',
         enum: [...operations],
       },
       params: {
         type: 'object',
-        description: 'TikHub operation parameters as a JSON object.',
-      },
-      raw: {
-        type: 'boolean',
-        description: 'Return the raw AIAPI Center envelope when true.',
+        description: 'Operation parameters as a JSON object.',
       },
     },
     ['params']
@@ -169,10 +165,10 @@ function bootstrapTikhubConnector([
   operations,
 ]: (typeof TIKHUB_PLATFORM_BOOTSTRAP_CONNECTORS)[number]) {
   return bootstrapConnector({
-    id: `social.tikhub.${platform}`,
+    id: `social.${platform}`,
     name: `${name} Social Data`,
     category: 'social-readers',
-    description: `Call TikHub-backed ${name} operations through AIAPI Center and return normalized social data for agents.`,
+    description: `Run ${name} operations and return normalized social data for agents.`,
     connectorType: 'read_only',
     inputSchema: buildTikhubInputSchema(operations),
   });
@@ -309,7 +305,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       name: 'Google Trends Get',
       category: 'seo',
       description:
-        'Fetch trend indicator points for one or more keywords. Synchronous requests may wait up to 60 seconds when upstream trend data is slow.',
+        'Fetch trend indicator points for one or more keywords. Synchronous requests may wait up to 60 seconds when trend data is slow.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -557,8 +553,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       id: 'read.x.replies',
       name: 'X Post Replies Read',
       category: 'social-readers',
-      description:
-        'Read public replies for a referenced X post through twitterapi.io.',
+      description: 'Read public replies for a referenced X post.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -668,7 +663,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       name: 'TikTok Search',
       category: 'social-readers',
       description:
-        'Search public TikTok videos through managed Apify provider and return normalized evidence rows.',
+        'Search public TikTok videos through managed access and return normalized evidence rows.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -693,7 +688,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       name: 'TikTok Video Read',
       category: 'social-readers',
       description:
-        'Read a public TikTok video by URL through managed Apify provider and return normalized metadata and metrics.',
+        'Read a public TikTok video by URL through managed access and return normalized metadata and metrics.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -710,7 +705,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       name: 'Instagram Search',
       category: 'social-readers',
       description:
-        'Search public Instagram posts through managed Apify provider and return normalized evidence rows.',
+        'Search public Instagram posts through managed access and return normalized evidence rows.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -735,7 +730,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
       name: 'Instagram Post Read',
       category: 'social-readers',
       description:
-        'Read a public Instagram post or Reel by URL through managed Apify provider and return normalized metadata and metrics.',
+        'Read a public Instagram post or Reel by URL through managed access and return normalized metadata and metrics.',
       connectorType: 'read_only',
       inputSchema: buildInputSchema(
         {
@@ -775,7 +770,7 @@ export const BUILTIN_BOOTSTRAP_CATALOG: ConnectorRegistryCatalog = {
           },
           sort: {
             type: 'string',
-            description: 'Optional managed provider sort mode.',
+            description: 'Optional managed sort mode.',
             enum: ['featured_at', 'votes', 'comments', 'recent'],
           },
         },

@@ -1,16 +1,16 @@
 ---
 name: vernclaw-instagram-social-data
 license: MIT
-description: Use when calling TikHub-backed Instagram social data operations through Vernclaw's CLI.
+description: Use when calling Instagram social data operations through Vernclaw's CLI.
 ---
 
 # Instagram Social Data — CLI Skill
 
-Call TikHub-backed Instagram operations through Vernclaw Connect CLI and return normalized social data for AI agents.
+Call Instagram operations through Vernclaw Connect CLI and return normalized social data for AI agents.
 
 ## When to Use
 
-- Run Instagram research from an agent workflow without managing a TikHub key
+- Run Instagram research from an agent workflow without managing separate credentials
 - Fetch public search, profile, feed, detail, trend, or comment data supported by this connector
 - Standardize Instagram results into Vernclaw's compact JSON connector envelope
 
@@ -36,11 +36,10 @@ This connector is currently not available in the offline catalog.
 
 ## Parameters
 
-| Flag          | Required | Description                                                                                                |
-| ------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
-| `--operation` | No       | TikHub operation name. Defaults to `user_info_by_username` when omitted.                                   |
-| `--params`    | Yes      | JSON object passed to the selected TikHub operation. Use `'{}'` when the operation has no required params. |
-| `--raw`       | No       | Return the raw AIAPI Center envelope when true.                                                            |
+| Flag          | Required | Description                                                                                         |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------- |
+| `--operation` | No       | Operation name. Defaults to `user_info_by_username` when omitted.                                   |
+| `--params`    | Yes      | JSON object passed to the selected operation. Use `'{}'` when the operation has no required params. |
 
 ## Supported Operations
 
@@ -55,16 +54,16 @@ This connector is currently not available in the offline catalog.
 `invoke` prints compact JSON to `stdout` by default:
 
 ```json
-{"status":200,"data":{}}
+{ "status": 200, "data": {} }
 ```
 
-Parse the numeric `status` first, then read `data`. The CLI omits provider raw payloads from normal connector output. Use `--pretty` only for human-readable terminal output, not automation. For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
+Parse the numeric `status` first, then read `data`. The CLI returns normalized connector output only. Use `--pretty` only for human-readable terminal output, not automation. For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 
 The `data` object includes normalized fields such as:
 
 - **Platform** — `instagram`
-- **Operation** — the TikHub operation that ran
-- **Result** — normalized object or array returned by AIAPI Center
+- **Operation** — the operation that ran
+- **Result** — normalized object or array returned by the connector
 - **Items** — result rows when the operation returns a list
 
 Execution mode: **synchronous**.
@@ -72,11 +71,12 @@ Execution mode: **synchronous**.
 ## Workflow
 
 This connector is currently not available in the offline catalog.
+
 ## Limits
 
-- Only public or provider-accessible data supported by TikHub is returned.
-- Some operations require upstream IDs, URLs, usernames, or pagination fields inside `--params`.
-- Mutating operations require explicit acknowledgement in AIAPI Center before they run.
+- Only public data supported by this connector is returned.
+- Some operations require IDs, URLs, usernames, or pagination fields inside `--params`.
+- Mutating operations require explicit acknowledgement before they run.
 
 ## Related Resources
 

@@ -82,8 +82,24 @@ export async function runInvokeCommand(
     };
   }
 
+  const payload = buildInvokePayload(flags);
+  if (
+    connectorId === 'seo.google-trends' &&
+    payload &&
+    typeof payload === 'object' &&
+    !Array.isArray(payload) &&
+    ['date-from', 'date-to', 'date_from', 'date_to'].some(
+      (key) => typeof payload[key] === 'string' && payload[key].trim()
+    )
+  ) {
+    // DataForSEO ignores presets when either custom date is supplied. Apply
+    // that precedence before the offline/remote schema validates the preset.
+    delete payload['time-range'];
+    delete payload.time_range;
+  }
+
   const payloadValidation = validateAndNormalizeInvokePayload(
-    buildInvokePayload(flags),
+    payload,
     entry.manifest?.inputSchema
   );
 

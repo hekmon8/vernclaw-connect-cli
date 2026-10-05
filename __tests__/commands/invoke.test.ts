@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { BUILTIN_BOOTSTRAP_CATALOG } from '../../src/catalog/bootstrap.js';
 import { runInvokeCommand } from '../../src/commands/invoke.js';
 
 const { mockRequestApiJson, mockGetEffectiveConnectorById } = vi.hoisted(
@@ -274,5 +275,82 @@ describe('invoke command', () => {
       message: 'Requires vernclaw-cli >= 0.2.0',
     });
     expect(mockRequestApiJson).not.toHaveBeenCalled();
+  });
+});
+
+describe('Google Trends date precedence through the real offline schema', () => {
+  const config = {
+    apiBaseUrl: 'https://api.example.com',
+    apiKey: 'fixture-key',
+    credentialsFile: '/tmp/cred.json',
+    registryCatalogFile: '/tmp/catalog.json',
+  };
+  beforeEach(() => {
+    vi.clearAllMocks();
+    const manifest = BUILTIN_BOOTSTRAP_CATALOG.connectors.find(
+      (entry) => entry.manifest.id === 'seo.google-trends'
+    )?.manifest;
+    mockGetEffectiveConnectorById.mockResolvedValue({
+      id: 'seo.google-trends',
+      compatibilityState: 'supported',
+      manifest,
+    });
+    mockRequestApiJson.mockResolvedValue({ status: 200, data: {} });
+  });
+
+  it.each(['date-from', 'date-to', 'date_from', 'date_to'])(
+    'allows %s to override an ignored preset before enum validation',
+    async (field) => {
+      const result = await runInvokeCommand(config, 'seo.google-trends', {
+        keywords: 'translator',
+        [field]: '2026-05-01',
+        'time-range': 'ignored-invalid-range',
+      });
+      expect(result.status).toBe(200);
+      expect(mockRequestApiJson).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: { keywords: 'translator', [field]: '2026-05-01' },
+        })
+      );
+    }
+  );
+
+  it('retains enum validation when a custom date is blank', async () => {
+    const result = await runInvokeCommand(config, 'seo.google-trends', {
+      keywords: 'translator',
+      'date-from': ' ',
+      'time-range': 'invalid',
+    });
+    expect(result.status).toBe(400);
+    expect(mockRequestApiJson).not.toHaveBeenCalled();
+  });
+
+  it('passes all existing explore controls with typed item lists and category zero', async () => {
+    const result = await runInvokeCommand(config, 'seo.google-trends', {
+      keywords: 'translator',
+      market: 'us',
+      language: 'english',
+      'time-range': 'past_7_days',
+      type: 'web',
+      'category-code': '0',
+      'item-types': 'google_trends_queries_list,google_trends_topics_list',
+    });
+    expect(result.status).toBe(200);
+    expect(mockRequestApiJson).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: {
+          keywords: 'translator',
+          market: 'us',
+          language: 'english',
+          'time-range': 'past_7_days',
+          type: 'web',
+          'category-code': 0,
+          'item-types': [
+            'google_trends_queries_list',
+            'google_trends_topics_list',
+          ],
+        },
+      })
+    );
   });
 });

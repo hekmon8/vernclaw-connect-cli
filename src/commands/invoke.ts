@@ -88,9 +88,10 @@ export async function runInvokeCommand(
     payload &&
     typeof payload === 'object' &&
     !Array.isArray(payload) &&
-    ['date-from', 'date-to', 'date_from', 'date_to'].some(
-      (key) => typeof payload[key] === 'string' && payload[key].trim()
-    )
+    [
+      payload['date-from'] ?? payload.date_from,
+      payload['date-to'] ?? payload.date_to,
+    ].some((value) => typeof value === 'string' && value.trim())
   ) {
     // DataForSEO ignores presets when either custom date is supplied. Apply
     // that precedence before the offline/remote schema validates the preset.

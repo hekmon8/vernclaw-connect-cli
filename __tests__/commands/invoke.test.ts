@@ -325,6 +325,41 @@ describe('Google Trends date precedence through the real offline schema', () => 
     expect(mockRequestApiJson).not.toHaveBeenCalled();
   });
 
+  it.each([
+    ['date-from', 'date_from', ''],
+    ['date-from', 'date_from', ' '],
+    ['date-to', 'date_to', ''],
+    ['date-to', 'date_to', ' '],
+  ])(
+    'retains the preset when blank %s shadows populated %s',
+    async (primary, alias, blank) => {
+      const input = {
+        keywords: 'translator',
+        [primary]: blank,
+        [alias]: '2026-05-01',
+        'time-range': 'past_7_days',
+      };
+      const result = await runInvokeCommand(config, 'seo.google-trends', input);
+      expect(result.status).toBe(200);
+      expect(mockRequestApiJson).toHaveBeenCalledWith(
+        expect.objectContaining({ body: input })
+      );
+    }
+  );
+
+  it('rejects an invalid preset when both resolved dates are blank', async () => {
+    const result = await runInvokeCommand(config, 'seo.google-trends', {
+      keywords: 'translator',
+      'date-from': ' ',
+      date_from: '2026-05-01',
+      'date-to': '',
+      date_to: '2026-05-02',
+      'time-range': 'invalid',
+    });
+    expect(result.status).toBe(400);
+    expect(mockRequestApiJson).not.toHaveBeenCalled();
+  });
+
   it('passes all existing explore controls with typed item lists and category zero', async () => {
     const result = await runInvokeCommand(config, 'seo.google-trends', {
       keywords: 'translator',

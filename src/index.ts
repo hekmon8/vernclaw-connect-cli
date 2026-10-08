@@ -532,6 +532,9 @@ export function formatMarkdownForTerminal(
   };
 
   for (const rawLine of lines) {
+    if (/^- Provider:/i.test(rawLine.trim())) {
+      continue;
+    }
     const line = sanitizeInvokeLine(rawLine).trimEnd();
     const trimmed = line.trim();
 
@@ -591,10 +594,6 @@ export function formatMarkdownForTerminal(
       }
 
       output.push('');
-      continue;
-    }
-
-    if (/^- Provider:/i.test(trimmed)) {
       continue;
     }
 

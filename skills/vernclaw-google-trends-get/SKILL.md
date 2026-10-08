@@ -51,7 +51,7 @@ vernclaw-cli invoke seo.google-trends --keywords "translator" --market us --lang
 | `--market`        | No       | Market code such as `us`                                                                                                                                   |
 | `--language`      | No       | Language name such as `english`                                                                                                                            |
 | `--time-range`    | No       | Preset range such as `past_7_days`, `past_30_days`, or `past_12_months`; common Google aliases such as `30d`, `now 7-d`, and `today 3-m` are also accepted |
-| `--date-from`     | No       | Custom start date in `YYYY-MM-DD` format. Takes precedence over time range when used with `--date-to`.                                                     |
+| `--date-from`     | No       | Custom start date in `YYYY-MM-DD` format. Either custom date flag takes precedence over `--time-range`.                                                     |
 | `--date-to`       | No       | Custom end date in `YYYY-MM-DD` format                                                                                                                     |
 | `--type`          | No       | Search type: `web`, `news`, `youtube`, `images`, or `froogle`                                                                                              |
 | `--category-code` | No       | Google Trends category code, default `0`                                                                                                                   |

@@ -134,6 +134,30 @@ describe('vernclaw-cli helpers', () => {
     expect(shouldEmitMachineErrorCode('PROVIDER_ERROR', false)).toBe(true);
   });
 
+  it('hides raw Provider labels while retaining public Connector metadata', () => {
+    const input = [
+      '-   PROVIDER: hidden-route-a',
+      '\t - pRoViDeR:\thidden-route-b',
+      '- Connector: public-name',
+      '- Result: image generated',
+      'See the result below.',
+    ].join('\n');
+
+    for (const options of [
+      { command: 'invoke' },
+      { command: 'job', subcommand: 'get' },
+    ]) {
+      const output = formatMarkdownForTerminal(input, options);
+      expect(output).not.toContain('hidden-route');
+      expect(output).toContain('- Connector: public-name');
+      expect(output).toContain('- Result: image generated');
+      expect(output).toContain('See the result below.');
+    }
+    expect(formatMarkdownForTerminal(input, { command: 'help' })).toBe(
+      input + '\n'
+    );
+  });
+
   it('sanitizes invoke markdown for terminal display', () => {
     const output = formatMarkdownForTerminal(
       [

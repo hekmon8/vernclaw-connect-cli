@@ -74,6 +74,8 @@ This connector is currently not available in the offline catalog.
 
 Parse the numeric `status` first, then read `data`. The CLI returns normalized connector output only. Use `--pretty` only for human-readable terminal output, not automation. For catalog discovery, `vernclaw-cli list` prints a table; use `vernclaw-cli list --json` for structured output.
 
+The CLI omits provider raw payloads from normal connector output.
+
 The `data` object includes normalized fields such as:
 
 - **Platform** — `xiaohongshu`

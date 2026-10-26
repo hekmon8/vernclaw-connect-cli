@@ -1,0 +1,17 @@
+{
+  "status": 200,
+  "data": {
+    "platform": "reddit",
+    "operation": "search",
+    "raw": { "marker": "provider-payload" },
+    "result": { "raw": null, "empty": null, "enabled": false, "count": 0 },
+    "items": [
+      {
+        "id": "example",
+        "text": "raw is an ordinary word",
+        "raw": ["provider-payload"],
+        "nested": [{ "raw": false, "score": 0 }]
+      }
+    ]
+  }
+}

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
+import socialOutput from './fixtures/social-output.json';
+
 import { resolveCliConfig } from '../src/config/env.js';
 import {
   ensureTrailingNewline,
@@ -85,6 +87,31 @@ describe('vernclaw-cli helpers', () => {
         status: 200,
       })
     ).toBe('{"status":200,"data":{"summary":"ok"}}\n');
+  });
+
+  it('omits nested raw fields without mutating normalized social results', () => {
+    const original = JSON.stringify(socialOutput);
+    const output = formatJsonForTerminal(socialOutput);
+    expect(JSON.parse(output)).toEqual({
+      status: 200,
+      data: {
+        platform: 'reddit',
+        operation: 'search',
+        result: { empty: null, enabled: false, count: 0 },
+        items: [
+          {
+            id: 'example',
+            text: 'raw is an ordinary word',
+            nested: [{ score: 0 }],
+          },
+        ],
+      },
+    });
+    expect(output).not.toContain('provider-payload');
+    expect(
+      formatResponseForTerminal(socialOutput, { command: 'invoke' })
+    ).not.toContain('provider-payload');
+    expect(JSON.stringify(socialOutput)).toBe(original);
   });
 
   it('includes error codes in JSON output when present', () => {

@@ -532,6 +532,11 @@ export function formatMarkdownForTerminal(
   };
 
   for (const rawLine of lines) {
+    // Inspect the raw label before sanitization renames provider to connector.
+    if (/^-\s*Provider:/i.test(rawLine.trim())) {
+      continue;
+    }
+
     const line = sanitizeInvokeLine(rawLine).trimEnd();
     const trimmed = line.trim();
 
@@ -591,10 +596,6 @@ export function formatMarkdownForTerminal(
       }
 
       output.push('');
-      continue;
-    }
-
-    if (/^- Provider:/i.test(trimmed)) {
       continue;
     }
 
